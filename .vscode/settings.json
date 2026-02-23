@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^gh repo list ProjektovyTyden3C --limit 20$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
