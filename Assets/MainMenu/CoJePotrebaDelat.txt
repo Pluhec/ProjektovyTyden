@@ -1,0 +1,40 @@
+Main menu
+
+- Presunuti do hry
+- Udelani nastaveni 
+- Exit hry 
+
+
+Nastaveni
+
+- Zeptat se stepana co tam bude chtit davat za nastaveni (motion blur, rozliseni, sound settigns atd..)
+- Vsechny buttony, slidery a checkboxy by mely byt hotove an disku od grafiku, takze se drzet te formy
+
+Hra
+
+Main canvas
+
+- Vytvorit main canvas, stejny jako poskytnou grafici, Obsahuje: 
+    - Proklik na skill tree
+    - Zobrazeni statu (ty 3 staty te hry, nevim jak se jmenujou neco jako znamost atd..)
+    - Proklik na 47 slide (prezentace se jmenuje Prace za 23. pondeli) menu - to taky udelat funkcni 
+    - Stav penez 
+        - vytvorit settry na penize, protoze matej to bude muste updateovat tuto hodnotu
+    - Proklik na web
+    
+    
+Web canvas
+- Realne udelat kopii toho webu (history logu)
+- poresit jestli ty plakaty v tom webu budou staticke (co clanek to prirazeny plakat) nebo jestli to bude mit nejakou hlubsi loigku
+
+    
+Skill tree canvas
+- Zase udelat stejnou kopii toho co udelali grafici
+- nejakym rozumnym zpusobem Matejovi posilat hodnoty na co uzivatel klikne (na jaky perk)
+
+Socialni site canvas
+- Je to ten side bar v navrhu 
+- ma 2 faze, bud pouze prizpevky (pouze text s ikonami uzivatelu a s jejich nicknamema) nebo s nejakym mediem (reel nebo plakat)
+- Takze potreba udelat metodu na prijmani prizpevku (zeptat se mateje jakou formou bude posialt data) 
+- Udelat metodu na prijmani medii (Smysluplne rozvrhnout jak budou videa ulozena a jak se z nich budou cucat ty spravne) - tuto metodu pretizit podle toho co si matej rekne ze bude sem posilat
+
