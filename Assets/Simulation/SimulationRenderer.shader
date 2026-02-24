@@ -110,14 +110,13 @@ Shader "Hidden/SimulationRenderer"
                 o.uv = float2(cornerIdx % 2, cornerIdx / 2);
 
                 // Map population (0 to 255) to color (red to green)
-                float normalizedValue = npc.impressionability / 255.0; // 0 to 1
+                float normalizedValue = (npc.stance + 128.0) / 255.0; // 0 to 1
                 //normalizedValue = npc.neighbors / 8.;
                 float3 redCol = float3(1.0, 0.0, 0.0);
                 float3 greenCol = float3(0.0, 1.0, 0.0);
                 float3 blueCol = float3(0.0, 0.0, 1.0);
                 o.color.xyz = lerp(redCol, lerp(greenCol, blueCol, saturate(normalizedValue*2-1)), saturate(normalizedValue*2));
                 o.color.w = npc.population > 0 ? 1.0 : 0.0;
-                //o.color.w = 1.;
 
                 return o;
             }
