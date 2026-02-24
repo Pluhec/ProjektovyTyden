@@ -58,6 +58,46 @@ Shader "Hidden/SimulationRenderer"
                 return npc;
             }
 
+            // Compute color for a single cell
+            float4 ComputeCellColor(int gx, int gy)
+            {
+                if (gx < 0 || gy < 0 || gx >= _GridWidth || gy >= _GridHeight)
+                    return float4(0, 0, 0, 0); // out-of-bounds -> zero weight
+                uint idx = (uint)gy * (uint)_GridWidth + (uint)gx;
+                if (idx >= (uint)_Count)
+                    return float4(0, 0, 0, 0);
+                Npc npc = LoadNpc(idx);
+                if (npc.population == 0u)
+                    return float4(0, 0, 0, 0);
+                float normalizedValue = (npc.stance + 128.0) / 255.0;
+                float3 redCol = float3(1.0, 0.0, 0.0);
+                float3 grayCol = float3(0.5, 0.5, 0.5);
+                float3 blueCol = float3(0.0, 0.0, 1.0);
+                float3 col = lerp(redCol, lerp(grayCol, blueCol, saturate(normalizedValue*2-1)), saturate(normalizedValue*2));
+                return float4(col, 1.0);
+            }
+
+            // Average color at a shared grid vertex from up to 4 adjacent cells
+            // cx, cy: 0 or 1 indicating which corner of the current cell
+            float4 SmoothCornerColor(int gridX, int gridY, int cx, int cy)
+            {
+                float4 total = float4(0, 0, 0, 0);
+                float weight = 0;
+                // The 4 cells sharing this corner vertex
+                for (int dy = -1; dy <= 0; dy++) {
+                    for (int dx = -1; dx <= 0; dx++) {
+                        float4 c = ComputeCellColor(gridX + cx + dx, gridY + cy + dy);
+                        if (c.w > 0.5) {
+                            total.rgb += c.rgb;
+                            weight += 1.0;
+                        }
+                    }
+                }
+                if (weight > 0)
+                    return float4(total.rgb / weight, 1.0);
+                return float4(0.5, 0.5, 0.5, 0.0);
+            }
+
             struct Attributes {
                 uint vertexID : SV_VertexID;
             };
@@ -80,8 +120,6 @@ Shader "Hidden/SimulationRenderer"
                     o.color = 0;
                     return o;
                 }
-                
-                Npc npc = LoadNpc(npcIdx);
                 
                 // Calculate grid position
                 int gridX = npcIdx % _GridWidth;
@@ -109,14 +147,12 @@ Shader "Hidden/SimulationRenderer"
                 o.positionCS = TransformWorldToHClip(worldPos);
                 o.uv = float2(cornerIdx % 2, cornerIdx / 2);
 
-                // Map population (0 to 255) to color (red to green)
-                float normalizedValue = (npc.stance + 128.0) / 255.0; // 0 to 1
-                //normalizedValue = npc.neighbors / 8.;
-                float3 redCol = float3(1.0, 0.0, 0.0);
-                float3 grayCol = float3(0.5, 0.5, 0.5);
-                float3 blueCol = float3(0.0, 0.0, 1.0);
-                o.color.xyz = lerp(redCol, lerp(grayCol, blueCol, saturate(normalizedValue*2-1)), saturate(normalizedValue*2));
-                o.color.w = npc.population > 0 ? 1.0 : 0.0;
+                // Smooth color: average stance from the 4 cells sharing this corner vertex
+                // Corner 0 (BL): cx=0, cy=0 | Corner 1 (BR): cx=1, cy=0
+                // Corner 2 (TR): cx=1, cy=1 | Corner 3 (TL): cx=0, cy=1
+                int cx = (cornerIdx == 1 || cornerIdx == 2) ? 1 : 0;
+                int cy = (cornerIdx >= 2) ? 1 : 0;
+                o.color = SmoothCornerColor(gridX, gridY, cx, cy);
 
                 return o;
             }
