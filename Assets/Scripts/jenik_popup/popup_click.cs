@@ -7,6 +7,8 @@ public class popup_click : MonoBehaviour
     public GameObject particles;
     public GameObject ukazatel;
     public Gradient timerGradient;
+
+    private Vector2 mousePos;
     void Start()
     {
         StartCoroutine(WaitForSeconds());
@@ -15,12 +17,17 @@ public class popup_click : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if(Input.GetMouseButtonDown(0))
         {
-            Debug.Log("ted se prictou penize ale idk kam to mam napojit");
-            GameObject partikl = Instantiate(particles, transform.position, Quaternion.identity);
-            partikl.GetComponent<ParticleSystem>().startColor = Color.white;
-            Destroy(gameObject);
+            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+            if (hit.collider != null && hit.collider.gameObject == gameObject)
+            {
+                StopAllCoroutines();
+                GameObject particl = Instantiate(particles, transform.position, Quaternion.identity);
+                particl.GetComponent<ParticleSystem>().startColor = Color.white;
+                Destroy(gameObject);
+            }
         }
     }
     IEnumerator WaitForSeconds()
