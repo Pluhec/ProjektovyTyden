@@ -19,6 +19,25 @@ public struct NPC // 12b (9b data + 3b padding)
     private byte _padding1;         // padding              1b
 }
 
+[System.Serializable]
+public struct AgeBandPropaganda
+{
+    [Min(0f)] public float virality;
+    [Min(0f)] public float impact;
+    [Min(0f)] public float visibility;
+}
+
+[System.Serializable]
+public struct PropagandaLevels
+{
+    public AgeBandPropaganda young;
+    public AgeBandPropaganda adults;
+    public AgeBandPropaganda seniors;
+    [Range(-1f, 1f)] public float narrativeDirection;
+    [Range(0, 255)] public int youngMaxAge;
+    [Range(0, 255)] public int adultMaxAge;
+}
+
 public class SimulationHandler : MonoBehaviour
 {
     public Vector2Int gridSize = new Vector2Int(32, 32);
@@ -36,6 +55,22 @@ public class SimulationHandler : MonoBehaviour
     public Texture2D initialTexture;
     public Texture2D regionTexture;
 
+    [Header("Propaganda")]
+    public PropagandaLevels propaganda = new PropagandaLevels
+    {
+        young = new AgeBandPropaganda { virality = 1f, impact = 1f, visibility = 1f },
+        adults = new AgeBandPropaganda { virality = 1f, impact = 1f, visibility = 1f },
+        seniors = new AgeBandPropaganda { virality = 1f, impact = 1f, visibility = 1f },
+        narrativeDirection = 1f,
+        youngMaxAge = 85,
+        adultMaxAge = 170
+    };
+    [Range(0.01f, 1f)] public float propagandaLevelAdaptationPerDay = 0.2f;
+
+    private PropagandaLevels runtimePropaganda;
+
+    private uint simulationDay;
+
     private const int NUM_REGIONS = 10;
     private int[] regionMap;
     public float[] regionAverages;
@@ -43,6 +78,7 @@ public class SimulationHandler : MonoBehaviour
     void Start()
     {
         numNPCs = gridSize.x * gridSize.y;
+        simulationDay = 0;
         propertyBlock = new MaterialPropertyBlock();
         kernel_init = cs.FindKernel("SimulationInit");
         kernel_step = cs.FindKernel("SimulationStep");
@@ -55,9 +91,15 @@ public class SimulationHandler : MonoBehaviour
         cs.SetTexture(kernel_init, "simumlationInitialTexture", initialTexture);
         cs.SetInts("populationSize", gridSize.x, gridSize.y);
         cs.SetInts("imageSize", initialTexture.width, initialTexture.height);
+        cs.SetInt("_NumNPCs", numNPCs);
         cs.SetInt("seedValue", Random.Range(0, int.MaxValue));
+        runtimePropaganda = propaganda;
+        ApplyPropagandaToShader();
         cs.Dispatch(kernel_init, (numNPCs + 63) / 64, 1, 1);
         npcBuffer.GetData(npcs);
+        for (int i = 0; i < numNPCs; i++)
+            npcs[i].friendIndex = (uint)Random.Range(0, numNPCs);
+        npcBuffer.SetData(npcs);
     }
 
     void Update()
@@ -81,10 +123,57 @@ public class SimulationHandler : MonoBehaviour
     }
 
     void SimulationStep(){
+        simulationDay++;
+        UpdateRuntimePropagandaLevels();
         cs.SetBuffer(kernel_step, "npcs", npcBuffer);
         cs.SetInt("_NumNPCs", numNPCs);
+        cs.SetInt("_SimulationDay", (int)simulationDay);
+        ApplyPropagandaToShader();
         cs.Dispatch(kernel_step, (numNPCs + 63) / 64, 1, 1);
         npcBuffer.GetData(npcs);
+    }
+
+    void UpdateRuntimePropagandaLevels()
+    {
+        float t = Mathf.Clamp01(propagandaLevelAdaptationPerDay);
+
+        runtimePropaganda.young.virality = Mathf.Lerp(runtimePropaganda.young.virality, Mathf.Max(0f, propaganda.young.virality), t);
+        runtimePropaganda.young.impact = Mathf.Lerp(runtimePropaganda.young.impact, Mathf.Max(0f, propaganda.young.impact), t);
+        runtimePropaganda.young.visibility = Mathf.Lerp(runtimePropaganda.young.visibility, Mathf.Max(0f, propaganda.young.visibility), t);
+
+        runtimePropaganda.adults.virality = Mathf.Lerp(runtimePropaganda.adults.virality, Mathf.Max(0f, propaganda.adults.virality), t);
+        runtimePropaganda.adults.impact = Mathf.Lerp(runtimePropaganda.adults.impact, Mathf.Max(0f, propaganda.adults.impact), t);
+        runtimePropaganda.adults.visibility = Mathf.Lerp(runtimePropaganda.adults.visibility, Mathf.Max(0f, propaganda.adults.visibility), t);
+
+        runtimePropaganda.seniors.virality = Mathf.Lerp(runtimePropaganda.seniors.virality, Mathf.Max(0f, propaganda.seniors.virality), t);
+        runtimePropaganda.seniors.impact = Mathf.Lerp(runtimePropaganda.seniors.impact, Mathf.Max(0f, propaganda.seniors.impact), t);
+        runtimePropaganda.seniors.visibility = Mathf.Lerp(runtimePropaganda.seniors.visibility, Mathf.Max(0f, propaganda.seniors.visibility), t);
+
+        runtimePropaganda.narrativeDirection = Mathf.Lerp(runtimePropaganda.narrativeDirection, Mathf.Clamp(propaganda.narrativeDirection, -1f, 1f), t);
+        runtimePropaganda.youngMaxAge = Mathf.Clamp(propaganda.youngMaxAge, 0, 255);
+        runtimePropaganda.adultMaxAge = Mathf.Clamp(propaganda.adultMaxAge, runtimePropaganda.youngMaxAge, 255);
+    }
+
+    void ApplyPropagandaToShader()
+    {
+        int youngMaxAge = Mathf.Clamp(runtimePropaganda.youngMaxAge, 0, 255);
+        int adultMaxAge = Mathf.Clamp(runtimePropaganda.adultMaxAge, youngMaxAge, 255);
+
+        cs.SetFloat("_ViralityYoung", runtimePropaganda.young.virality);
+        cs.SetFloat("_ImpactYoung", runtimePropaganda.young.impact);
+        cs.SetFloat("_VisibilityYoung", runtimePropaganda.young.visibility);
+
+        cs.SetFloat("_ViralityAdults", runtimePropaganda.adults.virality);
+        cs.SetFloat("_ImpactAdults", runtimePropaganda.adults.impact);
+        cs.SetFloat("_VisibilityAdults", runtimePropaganda.adults.visibility);
+
+        cs.SetFloat("_ViralitySeniors", runtimePropaganda.seniors.virality);
+        cs.SetFloat("_ImpactSeniors", runtimePropaganda.seniors.impact);
+        cs.SetFloat("_VisibilitySeniors", runtimePropaganda.seniors.visibility);
+
+        cs.SetFloat("_PropagandaDirection", runtimePropaganda.narrativeDirection);
+        cs.SetInt("_YoungMaxAge", youngMaxAge);
+        cs.SetInt("_AdultMaxAge", adultMaxAge);
     }
     void RenderSimulation(){
         propertyBlock.SetBuffer("npcs", npcBuffer);
