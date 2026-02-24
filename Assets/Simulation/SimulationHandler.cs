@@ -201,7 +201,7 @@ public class SimulationHandler : MonoBehaviour
             {
                 if (npcArray[i].population == 0) continue; // skip empty cells
                 int region = regionMapLocal[i];
-                sums[region] += npcArray[i].population;
+                sums[region] += npcArray[i].stance;
                 counts[region]++;
             }
         });
