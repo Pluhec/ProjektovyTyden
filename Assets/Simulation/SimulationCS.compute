@@ -19,6 +19,7 @@ uint seedValue;
 RWByteAddressBuffer npcs;
 uint _NumNPCs;
 int2 populationSize;
+float _InternetWeight = 1.0;
 
 float Hash(uint s, bool saturate = false)
 {
@@ -71,7 +72,8 @@ void SimulationInit(uint3 id : SV_DispatchThreadID)
     npc.population = uint((initData.x - 0.05) * 260.0); // somehow normalized to match the texture
     npc.age = uint(initData.y * 255.0);
     npc.education = uint(initData.z * 255.0);
-    npc.stance = 0;
+    npc.impressionability = uint(initData.w * 255.0);
+    npc.stance = int(pow(saturate(initData.z*0.9 + 0.08 - Hash(id.x+789, true)*0.15), 0.2) * 255 - 128);
     npc.neighbors = uint(npc.population / 255. * 4.5 + Hash(id.x+123, true)*4); // neighbors based by population with 50% randomness
     StoreNpc(id.x, npc);
 }
@@ -85,8 +87,8 @@ void SimulationStep(uint3 id : SV_DispatchThreadID)
     int2 currentNpcPos = int2(id.x % populationSize.x, id.x / populationSize.x);
 
     // Average current value with neighbors
-    float averageValue = float(currentNpc.population);
-    int totalCells = 1;
+    float averageValue = float(currentNpc.stance);
+    float averageWeight = 1.;
 
     if (currentNpc.population > 0u && currentNpc.neighbors > 0) {
         uint rngState = (uint)Hash(id.x);
@@ -107,16 +109,17 @@ void SimulationStep(uint3 id : SV_DispatchThreadID)
             uint neighborIndex = neighborPos.y * populationSize.x + neighborPos.x;
             Npc neighborNpc = LoadNpc(neighborIndex);
             if (neighborNpc.population == 0u) continue; // skip non-populated
-            averageValue += float(neighborNpc.population);
-            totalCells++;
+
+            averageValue += float(neighborNpc.stance);
+            averageWeight += 1.-(currentNpc.impressionability / 2048.0 + 0.125);
         }
         if (friendNpc.population > 0u && rngState < 50000000u) {
-            totalCells++;
-            averageValue += friendNpc.population;
+            averageWeight += _InternetWeight;
+            averageValue += friendNpc.stance;
         }
     }
     // Calculate average
-    averageValue /= float(totalCells);
-    currentNpc.population = uint(averageValue);
+    averageValue /= averageWeight;
+    currentNpc.stance = int(averageValue);
     StoreNpc(id.x, currentNpc);
 }
