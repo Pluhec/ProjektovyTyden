@@ -2,32 +2,35 @@ using System.Runtime.InteropServices;
 
 namespace PlayerChoice.DataSets;
 
-public class PerkData
+public class PerkInformation
 {
-	public readonly EnumStructs.E_Perk PerkType;
-	public readonly int PerkCost;
-	public readonly EnumStructs.S_StatData YouthStat;
-	public readonly EnumStructs.S_StatData AdultStat;
-	public readonly EnumStructs.S_StatData SeniorStat;
-	public readonly PerkData DependsOnPerk; // Can be null
+	public int PerkCost;
+	public EnumStructs.S_StatData YouthStat;
+	public EnumStructs.S_StatData AdultStat;
+	public EnumStructs.S_StatData SeniorStat;
+	public PerkInformation[] DependsOnPerks; // Can be null or empty — ALL must be bought
 	public bool IsBought;
+	public string SpecialEffect; // Description of special effects (e.g. "Removes 20% immune people")
 
 	public int PerkPurchase(int PAR_CurrentMoney)
 	{
-		if(PAR_CurrentMoney		>= PerkCost && DependsOnPerk		== null)
+		if (PAR_CurrentMoney < PerkCost)
+			return 0;
+
+		if (DependsOnPerks == null || DependsOnPerks.Length == 0)
 		{
-			IsBought			= true;
+			IsBought = true;
 			return PerkCost;
 		}
-		else if(DependsOnPerk	!= null && DependsOnPerk.IsBought	== true)
+
+		foreach (var dep in DependsOnPerks)
 		{
-			IsBought			= true;
-			return PerkCost;
+			if (!dep.IsBought)
+				return 0; // A required dependency has not been purchased
 		}
-		else
-		{
-			return 0; // 0 means the purchase was refused
-		}
+
+		IsBought = true;
+		return PerkCost;
 	}
 }
 
@@ -35,20 +38,12 @@ public class EnumStructs
 {
 	public struct S_StatData
 	{
-		E_Age AgeGroup;
-		sbyte Virality;
-		sbyte Impact;
-		sbyte Visibility;
+		public E_Age AgeGroup;
+		public sbyte Virality;
+		public sbyte Impact;
+		public sbyte Visibility;
 	}
 
-
-	public enum E_Perk
-	{
-		Coms_ChainMail,
-        Influencers_1,
-        Influencers_2,
-        Influencers_3
-	}
 
 	public enum E_CampaignTopic
 	{
@@ -96,12 +91,3 @@ public class EnumStructs
 		Video
 	}
 }
-
-// Influenceři 1
-// PerkData influencers1 = new PerkData(
-// 	EnumStructs.E_Perk.Influencers_1,
-// 	200, // $$
-// 	new EnumStructs.S_StatData(EnumStructs.E_Age.Young, 3, 0, 0),
-// 	new EnumStructs.S_StatData(EnumStructs.E_Age.Adult, 2, 0, 0),
-// 	new EnumStructs.S_StatData(EnumStructs.E_Age.Senior, 0, 0, 0)
-// );
