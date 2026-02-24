@@ -116,7 +116,7 @@ Shader "Hidden/SimulationRenderer"
                 float3 grayCol = float3(0.5, 0.5, 0.5);
                 float3 blueCol = float3(0.0, 0.0, 1.0);
                 o.color.xyz = lerp(redCol, lerp(grayCol, blueCol, saturate(normalizedValue*2-1)), saturate(normalizedValue*2));
-                o.color.w = npc.population > 0 ? 1.0 : 0.0;
+                o.color.w = npc.population > 0 ? sqrt(npc.population / 255.0) : 0.0;
 
                 return o;
             }
