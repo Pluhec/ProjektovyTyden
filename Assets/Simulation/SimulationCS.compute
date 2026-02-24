@@ -20,6 +20,23 @@ RWByteAddressBuffer npcs;
 uint _NumNPCs;
 int2 populationSize;
 float _InternetWeight = 1.0;
+int _SimulationDay;
+
+float _ViralityYoung;
+float _ImpactYoung;
+float _VisibilityYoung;
+
+float _ViralityAdults;
+float _ImpactAdults;
+float _VisibilityAdults;
+
+float _ViralitySeniors;
+float _ImpactSeniors;
+float _VisibilitySeniors;
+
+float _PropagandaDirection;
+int _YoungMaxAge;
+int _AdultMaxAge;
 
 float Hash(uint s, bool saturate = false)
 {
@@ -30,6 +47,36 @@ float Hash(uint s, bool saturate = false)
     s *= 0x27d4eb2du;
     s = s ^ (s >> 15u);
     return saturate ? float(s) / 4294967296.0 : float(s);
+}
+
+float NormalizeLevel(float value)
+{
+    return 1.0 - exp(-max(value, 0.0) * 0.15);
+}
+
+void GetAgeBandPropaganda(uint age, out float virality, out float impact, out float visibility)
+{
+    uint youngMaxAge = (uint)max(_YoungMaxAge, 0);
+    uint adultMaxAge = (uint)max(_AdultMaxAge, _YoungMaxAge);
+
+    if (age <= youngMaxAge)
+    {
+        virality = _ViralityYoung;
+        impact = _ImpactYoung;
+        visibility = _VisibilityYoung;
+    }
+    else if (age <= adultMaxAge)
+    {
+        virality = _ViralityAdults;
+        impact = _ImpactAdults;
+        visibility = _VisibilityAdults;
+    }
+    else
+    {
+        virality = _ViralitySeniors;
+        impact = _ImpactSeniors;
+        visibility = _VisibilitySeniors;
+    }
 }
 // Load the NPC buffer
 Npc LoadNpc(uint index)
@@ -66,6 +113,7 @@ void StoreNpc(uint index, Npc npc)
 [numthreads(64, 1, 1)]
 void SimulationInit(uint3 id : SV_DispatchThreadID)
 {
+    if (id.x >= _NumNPCs) return;
     float2 uv = float2(id.x % populationSize.x, id.x / populationSize.x) / float2(populationSize);
     float4 initData = simumlationInitialTexture.Load(int3(uv * imageSize, 0));
     Npc npc = LoadNpc(id.x);
@@ -83,15 +131,27 @@ void SimulationStep(uint3 id : SV_DispatchThreadID)
 {
     if (id.x >= _NumNPCs) return;
     Npc currentNpc = LoadNpc(id.x);
+    if (currentNpc.population == 0u) return;
     Npc friendNpc = LoadNpc(min(currentNpc.friendIndex, _NumNPCs - 1));
     int2 currentNpcPos = int2(id.x % populationSize.x, id.x / populationSize.x);
 
-    // Average current value with neighbors
-    float averageValue = float(currentNpc.stance);
-    float averageWeight = 1.;
+    float viralityRaw;
+    float impactRaw;
+    float visibilityRaw;
+    GetAgeBandPropaganda(currentNpc.age, viralityRaw, impactRaw, visibilityRaw);
+    float virality = NormalizeLevel(viralityRaw);
+    float impact = NormalizeLevel(impactRaw);
+    float visibility = NormalizeLevel(visibilityRaw);
+
+    // Weighted average current value with neighbors
+    float weightedSum = float(currentNpc.stance);
+    float totalWeight = 1.0;
+    float impressionability = currentNpc.impressionability / 255.0;
+    float educationResistance = currentNpc.education / 255.0;
+    float susceptibility = saturate(impressionability * (1.2 - 0.8 * educationResistance));
 
     if (currentNpc.population > 0u && currentNpc.neighbors > 0) {
-        uint rngState = (uint)Hash(id.x);
+        uint rngState = (uint)Hash(id.x + uint(_SimulationDay) * 977u);
         int neighborOrder[8] = {0, 1, 2, 3, 4, 5, 6, 7};
         for (int j = 7; j > 0; j--) {
             rngState = rngState * 747796405u + 2891336453u;
@@ -106,20 +166,56 @@ void SimulationStep(uint3 id : SV_DispatchThreadID)
             int neighborIdx = neighborOrder[i];  // randomized order
             uint mappedIdx = neighborIdx < 4 ? neighborIdx : neighborIdx + 1;
             int2 neighborPos = currentNpcPos + int2((mappedIdx % 3) - 1, (mappedIdx / 3) - 1);
+            if (neighborPos.x < 0 || neighborPos.y < 0 || neighborPos.x >= populationSize.x || neighborPos.y >= populationSize.y) continue;
             uint neighborIndex = neighborPos.y * populationSize.x + neighborPos.x;
             Npc neighborNpc = LoadNpc(neighborIndex);
             if (neighborNpc.population == 0u) continue; // skip non-populated
 
-            averageValue += float(neighborNpc.stance);
-            averageWeight += 1.-(currentNpc.impressionability / 2048.0 + 0.125);
+            float neighborWeight = 0.45 + 0.65 * susceptibility;
+            weightedSum += float(neighborNpc.stance) * neighborWeight;
+            totalWeight += neighborWeight;
         }
-        if (friendNpc.population > 0u && rngState < 50000000u) {
-            averageWeight += _InternetWeight;
-            averageValue += friendNpc.stance;
+        rngState = rngState * 747796405u + 2891336453u;
+        float friendRoll = float(rngState) / 4294967296.0;
+        float friendVisibilityChance = saturate(0.05 + visibility * (0.15 + 0.7 * virality));
+        if (friendNpc.population > 0u && friendRoll < friendVisibilityChance) {
+            float friendWeight = _InternetWeight * (0.1 + 0.9 * virality);
+            weightedSum += float(friendNpc.stance) * friendWeight;
+            totalWeight += friendWeight;
         }
     }
-    // Calculate average
-    averageValue /= averageWeight;
-    currentNpc.stance = int(averageValue);
+
+    // Social update
+    float averageValue = weightedSum / max(totalWeight, 1e-5);
+    float currentStanceNorm = clamp(float(currentNpc.stance) / 127.0, -1.0, 1.0);
+    float averageNorm = clamp(averageValue / 127.0, -1.0, 1.0);
+    float socialOpposition = saturate(max(0.0, -currentStanceNorm * averageNorm));
+    float conviction = saturate(pow(abs(currentStanceNorm), 1.35));
+    float socialInertia = 1.0 - 0.75 * socialOpposition * conviction;
+    float socialBlend = lerp(0.04, 0.22, susceptibility) * socialInertia;
+    float nextStance = lerp(float(currentNpc.stance), averageValue, socialBlend);
+
+    // Propaganda update
+    uint propagandaState = (uint)Hash(id.x + uint(_SimulationDay) * 1597u + 17u);
+    float propagandaRoll = float(propagandaState) / 4294967296.0;
+    float propagandaExposureChance = saturate(visibility * (0.2 + 0.8 * virality));
+    if (propagandaRoll < propagandaExposureChance)
+    {
+        float propagandaTarget = clamp(_PropagandaDirection, -1.0, 1.0) * 127.0;
+        float targetNorm = clamp(_PropagandaDirection, -1.0, 1.0);
+        float distanceToTarget = saturate(abs(targetNorm - currentStanceNorm) * 0.5);
+        float oppositeSide = saturate(max(0.0, -currentStanceNorm * targetNorm));
+        float ideologicalResistance = saturate(1.0 - (0.85 * oppositeSide * conviction + 0.55 * distanceToTarget * conviction));
+        float propagandaStrength = impact * susceptibility * (1.0 - 0.6 * educationResistance) * ideologicalResistance;
+        float propagandaBlend = saturate(0.02 + propagandaStrength * 0.28);
+        nextStance = lerp(nextStance, propagandaTarget, propagandaBlend);
+    }
+
+    // Stabilization: cap daily change so high propaganda levels remain controllable
+    float maxDailyShift = lerp(2.0, 14.0, saturate(impact * (0.35 + 0.65 * visibility)));
+    float clampedDelta = clamp(nextStance - float(currentNpc.stance), -maxDailyShift, maxDailyShift);
+    nextStance = float(currentNpc.stance) + clampedDelta;
+
+    currentNpc.stance = clamp(int(round(nextStance)), -128, 127);
     StoreNpc(id.x, currentNpc);
 }

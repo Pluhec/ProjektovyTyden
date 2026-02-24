@@ -1,0 +1,637 @@
+fileFormatVersion: 2
+guid: 16c0184a317655149850b8c53c1c2752
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2821730050399184028
+    second: Ilustrace_mapy_0
+  - first:
+      213: -322267689620280120
+    second: Ilustrace_mapy_1
+  - first:
+      213: 3286394206804030148
+    second: Ilustrace_mapy_2
+  - first:
+      213: -7037026228677765896
+    second: Ilustrace_mapy_3
+  - first:
+      213: -9016348884246786441
+    second: Ilustrace_mapy_4
+  - first:
+      213: -4386138574795972761
+    second: Ilustrace_mapy_5
+  - first:
+      213: 23325656115603640
+    second: Ilustrace_mapy_6
+  - first:
+      213: 6267814253669181778
+    second: Ilustrace_mapy_7
+  - first:
+      213: -1510700113660306509
+    second: Ilustrace_mapy_8
+  - first:
+      213: -1318939651883511640
+    second: Ilustrace_mapy_9
+  - first:
+      213: 2016020978623589494
+    second: Ilustrace_mapy_10
+  - first:
+      213: 1500297961338534556
+    second: Ilustrace_mapy_11
+  - first:
+      213: 7205196068862133608
+    second: Ilustrace_mapy_12
+  - first:
+      213: -6978443273312754399
+    second: Ilustrace_mapy_13
+  - first:
+      213: -5930191706128586051
+    second: Ilustrace_mapy_14
+  - first:
+      213: -961610142033951285
+    second: Ilustrace_mapy_15
+  - first:
+      213: -8006292693328352356
+    second: Ilustrace_mapy_16
+  - first:
+      213: -9074641615858183732
+    second: Ilustrace_mapy_17
+  - first:
+      213: 1408401630976134912
+    second: Ilustrace_mapy_18
+  - first:
+      213: -4155937480772738942
+    second: Ilustrace_mapy_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Ilustrace_mapy_0
+      rect:
+        serializedVersion: 2
+        x: 2833
+        y: 2821
+        width: 44
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46b59e5287337d8d0800000000000000
+      internalID: -2821730050399184028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_1
+      rect:
+        serializedVersion: 2
+        x: 3060
+        y: 2831
+        width: 36
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8cce8956e33178bf0800000000000000
+      internalID: -322267689620280120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_2
+      rect:
+        serializedVersion: 2
+        x: 3104
+        y: 2857
+        width: 44
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c2b4787e1e9b9d20800000000000000
+      internalID: 3286394206804030148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_3
+      rect:
+        serializedVersion: 2
+        x: 1923
+        y: 1041
+        width: 2092
+        height: 1774
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f41e84cde5775e90800000000000000
+      internalID: -7037026228677765896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_4
+      rect:
+        serializedVersion: 2
+        x: 2744
+        y: 2779
+        width: 44
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77e0b7fd57e7fd280800000000000000
+      internalID: -9016348884246786441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_5
+      rect:
+        serializedVersion: 2
+        x: 3104
+        y: 2791
+        width: 36
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76fd5a9743e4123c0800000000000000
+      internalID: -4386138574795972761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_6
+      rect:
+        serializedVersion: 2
+        x: 1907
+        y: 2409
+        width: 37
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b86ce68f8ed25000800000000000000
+      internalID: 23325656115603640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_7
+      rect:
+        serializedVersion: 2
+        x: 1907
+        y: 2194
+        width: 133
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 259e41cfadfbbf650800000000000000
+      internalID: 6267814253669181778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_8
+      rect:
+        serializedVersion: 2
+        x: 4097
+        y: 1907
+        width: 36
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bb922b204ae80be0800000000000000
+      internalID: -1510700113660306509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_9
+      rect:
+        serializedVersion: 2
+        x: 4169
+        y: 1929
+        width: 36
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a05e49ef5f22bde0800000000000000
+      internalID: -1318939651883511640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_10
+      rect:
+        serializedVersion: 2
+        x: 4144
+        y: 1863
+        width: 36
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67c289216685afb10800000000000000
+      internalID: 2016020978623589494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_11
+      rect:
+        serializedVersion: 2
+        x: 3985
+        y: 1522
+        width: 114
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9a73d20c0122d410800000000000000
+      internalID: 1500297961338534556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_12
+      rect:
+        serializedVersion: 2
+        x: 3905
+        y: 1447
+        width: 114
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 865819d56affdf360800000000000000
+      internalID: 7205196068862133608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_13
+      rect:
+        serializedVersion: 2
+        x: 2337
+        y: 952
+        width: 123
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 125aaf8f0d6972f90800000000000000
+      internalID: -6978443273312754399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_14
+      rect:
+        serializedVersion: 2
+        x: 2245
+        y: 873
+        width: 114
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbaec32101ab3bda0800000000000000
+      internalID: -5930191706128586051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_15
+      rect:
+        serializedVersion: 2
+        x: 2458
+        y: 873
+        width: 114
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc547afabaca7a2f0800000000000000
+      internalID: -961610142033951285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_16
+      rect:
+        serializedVersion: 2
+        x: 3092
+        y: 854
+        width: 45
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9bab5ee63fe3e090800000000000000
+      internalID: -8006292693328352356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_17
+      rect:
+        serializedVersion: 2
+        x: 3184
+        y: 882
+        width: 45
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc1dbc6a785601280800000000000000
+      internalID: -9074641615858183732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_18
+      rect:
+        serializedVersion: 2
+        x: 2378
+        y: 798
+        width: 114
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00fc96342d5ab8310800000000000000
+      internalID: 1408401630976134912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ilustrace_mapy_19
+      rect:
+        serializedVersion: 2
+        x: 3152
+        y: 798
+        width: 45
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2802fcd51e42356c0800000000000000
+      internalID: -4155937480772738942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Ilustrace_mapy_0: -2821730050399184028
+      Ilustrace_mapy_1: -322267689620280120
+      Ilustrace_mapy_10: 2016020978623589494
+      Ilustrace_mapy_11: 1500297961338534556
+      Ilustrace_mapy_12: 7205196068862133608
+      Ilustrace_mapy_13: -6978443273312754399
+      Ilustrace_mapy_14: -5930191706128586051
+      Ilustrace_mapy_15: -961610142033951285
+      Ilustrace_mapy_16: -8006292693328352356
+      Ilustrace_mapy_17: -9074641615858183732
+      Ilustrace_mapy_18: 1408401630976134912
+      Ilustrace_mapy_19: -4155937480772738942
+      Ilustrace_mapy_2: 3286394206804030148
+      Ilustrace_mapy_3: -7037026228677765896
+      Ilustrace_mapy_4: -9016348884246786441
+      Ilustrace_mapy_5: -4386138574795972761
+      Ilustrace_mapy_6: 23325656115603640
+      Ilustrace_mapy_7: 6267814253669181778
+      Ilustrace_mapy_8: -1510700113660306509
+      Ilustrace_mapy_9: -1318939651883511640
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
