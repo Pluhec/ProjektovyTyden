@@ -155,7 +155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 50, y: 50}
+  m_AnchoredPosition: {x: 50, y: -100}
   m_SizeDelta: {x: 183, y: 65}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &65630934
@@ -693,7 +693,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -50}
+  m_AnchoredPosition: {x: 50, y: 100.65}
   m_SizeDelta: {x: 63.138462, y: 50.953846}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &234763443
@@ -987,6 +987,29 @@ MonoBehaviour:
   stopCanvas: {fileID: 2110239030}
   skillTreeCanvas: {fileID: 1814889467}
   webCanvas: {fileID: 417551290}
+  uiElementsToAnimate:
+  - element: {fileID: 234763442}
+    startPosition: {x: 50, y: 100.65}
+    targetPosition: {x: 50, y: -50}
+  - element: {fileID: 1691570043}
+    startPosition: {x: -50, y: 106}
+    targetPosition: {x: -50, y: -50}
+  - element: {fileID: 65630933}
+    startPosition: {x: 50, y: -100}
+    targetPosition: {x: 50, y: 50}
+  - element: {fileID: 1128804578}
+    startPosition: {x: 5.1657257, y: -135}
+    targetPosition: {x: 5.1657257, y: -19.9}
+  - element: {fileID: 766959443}
+    startPosition: {x: 2561.999, y: 6}
+    targetPosition: {x: -217, y: 6}
+  - element: {fileID: 1734069721}
+    startPosition: {x: 1347, y: 5.9999924}
+    targetPosition: {x: 7.9637146, y: 5.9999924}
+  - element: {fileID: 2081948140}
+    startPosition: {x: 789, y: 5.9999924}
+    targetPosition: {x: 236.22995, y: 5.9999924}
+  animationDuration: 0.5
 --- !u!1 &371660554
 GameObject:
   m_ObjectHideFlags: 0
@@ -1475,7 +1498,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000030517578, y: 0.0005493164}
+  m_AnchoredPosition: {x: 0, y: 0.0005493164}
   m_SizeDelta: {x: 0, y: 0.00097656}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &647161519
@@ -1551,7 +1574,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -217, y: 6}
+  m_AnchoredPosition: {x: 2561.999, y: 6}
   m_SizeDelta: {x: 263.9, y: 58.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &766959444
@@ -1815,7 +1838,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -5705545534389016114, guid: c859f977d6c29437cb2c19c956f8eaa7, type: 3}
+  m_Sprite: {fileID: -3004567626971229019, guid: b0c5a4565e609417cb05c83865ef55f9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1867,7 +1890,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 5.1657257, y: -19.9}
+  m_AnchoredPosition: {x: 5.1657257, y: -135}
   m_SizeDelta: {x: 970, y: 45}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1128804579
@@ -2210,7 +2233,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -50, y: -50}
+  m_AnchoredPosition: {x: -50, y: 106}
   m_SizeDelta: {x: 126, y: 46}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1691570044
@@ -2342,7 +2365,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 7.9637146, y: 5.9999924}
+  m_AnchoredPosition: {x: 1347, y: 5.9999924}
   m_SizeDelta: {x: 291.2, y: 58.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1734069722
@@ -3112,7 +3135,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 236.22995, y: 5.9999924}
+  m_AnchoredPosition: {x: 789, y: 5.9999924}
   m_SizeDelta: {x: 262.6, y: 58.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2081948141
@@ -3215,7 +3238,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2110239031
 MonoBehaviour:
   m_ObjectHideFlags: 0
