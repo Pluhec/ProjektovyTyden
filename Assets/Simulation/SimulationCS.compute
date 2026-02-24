@@ -1,0 +1,125 @@
+#pragma kernel SimulationInit
+#pragma kernel SimulationStep
+
+struct Npc
+{
+    uint population;          // 0 - 255                static
+    uint age;                 // 0 - 255                static
+    uint education;           // 0 - 255                static
+    uint impressionability;   // 0 - 255                static
+    int stance;               // -128 - 127             variable
+    uint friendIndex;         // friend index           static
+    uint neighbors;           // 0 - 8 neighbors        static
+};
+
+Texture2D<float4> simumlationInitialTexture; // X=population, Y=age, Z=education, W=mask
+int2 imageSize;
+uint seedValue;
+
+RWByteAddressBuffer npcs;
+uint _NumNPCs;
+int2 populationSize;
+float _InternetWeight = 1.0;
+
+float Hash(uint s, bool saturate = false)
+{
+    s += seedValue;
+    s = (s ^ 61u) ^ (s >> 16u);
+    s *= 9u;
+    s = s ^ (s >> 4u);
+    s *= 0x27d4eb2du;
+    s = s ^ (s >> 15u);
+    return saturate ? float(s) / 4294967296.0 : float(s);
+}
+// Load the NPC buffer
+Npc LoadNpc(uint index)
+{
+    uint address = index * 12;
+    uint3 data = npcs.Load3(address);
+    Npc npc;
+    npc.population = int((data.x >> 0) & 0xFF);            // Extract byte 0
+    npc.age = (data.x >> 8) & 0xFF;                        // Extract byte 1
+    npc.education = (data.x >> 16) & 0xFF;                 // Extract byte 2
+    npc.impressionability = (data.x >> 24) & 0xFF;         // Extract byte 3
+    npc.stance = int((data.y >> 0) & 0xFF) - 128;          // Extract byte 4
+    npc.friendIndex = (data.y >> 8);                       // Extract bytes 5-8 (3 bytes from data.y)
+    npc.friendIndex |= (data.z & 0xFF) << 24;              // Extract byte 8 (1 byte from data.z)
+    npc.neighbors = (data.z >> 8) & 0xFF;                  // Extract byte 9
+    // Bytes 10-11 are padding, ignored
+    return npc;
+}
+// Store the NPC buffer
+void StoreNpc(uint index, Npc npc)
+{
+    uint address = index * 12;
+    uint3 data;
+    data.x = ((npc.population) & 0xFF) | 
+             ((npc.age & 0xFF) << 8) | 
+             ((npc.education & 0xFF) << 16) | 
+             ((npc.impressionability & 0xFF) << 24);
+    data.y = ((npc.stance + 128) & 0xFF) | 
+             ((npc.friendIndex & 0xFFFFFF) << 8);                       // Lower 3 bytes of friendIndex in bytes 5-7
+    data.z = (npc.friendIndex >> 24) | ((npc.neighbors & 0xFF) << 8);   // Upper byte of friendIndex in byte 8, neighbors in byte 9, bytes 10-11 are padding
+    npcs.Store3(address, data);
+}
+
+[numthreads(64, 1, 1)]
+void SimulationInit(uint3 id : SV_DispatchThreadID)
+{
+    float2 uv = float2(id.x % populationSize.x, id.x / populationSize.x) / float2(populationSize);
+    float4 initData = simumlationInitialTexture.Load(int3(uv * imageSize, 0));
+    Npc npc = LoadNpc(id.x);
+    npc.population = uint((initData.x - 0.05) * 260.0); // somehow normalized to match the texture
+    npc.age = uint(initData.y * 255.0);
+    npc.education = uint(initData.z * 255.0);
+    npc.impressionability = uint(initData.w * 255.0);
+    npc.stance = int(pow(saturate(initData.z*0.9 + 0.08 - Hash(id.x+789, true)*0.15), 0.2) * 255 - 128);
+    npc.neighbors = uint(npc.population / 255. * 4.5 + Hash(id.x+123, true)*4); // neighbors based by population with 50% randomness
+    StoreNpc(id.x, npc);
+}
+
+[numthreads(64, 1, 1)]
+void SimulationStep(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= _NumNPCs) return;
+    Npc currentNpc = LoadNpc(id.x);
+    Npc friendNpc = LoadNpc(min(currentNpc.friendIndex, _NumNPCs - 1));
+    int2 currentNpcPos = int2(id.x % populationSize.x, id.x / populationSize.x);
+
+    // Average current value with neighbors
+    float averageValue = float(currentNpc.stance);
+    float averageWeight = 1.;
+
+    if (currentNpc.population > 0u && currentNpc.neighbors > 0) {
+        uint rngState = (uint)Hash(id.x);
+        int neighborOrder[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+        for (int j = 7; j > 0; j--) {
+            rngState = rngState * 747796405u + 2891336453u;
+            int swapIdx = int((rngState >> 16) % uint(j + 1));
+            int temp = neighborOrder[j];
+            neighborOrder[j] = neighborOrder[swapIdx];
+            neighborOrder[swapIdx] = temp;
+        }
+        // Use first N neighbors from randomized order
+        int numNeighbors = min(currentNpc.neighbors, 8u);
+        for (int i = 0; i < numNeighbors; i++) {
+            int neighborIdx = neighborOrder[i];  // randomized order
+            uint mappedIdx = neighborIdx < 4 ? neighborIdx : neighborIdx + 1;
+            int2 neighborPos = currentNpcPos + int2((mappedIdx % 3) - 1, (mappedIdx / 3) - 1);
+            uint neighborIndex = neighborPos.y * populationSize.x + neighborPos.x;
+            Npc neighborNpc = LoadNpc(neighborIndex);
+            if (neighborNpc.population == 0u) continue; // skip non-populated
+
+            averageValue += float(neighborNpc.stance);
+            averageWeight += 1.-(currentNpc.impressionability / 2048.0 + 0.125);
+        }
+        if (friendNpc.population > 0u && rngState < 50000000u) {
+            averageWeight += _InternetWeight;
+            averageValue += friendNpc.stance;
+        }
+    }
+    // Calculate average
+    averageValue /= averageWeight;
+    currentNpc.stance = int(averageValue);
+    StoreNpc(id.x, currentNpc);
+}
