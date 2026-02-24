@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c859f977d6c29437cb2c19c956f8eaa7
+guid: b0c5a4565e609417cb05c83865ef55f9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5705545534389016114
-    second: hakac cervenej_0
+      213: -3004567626971229019
+    second: LOGO_HRY_RED_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hakac cervenej_0
+      name: LOGO_HRY_RED_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 67
-        height: 37
+        width: 8758
+        height: 4739
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ec92de4d094d1d0b0800000000000000
-      internalID: -5705545534389016114
+      spriteID: 5a4ddb289a1ad46d0800000000000000
+      internalID: -3004567626971229019
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      hakac cervenej_0: -5705545534389016114
+      LOGO_HRY_RED_0: -3004567626971229019
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
