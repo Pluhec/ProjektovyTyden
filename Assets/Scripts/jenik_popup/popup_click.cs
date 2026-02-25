@@ -25,6 +25,8 @@ public class popup_click : MonoBehaviour
     [Range(0f, 1f)]
     public float pulseRedBlend = 0.55f;
     public Color pulseColor = Color.red;
+    public bool pulseScale = true;
+    public float pulseScaleAmount = 1.1f;
 
     [Header("Particle Colors")]
     public Color particleClickedColor = Color.white;
@@ -43,6 +45,7 @@ public class popup_click : MonoBehaviour
     private Vector3 currentScale;
     private Vector3 currentHoverOffset;
     private float mouseHoverScaleMultiplier = 1f;
+    private float pulseScaleMultiplier = 1f;
 
     private SpriteRenderer ukazatelRenderer;
     private SpriteRenderer bodyRenderer;
@@ -116,8 +119,9 @@ public class popup_click : MonoBehaviour
 
     void LateUpdate()
     {
-        // 1. Apply scale with hover multiplier
-        Vector3 finalScale = Vector3.Scale(currentScale, new Vector3(mouseHoverScaleMultiplier, mouseHoverScaleMultiplier, 1f));
+        // 1. Apply scale with hover and pulse multipliers
+        float totalScaleMultiplier = mouseHoverScaleMultiplier * pulseScaleMultiplier;
+        Vector3 finalScale = Vector3.Scale(currentScale, new Vector3(totalScaleMultiplier, totalScaleMultiplier, 1f));
         transform.localScale = finalScale;
 
         // 2. Apply pivot offset math (keeps the bottom point stationary)
@@ -206,12 +210,24 @@ public class popup_click : MonoBehaviour
         if (timeLeft > pulseStartSeconds)
         {
             ResetPulseColors();
+            pulseScaleMultiplier = 1f;
             return;
         }
 
         float pulse = (Mathf.Sin(Time.time * pulseSpeed) + 1f) * 0.5f;
         float nearEndFactor = 1f - Mathf.Clamp01(timeLeft / Mathf.Max(0.01f, pulseStartSeconds));
         float blend = pulse * pulseRedBlend * Mathf.Lerp(0.6f, 1f, nearEndFactor);
+
+        if (pulseScale)
+        {
+            // Scale pulses between 1.0 and pulseScaleAmount based on the pulse wave and how close to the end it is
+            float currentPulseScale = Mathf.Lerp(1f, pulseScaleAmount, pulse * nearEndFactor);
+            pulseScaleMultiplier = currentPulseScale;
+        }
+        else
+        {
+            pulseScaleMultiplier = 1f;
+        }
 
         if (iconRenderer != null)
         {
