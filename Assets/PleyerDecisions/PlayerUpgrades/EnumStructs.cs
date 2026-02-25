@@ -45,9 +45,9 @@ public class EventInfo
 {
 	public string EventName;
 	public string EventDescription;
-	public S_EventOption OptionFree;
-	public S_EventOption OptionMoney;
-	public S_EventOption OptionPerk;
+	public EnumStructs.S_EventOption OptionFree;
+	public EnumStructs.S_EventOption OptionMoney;
+	public EnumStructs.S_EventOption OptionPerk;
 
 }
 
@@ -55,7 +55,9 @@ public class EnumStructs
 {
 	public struct S_PerkSpecialEffect
 	{
+		public E_PerkSpecialType EffectsType;
 		public E_Manipulatable EffectsGroup;
+		public E_Education EffectsEducation;
 		public sbyte EffectAmmount;
 	}
 
@@ -80,8 +82,16 @@ public class EnumStructs
 
 	public struct S_EventPredisposition
 	{
-		public sbyte Collaborator	= null; // If number, it shall be considered as requirement
-		public PerkInformation Perk	= null; // If number, it shall be considered as requirement
+		public sbyte Collaborator; // If not zero, it shall be considered as requirement
+		public PerkInformation Perk; // If Class, it shall be considered as requirement
+	}
+
+	public enum E_PerkSpecialType
+	{
+		School,
+		Democracy,
+		FinancePopUp,
+		SocialGroup,
 	}
 
 	public enum E_CampaignTopic
