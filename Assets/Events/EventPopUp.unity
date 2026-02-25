@@ -424,9 +424,9 @@ RectTransform:
   - {fileID: 583801294}
   m_Father: {fileID: 1154075291}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 772.0846, y: -70.03}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1544.1692, y: 140.06}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &508218012
@@ -493,7 +493,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -6081826208250588545, guid: 7a18c19c1b486de4399bb5ef0b59af6c, type: 3}
+  m_Sprite: {fileID: -5119347146680364581, guid: aff2b1d9e0aefdc4582d5ed9656d21c0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -529,7 +529,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &565386212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -675,7 +675,7 @@ MonoBehaviour:
   m_text: "Zalo\u017Een\xED politick\xE9 strany"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
-  m_sharedMaterial: {fileID: -7705855957116800048, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
+  m_sharedMaterial: {fileID: 3980617868774612110, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -812,7 +812,7 @@ MonoBehaviour:
   m_text: Option 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
-  m_sharedMaterial: {fileID: -7705855957116800048, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
+  m_sharedMaterial: {fileID: 3980617868774612110, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1073,7 +1073,7 @@ GameObject:
   - component: {fileID: 871827001}
   - component: {fileID: 871827000}
   m_Layer: 5
-  m_Name: Button - Top (1)
+  m_Name: Button - mid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1094,9 +1094,9 @@ RectTransform:
   - {fileID: 742839083}
   m_Father: {fileID: 1154075291}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 772.0846, y: -231.36}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1544.1692, y: 140.06}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &871827000
@@ -1163,7 +1163,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -6081826208250588545, guid: 7a18c19c1b486de4399bb5ef0b59af6c, type: 3}
+  m_Sprite: {fileID: -5119347146680364581, guid: aff2b1d9e0aefdc4582d5ed9656d21c0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1218,6 +1218,47 @@ RectTransform:
   m_AnchoredPosition: {x: -494, y: -9}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!21 &1004666657
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _OuterUV: {r: 0, g: 0, b: 1, a: 1}
+    - _WidthHeightRadius: {r: 1276.2, g: 715.1188, b: 80, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1025862809
 GameObject:
   m_ObjectHideFlags: 0
@@ -1395,7 +1436,7 @@ MonoBehaviour:
   m_text: Rewatch
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
-  m_sharedMaterial: {fileID: -7705855957116800048, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
+  m_sharedMaterial: {fileID: 3980617868774612110, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1461,7 +1502,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1103878501
@@ -1692,7 +1733,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1309523677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1960,7 +2001,7 @@ MonoBehaviour:
   m_text: 'Info o videu:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
-  m_sharedMaterial: {fileID: -7705855957116800048, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
+  m_sharedMaterial: {fileID: 3980617868774612110, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2050,7 +2091,7 @@ GameObject:
   - component: {fileID: 1679077242}
   - component: {fileID: 1679077241}
   m_Layer: 5
-  m_Name: Button - Top (2)
+  m_Name: Button - bot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2071,9 +2112,9 @@ RectTransform:
   - {fileID: 1858350798}
   m_Father: {fileID: 1154075291}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 772.0846, y: -392.69}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1544.1692, y: 140.06}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1679077241
@@ -2140,7 +2181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -6081826208250588545, guid: 7a18c19c1b486de4399bb5ef0b59af6c, type: 3}
+  m_Sprite: {fileID: -5119347146680364581, guid: aff2b1d9e0aefdc4582d5ed9656d21c0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2218,7 +2259,7 @@ MonoBehaviour:
   m_text: Option 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
-  m_sharedMaterial: {fileID: -7705855957116800048, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
+  m_sharedMaterial: {fileID: 3980617868774612110, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2284,7 +2325,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1858350800
@@ -2345,7 +2386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
-  m_Material: {fileID: 2109680050}
+  m_Material: {fileID: 1004666657}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -2446,7 +2487,7 @@ MonoBehaviour:
     houstne, zat\xEDmco Emanuel Verdi obhajuje sv\xE9 kroky p\u0159ed zraky\r\nve\u0159ejnosti."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
-  m_sharedMaterial: {fileID: -7705855957116800048, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
+  m_sharedMaterial: {fileID: 3980617868774612110, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2523,47 +2564,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2075783360}
   m_CullTransparentMesh: 1
---- !u!21 &2109680050
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _OuterUV: {r: 0, g: 0, b: 1, a: 1}
-    - _WidthHeightRadius: {r: 1276.2, g: 715.1188, b: 80, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
