@@ -1,8 +1,8 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 
-namespace PlayerChoice.DataSets;
-
+namespace PlayerChoice.DataSets
+{
 public class PerkInformation
 {
 	public string PerkName;
@@ -56,9 +56,9 @@ public class EnumStructs
 	public struct S_PerkSpecialEffect
 	{
 		public E_PerkSpecialType EffectsType;
-		public E_Manipulatable EffectsGroup; // IF EffectType is School, Democracy, FinancePopUp this is NULL
-		public E_Education EffectsEducation; // IF EffectType is SocialGroup, Democracy, FinancePopUp this is NULL
-		public sbyte EffectAmmount; // IF EffectType FinancePopUp this is NULL
+		public E_Manipulatable? EffectsGroup; // IF EffectType is School, Democracy, FinancePopUp this is NULL
+		public E_Education? EffectsEducation; // IF EffectType is SocialGroup, Democracy, FinancePopUp this is NULL
+		public sbyte? EffectAmmount; // IF EffectType FinancePopUp this is NULL
 	}
 
 	public struct S_EventOption
@@ -92,6 +92,7 @@ public class EnumStructs
 		Democracy,
 		FinancePopUp,
 		SocialGroup,
+		Visibility,
 	}
 
 	public enum E_CampaignTopic
@@ -139,4 +140,5 @@ public class EnumStructs
 		Image,
 		Video
 	}
+}
 }
