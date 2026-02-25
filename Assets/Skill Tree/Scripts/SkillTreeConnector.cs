@@ -115,15 +115,19 @@ public class SkillTreeConnector : MonoBehaviour
 
         RectTransform rt = lineObj.GetComponent<RectTransform>();
 
-        Vector2 dir = end - start;
-        float length = dir.magnitude;
+        Vector2 dir = (end - start).normalized;
+        float length = Vector2.Distance(start, end);
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        // Posunout start dozadu o půl lineWidth a prodloužit délku o celý lineWidth
+        Vector2 adjustedStart = start - dir * (lineWidth * 0.5f);
+        float adjustedLength = length + lineWidth;
 
         rt.anchorMin = Vector2.zero;
         rt.anchorMax = Vector2.zero;
         rt.pivot = new Vector2(0f, 0.5f);
-        rt.sizeDelta = new Vector2(length, lineWidth);
-        rt.anchoredPosition = start;
+        rt.sizeDelta = new Vector2(adjustedLength, lineWidth);
+        rt.anchoredPosition = adjustedStart;
         rt.localRotation = Quaternion.Euler(0, 0, angle);
     }
 
