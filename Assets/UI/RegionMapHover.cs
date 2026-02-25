@@ -25,6 +25,7 @@ public class RegionMapHover : MonoBehaviour
     public TextMeshProUGUI populationText;
     public TextMeshProUGUI vekText;
     public TextMeshProUGUI educationText;
+    public TextMeshProUGUI regionText;
 
     [Header("Detection Tuning")]
 
@@ -151,6 +152,9 @@ public class RegionMapHover : MonoBehaviour
 
         if (vekText != null)
             vekText.text = $"{simulationHandler.GetRegionAgeAverage(hoveredRegion):F1}";
+
+        if (regionText != null)
+            regionText.text = $"Region: {hoveredRegion + 1}";
     }
 
     private void PositionTooltip()
@@ -163,7 +167,10 @@ public class RegionMapHover : MonoBehaviour
             tooltipCanvas.worldCamera,
             out Vector2 localPoint);
 
-        tooltipRect.anchoredPosition = localPoint + new Vector2(16f, -16f);
+        // Set the tooltip's top-left corner to the mouse position (no offset)
+        Vector2 pivot = tooltipRect.pivot;
+        Vector2 adjustedPosition = localPoint + new Vector2(tooltipRect.rect.width * pivot.x, -tooltipRect.rect.height * (1 - pivot.y));
+        tooltipRect.anchoredPosition = adjustedPosition;
     }
 
 
