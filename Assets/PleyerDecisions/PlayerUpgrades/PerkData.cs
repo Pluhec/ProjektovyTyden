@@ -995,10 +995,18 @@ public class PerkSet
 	// No combat stats — purely strategic effect
 	public static PerkInformation Action_EncryptedComms1 = new PerkInformation
 	{
+		PerkName = "Šifrované komunikace 1",
+		PerkDescription = "Zavedení základních šifrovaných komunikačních kanálů pro koordinaci akcí a šíření dezinformací, ale snižuje demokracii.",
 		PerkCost		= 3,
 		DependsOnPerks = null,
 		IsBought		= false,
-		SpecialEffect  = "Reduces democracy meter by 10%",
+		SpecialEffect  = new[] { new EnumStructs.S_PerkSpecialEffect
+		{
+			EffectsType = EnumStructs.E_PerkSpecialType.DemocracyMeter,
+			EffectsGroup = null,
+			EffectsEducation = null,
+			EffectAmmount = -10, // Reduces democracy meter by 10%
+		}},
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1026,10 +1034,18 @@ public class PerkSet
 	// Special: Reduces democracy meter by 15%
 	public static PerkInformation Action_EncryptedComms2 = new PerkInformation
 	{
+		PerkName = "Šifrované komunikace 2",
+		PerkDescription = "Zavedení pokročilých šifrovaných komunikačních kanálů pro koordinaci akcí a šíření dezinformací, ale výrazně snižuje demokracii.",
 		PerkCost		= 5,
 		DependsOnPerks = new[] { Action_EncryptedComms1 },
 		IsBought		= false,
-		SpecialEffect  = "Reduces democracy meter by 15%",
+		SpecialEffect  = new[] { new EnumStructs.S_PerkSpecialEffect
+		{
+			EffectsType = EnumStructs.E_PerkSpecialType.DemocracyMeter,
+			EffectsGroup = null,
+			EffectsEducation = null,
+			EffectAmmount = -15, // Reduces democracy meter by 15%
+		}},
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1058,6 +1074,8 @@ public class PerkSet
 	// No specific age targeting — uniform across all groups
 	public static PerkInformation Action_FakeCompromising = new PerkInformation
 	{
+		Perkname = "Falešné kompromitující materiály",
+		PerkDescription = "Vytvoření a šíření falešných kompromitujících materiálů o politických oponentech pro snížení jejich popularity.",
 		PerkCost		= 3,
 		DependsOnPerks = null,
 		IsBought		= false,
@@ -1090,6 +1108,8 @@ public class PerkSet
 	// Targeting: Young +, Adult ++, Senior +++
 	public static PerkInformation Action_PoliticalParty = new PerkInformation
 	{
+		PerkName = "Založení politické strany",
+		PerkDescription = "Založení vlastní politické strany pro získání přímého přístupu k politickému procesu a většího vlivu, ale vyžaduje značnou podporu veřejnosti.",
 		PerkCost		= 5,
 		DependsOnPerks = null, // Special condition: requires 25% followers — checked in game logic
 		IsBought		= false,
@@ -1121,6 +1141,8 @@ public class PerkSet
 	// Strategic milestone perk
 	public static PerkInformation Action_PoliticalCampaign1 = new PerkInformation
 	{
+		PerkName = "Politická kampaň 1",
+		PerkDescription = "Zahájení první politické kampaně pro zvýšení viditelnosti a podpory, ale vyžaduje založení politické strany.",
 		PerkCost		= 4,
 		DependsOnPerks = new[] { Action_PoliticalParty },
 		IsBought		= false,
@@ -1151,6 +1173,8 @@ public class PerkSet
 	// 3d-i. Political Campaign 2 (depends on Political Campaign 1, cost $$$$)
 	public static PerkInformation Action_PoliticalCampaign2 = new PerkInformation
 	{
+		PerkName = "Politická kampaň 2",
+		PerkDescription = "Zahájení druhé politické kampaně pro další zvýšení viditelnosti a podpory, ale vyžaduje úspěšné dokončení první kampaně.",
 		PerkCost		= 4,
 		DependsOnPerks = new[] { Action_PoliticalCampaign1 },
 		IsBought		= false,
@@ -1181,6 +1205,8 @@ public class PerkSet
 	// 3e. Elected to Parliament (depends on Political Campaign 2, cost 0)
 	public static PerkInformation Action_ElectedToParliament = new PerkInformation
 	{
+		PerkName = "Zvolen do parlamentu",
+		PerkDescription = "Získání křesla v parlamentu pro přímý vliv na legislativu a politické rozhodování, ale vyžaduje úspěšné dokončení dvou politických kampaní.",
 		PerkCost		= 0,
 		DependsOnPerks = new[] { Action_PoliticalCampaign2 },
 		IsBought		= false,
@@ -1211,6 +1237,8 @@ public class PerkSet
 	// 3e-i. Government Participation (depends on Elected to Parliament, cost $$$$)
 	public static PerkInformation Action_GovernmentParticipation = new PerkInformation
 	{
+		PerkName = "Účast ve vládě",
+		PerkDescription = "Získání pozice ve vládě pro přímý vliv na politické rozhodování a implementaci politik, ale vyžaduje zvolení do parlamentu.",
 		PerkCost		= 4,
 		DependsOnPerks = new[] { Action_ElectedToParliament },
 		IsBought		= false,
@@ -1242,6 +1270,8 @@ public class PerkSet
 	// Visibility ++, Virality +, Impact -
 	public static PerkInformation Action_IntimidateOpponents = new PerkInformation
 	{
+		PerkName = "Intimidace politických oponentů",
+		PerkDescription = "Používání politického vlivu k zastrašování a diskreditaci oponentů, což zvyšuje viditelnost a virálnost, ale snižuje celkový dopad kvůli negativní publicitě.",
 		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_GovernmentParticipation },
 		IsBought		= false,
@@ -1273,10 +1303,18 @@ public class PerkSet
 	// Special: Removes 20% immune people from the map
 	public static PerkInformation Action_PersecuteUndesirables1 = new PerkInformation
 	{
+		PerkName = "Perzekuce nežádoucích osob 1",
+		PerkDescription = "Používání politického vlivu k perzekuci a odstraňování nežádoucích osob z veřejného života, což snižuje počet imunních lidí, ale může vést k negativní publicitě.",
 		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_IntimidateOpponents },
 		IsBought		= false,
-		SpecialEffect  = "Removes 20% of immune people from the map",
+		SpecialEffect  = new[] { new EnumStructs.S_PerkSpecialEffect
+		{
+			EffectsType = EnumStructs.E_PerkSpecialType.SocialGroup,
+			EffectsGroup = EnumStructs.E_Manipulatable.Immune,
+			EffectsEducation = null,
+			EffectAmmount = -20, // Removes 20% of immune people from the map
+		}},
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1304,10 +1342,18 @@ public class PerkSet
 	// Special: Removes another 20% immune people from the map
 	public static PerkInformation Action_PersecuteUndesirables2 = new PerkInformation
 	{
+		PerkName = "Perzekuce nežádoucích osob 2",
+		PerkDescription = "Intenzivnější perzekuce a odstraňování nežádoucích osob z veřejného života, což dále snižuje počet imunních lidí, ale může vést k ještě větší negativní publicitě.",
 		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_PersecuteUndesirables1 },
 		IsBought		= false,
-		SpecialEffect  = "Removes 20% of immune people from the map",
+		SpecialEffect  = new[] { new EnumStructs.S_PerkSpecialEffect
+		{
+			EffectsType = EnumStructs.E_PerkSpecialType.SocialGroup,
+			EffectsGroup = EnumStructs.E_Manipulatable.Immune,
+			EffectsEducation = null,
+			EffectAmmount = -20, // Removes 20% of immune people from the map
+		}},
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1335,10 +1381,18 @@ public class PerkSet
 	// Special: Reduces visibility by 20%, increases immune people by 10%
 	public static PerkInformation Action_MediaControl = new PerkInformation
 	{
+		PerkName = "Kontrola médií",
+		PerkDescription = "Získání kontroly nad hlavními médii pro manipulaci s informacemi a šíření propagandy, což snižuje viditelnost opozice, ale zvyšuje počet imunních lidí kvůli nedůvěře.",
 		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_GovernmentParticipation },
 		IsBought		= false,
-		SpecialEffect  = "Reduces visibility by 20%, increases immune people by 10%",
+		SpecialEffect  = new[] { new EnumStructs.S_PerkSpecialEffect
+		{
+			EffectsType = EnumStructs.E_PerkSpecialType.SocialGroup,
+			EffectsGroup = EnumStructs.E_Manipulatable.Immune,
+			EffectsEducation = null,
+			EffectAmmount = 10, // Increases immune people by 10%
+		} }, // Note: Visibility reduction (-20%) not implemented as no enum type exists; consider adding E_PerkSpecialType.Visibility
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1366,6 +1420,8 @@ public class PerkSet
 	// Special: Reduces visibility by 20%
 	public static PerkInformation Action_IntimidateJournalists = new PerkInformation
 	{
+		PerkName = "Intimidace novinářů",
+		PerkDescription = "Používání politického vlivu k zastrašování a diskreditaci novinářů, což snižuje viditelnost opozice, ale může vést k negativní publicitě.",
 		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_MediaControl },
 		IsBought		= false,
@@ -1397,6 +1453,8 @@ public class PerkSet
 	// Special: Reduces visibility by 20%
 	public static PerkInformation Action_IntroduceCensorship = new PerkInformation
 	{
+		PerkName = "Zavedení cenzury",
+		PerkDescription = "Zavedení cenzury pro kontrolu a omezení přístupu k informacím, což dále snižuje viditelnost opozice, ale může vést k ještě větší negativní publicitě.",
 		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_IntimidateJournalists },
 		IsBought		= false,
@@ -1428,6 +1486,8 @@ public class PerkSet
 	// Special: END OF GAME — totalitarian regime established
 	public static PerkInformation Action_ChangeConstitution = new PerkInformation
 	{
+		PerkName = "Změna ústavy",
+		PerkDescription = "Změna ústavy pro legalizaci autoritářských praktik a upevnění moci, což vede k úplnému zavedení totalitního režimu.",
 		PerkCost		= 3,
 		DependsOnPerks = new[] { Action_IntroduceCensorship, Action_PersecuteUndesirables1 },
 		IsBought		= false,
