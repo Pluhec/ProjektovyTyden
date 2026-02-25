@@ -1,8 +1,22 @@
 using UnityEngine;
 using TMPro;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using PlayerChoice.DataSets;
+using PlayerChoice.Timing;
+using System.Text.Json;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
+// Helper classes for JSON deserialization
+[System.Serializable]
+public class IndependentMessageList
+{
+    public List<SocialPost_JSON> IndependentZpravy;
+}
 
 public class UserMessageScript : MonoBehaviour
 {
@@ -15,9 +29,11 @@ public class UserMessageScript : MonoBehaviour
     public Transform parentTransform;
 
     [Header("Data to Inject")]
-    public string usernameInput = "Joe Doe"; // Deafult values ignore
+    public string usernameInput = "Joe Doe"; // Default values ignore
     [TextArea(3, 10)]
-    public string userMessageInput = "Prezident je velice dobrý"; // Deafult values ignore
+    public string userMessageInput = "Prezident je velice dobrý"; // Default values ignore
+
+    private static System.Random V_Random = new System.Random();
 
     void Start() 
     {
@@ -45,9 +61,17 @@ public class UserMessageScript : MonoBehaviour
             return;
         }
 
-// TO SPAWN MESSAGE USES CONTEXT MENU IN EDITOR. RUNTIME OR NOT IT DOESNT MATTER
-
 #if UNITY_EDITOR
+        // --- Logic from TimerService.StrtRandPost ---
+
+        SocialPost_JSON messageToPost = GetRandomPost();
+        if (messageToPost == null)
+        {
+            Debug.LogError("No message could be fetched. Check JSON files and perk conditions.");
+            return;
+        }
+
+        // --- Original Spawning Logic ---
         GameObject spawned = (GameObject)PrefabUtility.InstantiatePrefab(prefabToSpawn);
         spawned.transform.SetParent(parentTransform, false);
 
@@ -55,16 +79,79 @@ public class UserMessageScript : MonoBehaviour
 
         if (newScript != null)
         {
-            newScript.usernameInput = this.usernameInput;
-            newScript.userMessageInput = this.userMessageInput;
+            newScript.usernameInput = messageToPost.UserName;
+            newScript.userMessageInput = messageToPost.Content;
 
-            newScript.setName(this.usernameInput);
-            newScript.setMessage(this.userMessageInput);
+            newScript.setName(messageToPost.UserName);
+            newScript.setMessage(messageToPost.Content);
             
             EditorUtility.SetDirty(newScript);
         }
 
         Undo.RegisterCreatedObjectUndo(spawned, "Spawn and Setup User");
 #endif
+    }
+
+    private SocialPost_JSON GetRandomPost()
+    {
+        // Using Application.dataPath to get the path to the Assets folder
+        string socialBasePath = Path.Combine(Application.dataPath, "PleyerDecisions/SocialMessagesJSON/");
+        
+        // Hardcoded probability as in TimerService it's not clear where it's set
+        byte V_SocialPostSpawnProb = 50; 
+
+        if (V_Random.Next(0, 101) > V_SocialPostSpawnProb)
+        {
+            var independentMessagesFile = Path.Combine(socialBasePath, "IndependentMessages.json");
+            if (!File.Exists(independentMessagesFile))
+            {
+                Debug.LogError($"File not found: {independentMessagesFile}");
+                return null;
+            }
+            var jsonString = File.ReadAllText(independentMessagesFile);
+            var independentMessages = JsonUtility.FromJson<IndependentMessageList>(jsonString);
+            if (independentMessages == null || independentMessages.IndependentZpravy == null || independentMessages.IndependentZpravy.Count == 0) return null;
+            return independentMessages.IndependentZpravy[V_Random.Next(0, independentMessages.IndependentZpravy.Count)];
+        }
+        else
+        {
+            var unlockedTopics = new List<EnumStructs.E_CampaignTopic>();
+            if (PerkSet.Campaign_AntiImmigrants.IsBought) { unlockedTopics.Add(EnumStructs.E_CampaignTopic.Imigrants); }
+            if (PerkSet.Campaign_AntiNationalMinorities.IsBought) { unlockedTopics.Add(EnumStructs.E_CampaignTopic.Naionality); }
+            if (PerkSet.Campaign_AntiSexualMinorities.IsBought) { unlockedTopics.Add(EnumStructs.E_CampaignTopic.Sexuality); }
+            if (PerkSet.Campaign_AntiReligiousMinorities.IsBought) { unlockedTopics.Add(EnumStructs.E_CampaignTopic.Religion); }
+            if (PerkSet.Campaign_AntiElites.IsBought) { unlockedTopics.Add(EnumStructs.E_CampaignTopic.Elites); }
+
+            if (unlockedTopics.Count > 0)
+            {
+                var selectedTopic = unlockedTopics[V_Random.Next(0, unlockedTopics.Count)];
+                var dependentMessageFile = Path.Combine(socialBasePath, "DependentMessages", $"T{(int)selectedTopic}_{selectedTopic}Messages.json");
+                
+                if (!File.Exists(dependentMessageFile))
+                {
+                    Debug.LogError($"File not found: {dependentMessageFile}");
+                    return null;
+                }
+                var jsonString = File.ReadAllText(dependentMessageFile);
+
+                // Using System.Text.Json to handle dictionaries, as JsonUtility cannot.
+                try
+                {
+                    var dependentMessages = JsonSerializer.Deserialize<Dictionary<string, List<SocialPost_JSON>>>(jsonString);
+                    var stageKey = ((int)TimerBase.V_GameStage).ToString();
+
+                    if (dependentMessages.TryGetValue(stageKey, out var messagesForStage) && messagesForStage.Count > 0)
+                    {
+                        return messagesForStage[V_Random.Next(0, messagesForStage.Count)];
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                     Debug.LogError($"Failed to deserialize dependent messages: {ex.Message}");
+                     return null;
+                }
+            }
+        }
+        return null; // Return null if no conditions are met
     }
 }
