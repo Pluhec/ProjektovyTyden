@@ -1,31 +1,19 @@
 fileFormatVersion: 2
-guid: ec63e6552f8512f459fbbbbb45cb982d
+guid: 3e80a6a111f5f7c4293baaaa0bb070f9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8558872717939373115
-    second: "Selsky\u0301 rozum_0"
+      213: -2151256579594707336
+    second: fist_0
   - first:
-      213: 7420054789752422208
-    second: "Selsky\u0301 rozum_1"
+      213: 6702046700113486352
+    second: fist_1
   - first:
-      213: -409104763782664725
-    second: "Selsky\u0301 rozum_2"
+      213: -7520410724212831625
+    second: fist_2
   - first:
-      213: -6913287550223341206
-    second: "Selsky\u0301 rozum_3"
-  - first:
-      213: 3022817050986682486
-    second: "Selsky\u0301 rozum_4"
-  - first:
-      213: 1821536460328235449
-    second: "Selsky\u0301 rozum_5"
-  - first:
-      213: -1564654073835601065
-    second: "Selsky\u0301 rozum_6"
-  - first:
-      213: 5075262934375144583
-    second: "Selsky\u0301 rozum_7"
+      213: 3409920162834939439
+    second: fist_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -121,13 +109,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "Selsky\u0301 rozum_0"
+      name: fist_0
       rect:
         serializedVersion: 2
-        x: 39
-        y: 207
-        width: 41
-        height: 41
+        x: 42
+        y: 0
+        width: 403
+        height: 419
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -136,20 +124,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b34fe8ed36937c670800000000000000
-      internalID: 8558872717939373115
+      spriteID: 87e1988e9833522e0800000000000000
+      internalID: -2151256579594707336
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Selsky\u0301 rozum_1"
+      name: fist_1
       rect:
         serializedVersion: 2
-        x: 135
-        y: 237
-        width: 17
-        height: 40
+        x: 137
+        y: 415
+        width: 101
+        height: 97
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -158,86 +146,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 04ff025a48459f660800000000000000
-      internalID: 7420054789752422208
+      spriteID: 012e75cf6f3720d50800000000000000
+      internalID: 6702046700113486352
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Selsky\u0301 rozum_2"
-      rect:
-        serializedVersion: 2
-        x: 207
-        y: 207
-        width: 41
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: bed60d68261925af0800000000000000
-      internalID: -409104763782664725
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "Selsky\u0301 rozum_3"
-      rect:
-        serializedVersion: 2
-        x: 21
-        y: 135
-        width: 41
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a69aecae9911f00a0800000000000000
-      internalID: -6913287550223341206
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "Selsky\u0301 rozum_4"
-      rect:
-        serializedVersion: 2
-        x: 70
-        y: 69
-        width: 147
-        height: 160
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6781e01a71433f920800000000000000
-      internalID: 3022817050986682486
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "Selsky\u0301 rozum_5"
+      name: fist_2
       rect:
         serializedVersion: 2
         x: 225
-        y: 135
-        width: 41
-        height: 17
+        y: 371
+        width: 95
+        height: 90
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -246,20 +168,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9b1794f72c5674910800000000000000
-      internalID: 1821536460328235449
+      spriteID: 77a814a8a4222a790800000000000000
+      internalID: -7520410724212831625
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Selsky\u0301 rozum_6"
+      name: fist_3
       rect:
         serializedVersion: 2
-        x: 110
-        y: 45
-        width: 66
-        height: 17
+        x: 367
+        y: 246
+        width: 103
+        height: 113
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -268,30 +190,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 75349a4e86b394ae0800000000000000
-      internalID: -1564654073835601065
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "Selsky\u0301 rozum_7"
-      rect:
-        serializedVersion: 2
-        x: 112
-        y: 16
-        width: 63
-        height: 22
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 78c1329bfb4fe6640800000000000000
-      internalID: 5075262934375144583
+      spriteID: f2ef7325258725f20800000000000000
+      internalID: 3409920162834939439
       vertices: []
       indices: 
       edges: []
@@ -310,14 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "Selsky\u0301 rozum_0": 8558872717939373115
-      "Selsky\u0301 rozum_1": 7420054789752422208
-      "Selsky\u0301 rozum_2": -409104763782664725
-      "Selsky\u0301 rozum_3": -6913287550223341206
-      "Selsky\u0301 rozum_4": 3022817050986682486
-      "Selsky\u0301 rozum_5": 1821536460328235449
-      "Selsky\u0301 rozum_6": -1564654073835601065
-      "Selsky\u0301 rozum_7": 5075262934375144583
+      fist_0: -2151256579594707336
+      fist_1: 6702046700113486352
+      fist_2: -7520410724212831625
+      fist_3: 3409920162834939439
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
