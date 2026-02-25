@@ -1433,8 +1433,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "ZVUKOV\xC9 EFEKTY"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
-  m_sharedMaterial: {fileID: -7705855957116800048, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
+  m_sharedMaterial: {fileID: 3980617868774612110, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1570,8 +1570,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1920 x 1080
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
-  m_sharedMaterial: {fileID: -7705855957116800048, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
+  m_sharedMaterial: {fileID: 3980617868774612110, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1833,8 +1833,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: VYPNUTO
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
-  m_sharedMaterial: {fileID: -7705855957116800048, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
+  m_sharedMaterial: {fileID: 3980617868774612110, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2080,8 +2080,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: V-SYNC
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
-  m_sharedMaterial: {fileID: -7705855957116800048, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
+  m_sharedMaterial: {fileID: 3980617868774612110, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2747,10 +2747,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb85dc8dc98aaf43a394be4ff725ead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FPSDebugOverlay
-  showOverlay: 1
-  toggleKey: 284
-  position: {x: 12, y: 12}
-  updateInterval: 0.25
 --- !u!1 &1427123370
 GameObject:
   m_ObjectHideFlags: 0
@@ -3143,7 +3139,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Option A
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
   m_sharedMaterial: {fileID: -7705855957116800048, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -3210,7 +3206,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1513602563
@@ -3628,8 +3624,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: ZVUK
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
-  m_sharedMaterial: {fileID: -7705855957116800048, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
+  m_sharedMaterial: {fileID: 3980617868774612110, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3891,8 +3887,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "ROZLI\u0160EN\xCD"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
-  m_sharedMaterial: {fileID: -7705855957116800048, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4103,8 +4099,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: ZAPNUTO
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
-  m_sharedMaterial: {fileID: -7705855957116800048, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
+  m_sharedMaterial: {fileID: 3980617868774612110, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4558,8 +4554,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "NASTAVEN\xCD"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
-  m_sharedMaterial: {fileID: -7705855957116800048, guid: 866660e0953594d4d88d046f1fbc6c7b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
+  m_sharedMaterial: {fileID: 3980617868774612110, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
