@@ -12,7 +12,7 @@ public struct NPC // 12b (9b data + 3b padding)
     public byte age;                // 0 - 255              1b
     public byte education;          // 0 - 255              1b
     public byte impressionability;  // 0 - 255              1b
-    public sbyte stance;            // -128 - 127           1b
+    public byte stance;            // -128 - 127           1b
     public uint friendIndex;        // 0 - 4,294,967,295    4b (friend index)
     public byte neighbors;          // 0 - 255              1b (up to 8 neighbors)
     private byte _padding0;         // padding              1b
@@ -46,7 +46,6 @@ public class SimulationHandler : MonoBehaviour
     public Material gridMaterial;
     public Transform simulationQuadTransform;
     [Header("Render Settings")]
-    public Camera renderCamera;
     private MaterialPropertyBlock propertyBlock;
     public ComputeShader cs;
     public ComputeBuffer npcBuffer;
@@ -56,6 +55,11 @@ public class SimulationHandler : MonoBehaviour
 
     public Texture2D initialTexture;
     public Texture2D regionTexture;
+
+    [Header("Visual Style")]
+    [Range(2, 64)] public float posterizeLevels = 16f;
+    [Range(0f, 10f)] public float ditherStrength = 0.3f;
+    [Range(0, 5)] public int blurRadius = 1;
 
     [Header("Propaganda")]
     public PropagandaLevels propaganda = new PropagandaLevels
@@ -69,6 +73,7 @@ public class SimulationHandler : MonoBehaviour
     };
     [Range(0.01f, 1f)] public float propagandaLevelAdaptationPerDay = 0.2f;
 
+    public int paintingBrushRadius = 8;
     private PropagandaLevels runtimePropaganda;
 
     private uint simulationDay;
@@ -102,10 +107,19 @@ public class SimulationHandler : MonoBehaviour
         for (int i = 0; i < numNPCs; i++)
             npcs[i].friendIndex = (uint)Random.Range(0, numNPCs);
         npcBuffer.SetData(npcs);
+
+        RegionAverage(); // compute initial averages for tooltip
     }
 
     void Update()
     {
+        if (Mouse.current != null && Mouse.current.leftButton.isPressed)
+        {
+            Vector2 mousePos = Mouse.current.position.ReadValue();
+            if (TryGetGridPositionFromMouse(mousePos, out int gridX, out int gridY))
+                PaintStance(gridX, gridY, -0.1f);
+        }
+
         if (Keyboard.current != null &&
             (Keyboard.current.spaceKey.isPressed || Keyboard.current.rightArrowKey.wasPressedThisFrame))
         {
@@ -120,8 +134,36 @@ public class SimulationHandler : MonoBehaviour
         RenderSimulation();
     }
 
+    bool TryGetGridPositionFromMouse(Vector2 mousePosition, out int gridX, out int gridY)
+    {
+        gridX = -1;
+        gridY = -1;
+
+        Camera targetCamera = Camera.main;
+        if (targetCamera == null || simulationQuadTransform == null)
+            return false;
+
+        Ray ray = targetCamera.ScreenPointToRay(mousePosition);
+        Plane quadPlane = new Plane(simulationQuadTransform.forward, simulationQuadTransform.position);
+        if (!quadPlane.Raycast(ray, out float enterDistance))
+            return false;
+
+        Vector3 hitWorld = ray.GetPoint(enterDistance);
+        Vector3 localPos = simulationQuadTransform.InverseTransformPoint(hitWorld);
+
+        float u = localPos.x + 0.5f;
+        float v = localPos.y + 0.5f;
+        if (u < 0f || u >= 1f || v < 0f || v >= 1f)
+            return false;
+
+        gridX = Mathf.Clamp(Mathf.FloorToInt(u * gridSize.x), 0, gridSize.x - 1);
+        gridY = Mathf.Clamp(Mathf.FloorToInt(v * gridSize.y), 0, gridSize.y - 1);
+        return true;
+    }
+
     void NextDay(){
         SimulationStep();
+        RegionAverage();
     }
 
     void SimulationStep(){
@@ -186,13 +228,19 @@ public class SimulationHandler : MonoBehaviour
         propertyBlock.SetFloat("_CellSizeY", 1f / gridSize.y * simulationQuadTransform.localScale.y);
         propertyBlock.SetFloat("_PosOffsetX", simulationQuadTransform.position.x);
         propertyBlock.SetFloat("_PosOffsetY", simulationQuadTransform.position.y);
+        propertyBlock.SetFloat("_PosterizeLevels", Mathf.Max(posterizeLevels, 2f));
+        propertyBlock.SetFloat("_DitherStrength", Mathf.Clamp01(ditherStrength));
+        propertyBlock.SetInt("_BlurRadius", blurRadius);
+        gridMaterial.SetFloat("_PosterizeLevels", Mathf.Max(posterizeLevels, 2f));
+        gridMaterial.SetFloat("_DitherStrength", Mathf.Clamp01(ditherStrength));
+        gridMaterial.SetInt("_BlurRadius", blurRadius);
         Graphics.DrawProcedural(
             gridMaterial,
             new Bounds(Vector3.zero, Vector3.one * 1000),
             MeshTopology.Triangles,
             numNPCs * 6,                // 6 vertices (1 quad = 2 triangles) per NPC
             1,
-            renderCamera,
+            null,
             propertyBlock,
             ShadowCastingMode.Off,
             false,
@@ -292,7 +340,7 @@ public class SimulationHandler : MonoBehaviour
             {
                 if (npcArray[i].population == 0) continue; // skip empty cells
                 int region = regionMapLocal[i];
-                sums[region] += npcArray[i].stance;
+                sums[region] += npcArray[i].stance - 127;
                 counts[region]++;
             }
         });
@@ -312,6 +360,46 @@ public class SimulationHandler : MonoBehaviour
             }
             regionAverages[r] = totalCount > 0 ? totalSum / totalCount : 0f;
         }
+    }
+
+    public float GetRegionAverage(int regionIndex)
+    {
+        if (regionAverages == null || regionIndex < 0 || regionIndex >= regionAverages.Length)
+            return 0f;
+        return regionAverages[regionIndex];
+    }
+
+    public void PaintStance(int gridX, int gridY, float stanceOffset)
+    {
+        int radius = Mathf.Max(1, paintingBrushRadius);
+        float radiusSq = radius * radius;
+        float stanceDeltaByte = stanceOffset * 127f;
+
+        for (int y = -radius; y <= radius; y++)
+        {
+            for (int x = -radius; x <= radius; x++)
+            {
+                float distSq = x * x + y * y;
+                if (distSq > radiusSq) continue;
+
+                float t = 1f - (distSq / radiusSq);
+                float weight = t * t * (3f - 2f * t);
+
+                int px = gridX + x;
+                int py = gridY + y;
+                if (px >= 0 && px < gridSize.x && py >= 0 && py < gridSize.y)
+                {
+                    int index = py * gridSize.x + px;
+                    if (index >= 0 && index < numNPCs)
+                    {
+                        float current = npcs[index].stance;
+                        float additive = stanceDeltaByte * weight;
+                        npcs[index].stance = (byte)Mathf.Clamp(Mathf.RoundToInt(current + additive), 0, 255);
+                    }
+                }
+            }
+        }
+        npcBuffer.SetData(npcs);
     }
 
     void OnDestroy()
