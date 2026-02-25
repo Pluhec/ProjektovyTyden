@@ -11,8 +11,6 @@ public class SkillPopup : MonoBehaviour
 
     private int _skillId;
     private SkillButton _skillButton;
-    
-    
 
     public void Init(int skillId, SkillButton skillButton)
     {
@@ -31,26 +29,32 @@ public class SkillPopup : MonoBehaviour
             if (btnText != null)
                 btnText.text = alreadyUnlocked ? "Odemčeno" : "Odemknout";
 
+            unlockButton.onClick.RemoveAllListeners();
             unlockButton.onClick.AddListener(OnUnlockClicked);
         }
 
         if (closeButton != null)
+        {
+            closeButton.onClick.RemoveAllListeners();
             closeButton.onClick.AddListener(Close);
+        }
     }
 
     private void OnUnlockClicked()
     {
-        // TODO: Tady později přidáš volání na logiku peněz
-        // bool success = SkillManager.Instance.TryUnlockSkill(_skillId);
-
         _skillButton.SetState(SkillButton.SkillState.Unlocked);
 
-        // Aktualizuj dostupnost childů
         SkillTreeConnector connector = FindObjectOfType<SkillTreeConnector>();
         if (connector != null)
+        {
             connector.RefreshAllAvailability();
+            connector.RefreshLineColors();
+            connector.AnimateUnlockedLines(_skillButton.GetComponent<RectTransform>());
+        }
 
+        Debug.Log("Před Close");
         Close();
+        Debug.Log("Po Close - tento log se už neukáže pokud Destroy funguje");
     }
 
     private void Close()

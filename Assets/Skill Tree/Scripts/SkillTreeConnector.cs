@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,17 @@ public class SkillNode
     public List<SkillNode> children = new List<SkillNode>();
 }
 
+[System.Serializable]
+public class SkillLine
+{
+    public GameObject lineObject;
+    public RectTransform from;
+    public RectTransform to;
+    public Vector2 start;
+    public Vector2 end;
+    public string connectionId;
+}
+
 [ExecuteInEditMode]
 public class SkillTreeConnector : MonoBehaviour
 {
@@ -18,8 +30,15 @@ public class SkillTreeConnector : MonoBehaviour
     [Header("Line Settings")]
     public float lineWidth = 4f;
     public Color lineColor = Color.white;
+    public Color unlockedLineColor = Color.red;
 
-    private List<GameObject> _spawnedLines = new List<GameObject>();
+    [Header("Animation")]
+    public float lineAnimationSpeed = 500f;
+
+    [Header("Popup")]
+    public GameObject popupPrefab;
+
+    private List<SkillLine> _spawnedLines = new List<SkillLine>();
     private RectTransform _rectTransform;
 
 #if UNITY_EDITOR
@@ -30,6 +49,20 @@ public class SkillTreeConnector : MonoBehaviour
     {
         _rectTransform = GetComponent<RectTransform>();
 
+        // Vždy smaž všechny existující SkillLine objekty při startu
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            GameObject child = transform.GetChild(i).gameObject;
+            if (child.name == "SkillLine")
+            {
+                if (Application.isPlaying)
+                    Destroy(child);
+                else
+                    DestroyImmediate(child);
+            }
+        }
+        _spawnedLines.Clear();
+
         foreach (var root in rootNodes)
         {
             if (root?.skillButton == null) continue;
@@ -39,6 +72,23 @@ public class SkillTreeConnector : MonoBehaviour
         }
 
         GenerateConnections();
+    }
+
+    private void OnDisable()
+    {
+        // Při vypnutí hry smaž všechny runtime čáry
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            GameObject child = transform.GetChild(i).gameObject;
+            if (child.name == "SkillLine")
+            {
+                if (Application.isPlaying)
+                    Destroy(child);
+                else
+                    DestroyImmediate(child);
+            }
+        }
+        _spawnedLines.Clear();
     }
 
     private void OnValidate()
@@ -71,7 +121,6 @@ public class SkillTreeConnector : MonoBehaviour
         foreach (var child in node.children)
         {
             if (child == null || child.skillButton == null) continue;
-
             DrawOrthogonalLine(node.skillButton, child.skillButton);
             DrawNodeConnections(child);
         }
@@ -82,29 +131,20 @@ public class SkillTreeConnector : MonoBehaviour
         Vector2 fromPos = WorldToLocal(from);
         Vector2 toPos = WorldToLocal(to);
 
-        SkillButton fromSkill = from.GetComponent<SkillButton>();
-        SkillButton toSkill = to.GetComponent<SkillButton>();
-
-        // Čára je červená pouze pokud jsou OBA konce unlocked
-        bool isUnlocked = fromSkill != null && toSkill != null &&
-                          fromSkill.skillState == SkillButton.SkillState.Unlocked &&
-                          toSkill.skillState == SkillButton.SkillState.Unlocked;
-
-        Color currentColor = isUnlocked ? Color.red : lineColor;
-
+        string connId = $"{from.name}->{to.name}";
         float midY = (fromPos.y + toPos.y) / 2f;
 
         if (Mathf.Approximately(fromPos.x, toPos.x))
         {
-            CreateLine(fromPos, toPos, currentColor);
+            CreateLine(fromPos, toPos, lineColor, from, to, connId);
         }
         else
         {
             Vector2 pointB = new Vector2(fromPos.x, midY);
             Vector2 pointC = new Vector2(toPos.x, midY);
-            CreateLine(fromPos, pointB, currentColor);
-            CreateLine(pointB, pointC, currentColor);
-            CreateLine(pointC, toPos, currentColor);
+            CreateLine(fromPos, pointB, lineColor, from, to, connId);
+            CreateLine(pointB, pointC, lineColor, from, to, connId);
+            CreateLine(pointC, toPos, lineColor, from, to, connId);
         }
     }
 
@@ -112,115 +152,204 @@ public class SkillTreeConnector : MonoBehaviour
     {
         Vector3 worldCenter = rt.TransformPoint(Vector3.zero);
         Vector3 local = _rectTransform.InverseTransformPoint(worldCenter);
-
         float pivotOffsetY = (_rectTransform.pivot.y - 2f) * _rectTransform.rect.height;
-
         return new Vector2(local.x, local.y - pivotOffsetY);
     }
 
-    private void CreateLine(Vector2 start, Vector2 end, Color color)
-{
-    if ((end - start).sqrMagnitude < 0.01f) return;
-
-    GameObject lineObj = new GameObject("SkillLine");
-    lineObj.transform.SetParent(transform, false);
-    lineObj.transform.SetAsFirstSibling();
-    _spawnedLines.Add(lineObj);
-
-    Image img = lineObj.AddComponent<Image>();
-    img.color = color;
-    img.raycastTarget = false;
-
-    RectTransform rt = lineObj.GetComponent<RectTransform>();
-
-    Vector2 dir = (end - start).normalized;
-    float length = Vector2.Distance(start, end);
-    float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-
-    Vector2 adjustedStart = start - dir * (lineWidth * 0.5f);
-    float adjustedLength = length + lineWidth;
-
-    rt.anchorMin = Vector2.zero;
-    rt.anchorMax = Vector2.zero;
-    rt.pivot = new Vector2(0f, 0.5f);
-    rt.sizeDelta = new Vector2(adjustedLength, lineWidth);
-    rt.anchoredPosition = adjustedStart;
-    rt.localRotation = Quaternion.Euler(0, 0, angle);
-}
-
-// Přidej tuto novou metodu - projde celý strom a aktualizuje Available stavy
-public void RefreshAllAvailability()
-{
-    // Projdi všechny nody a pro každý child zjisti jestli jsou všichni jeho parenti unlocked
-    foreach (var root in rootNodes)
+    private void CreateLine(Vector2 start, Vector2 end, Color color, RectTransform from, RectTransform to, string connId)
     {
-        if (root != null)
-            RefreshNodeAvailability(root);
-    }
-    GenerateConnections();
-}
+        if ((end - start).sqrMagnitude < 0.01f) return;
 
-private void RefreshNodeAvailability(SkillNode node)
-{
-    if (node.skillButton == null) return;
+        GameObject lineObj = new GameObject("SkillLine");
+        lineObj.transform.SetParent(transform, false);
+        lineObj.transform.SetAsFirstSibling();
 
-    SkillButton skillBtn = node.skillButton.GetComponent<SkillButton>();
-    if (skillBtn == null) return;
-
-    foreach (var child in node.children)
-    {
-        if (child?.skillButton == null) continue;
-
-        SkillButton childBtn = child.skillButton.GetComponent<SkillButton>();
-        if (childBtn == null) continue;
-
-        // Zkontroluj jestli jsou VŠICHNI parenti tohoto childu unlocked
-        bool allParentsUnlocked = IsAllParentsUnlocked(child);
-        childBtn.RefreshAvailability(allParentsUnlocked);
-
-        RefreshNodeAvailability(child);
-    }
-}
-
-// Projde celý strom a najde všechny parenty daného nodu
-private bool IsAllParentsUnlocked(SkillNode targetNode)
-{
-    foreach (var root in rootNodes)
-    {
-        if (!CheckParentsUnlocked(root, targetNode))
-            return false;
-    }
-    return true;
-}
-
-private bool CheckParentsUnlocked(SkillNode current, SkillNode target)
-{
-    foreach (var child in current.children)
-    {
-        if (child == target)
+        SkillLine skillLine = new SkillLine
         {
-            // Tento current je parent targetu - musí být unlocked
-            SkillButton btn = current.skillButton?.GetComponent<SkillButton>();
-            return btn != null && btn.skillState == SkillButton.SkillState.Unlocked;
+            lineObject = lineObj,
+            from = from,
+            to = to,
+            start = start,
+            end = end,
+            connectionId = connId
+        };
+        _spawnedLines.Add(skillLine);
+
+        Image img = lineObj.AddComponent<Image>();
+        img.color = color;
+        img.raycastTarget = false;
+
+        RectTransform rt = lineObj.GetComponent<RectTransform>();
+        Vector2 dir = (end - start).normalized;
+        float length = Vector2.Distance(start, end);
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        Vector2 adjustedStart = start - dir * (lineWidth * 0.5f);
+        float adjustedLength = length + lineWidth;
+
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.zero;
+        rt.pivot = new Vector2(0f, 0.5f);
+        rt.sizeDelta = new Vector2(adjustedLength, lineWidth);
+        rt.anchoredPosition = adjustedStart;
+        rt.localRotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    public void RefreshLineColors()
+    {
+        HashSet<string> unlockedConnections = new HashSet<string>();
+
+        foreach (var line in _spawnedLines)
+        {
+            if (line?.lineObject == null) continue;
+
+            SkillButton fromSkill = line.from?.GetComponent<SkillButton>();
+            SkillButton toSkill = line.to?.GetComponent<SkillButton>();
+
+            bool shouldBeRed = fromSkill != null && toSkill != null &&
+                               fromSkill.skillState == SkillButton.SkillState.Unlocked &&
+                               toSkill.skillState == SkillButton.SkillState.Unlocked;
+
+            if (shouldBeRed)
+                unlockedConnections.Add(line.connectionId);
         }
 
-        if (!CheckParentsUnlocked(child, target))
-            return false;
+        foreach (string connId in unlockedConnections)
+        {
+            List<SkillLine> connLines = _spawnedLines.FindAll(l => l.connectionId == connId);
+
+            List<(Vector2 start, Vector2 end, RectTransform from, RectTransform to)> lineData =
+                new List<(Vector2, Vector2, RectTransform, RectTransform)>();
+
+            foreach (var line in connLines)
+                lineData.Add((line.start, line.end, line.from, line.to));
+
+            foreach (var line in connLines)
+            {
+                _spawnedLines.Remove(line);
+                if (Application.isPlaying)
+                    Destroy(line.lineObject);
+                else
+                    DestroyImmediate(line.lineObject);
+            }
+
+            foreach (var data in lineData)
+                CreateLine(data.start, data.end, unlockedLineColor, data.from, data.to, connId);
+        }
     }
-    return true;
-}
+
+    public void AnimateUnlockedLines(RectTransform unlockedSkill)
+    {
+        List<SkillLine> linesToAnimate = new List<SkillLine>();
+
+        foreach (var line in _spawnedLines)
+        {
+            if (line?.lineObject == null) continue;
+            if (line.from != unlockedSkill && line.to != unlockedSkill) continue;
+
+            Image img = line.lineObject.GetComponent<Image>();
+            if (img != null && img.color == unlockedLineColor)
+                linesToAnimate.Add(line);
+        }
+
+        if (linesToAnimate.Count > 0)
+            StartCoroutine(AnimateLinesCoroutine(linesToAnimate));
+    }
+
+    private IEnumerator AnimateLinesCoroutine(List<SkillLine> lines)
+    {
+        foreach (var skillLine in lines)
+        {
+            if (skillLine?.lineObject == null) continue;
+
+            RectTransform rt = skillLine.lineObject.GetComponent<RectTransform>();
+            Image img = skillLine.lineObject.GetComponent<Image>();
+            if (rt == null || img == null) continue;
+
+            float fullLength = rt.sizeDelta.x;
+            float currentLength = 0f;
+            rt.sizeDelta = new Vector2(0f, lineWidth);
+
+            while (currentLength < fullLength)
+            {
+                currentLength += lineAnimationSpeed * Time.deltaTime;
+                currentLength = Mathf.Min(currentLength, fullLength);
+                rt.sizeDelta = new Vector2(currentLength, lineWidth);
+                yield return null;
+            }
+
+            rt.sizeDelta = new Vector2(fullLength, lineWidth);
+        }
+    }
+
+    public void RefreshAllAvailability()
+    {
+        foreach (var root in rootNodes)
+        {
+            if (root != null)
+                RefreshNodeAvailability(root);
+        }
+    }
+
+    private void RefreshNodeAvailability(SkillNode node)
+    {
+        if (node.skillButton == null) return;
+
+        foreach (var child in node.children)
+        {
+            if (child?.skillButton == null) continue;
+
+            SkillButton childBtn = child.skillButton.GetComponent<SkillButton>();
+            if (childBtn == null) continue;
+
+            bool allParentsUnlocked = IsAllParentsUnlocked(child);
+            childBtn.RefreshAvailability(allParentsUnlocked);
+
+            RefreshNodeAvailability(child);
+        }
+    }
+
+    private bool IsAllParentsUnlocked(SkillNode targetNode)
+    {
+        List<SkillNode> parents = new List<SkillNode>();
+        FindParents(rootNodes, targetNode, parents);
+
+        if (parents.Count == 0) return true;
+
+        foreach (var parent in parents)
+        {
+            SkillButton btn = parent.skillButton?.GetComponent<SkillButton>();
+            if (btn == null || btn.skillState != SkillButton.SkillState.Unlocked)
+                return false;
+        }
+        return true;
+    }
+
+    private void FindParents(List<SkillNode> nodes, SkillNode target, List<SkillNode> parents)
+    {
+        foreach (var node in nodes)
+        {
+            if (node == null) continue;
+            foreach (var child in node.children)
+            {
+                if (child == target)
+                    parents.Add(node);
+            }
+            FindParents(node.children, target, parents);
+        }
+    }
 
     public void ClearLines()
     {
         foreach (var line in _spawnedLines)
         {
-            if (line == null) continue;
+            if (line?.lineObject == null) continue;
 #if UNITY_EDITOR
             if (!Application.isPlaying)
-                DestroyImmediate(line);
+                DestroyImmediate(line.lineObject);
             else
 #endif
-                Destroy(line);
+                Destroy(line.lineObject);
         }
         _spawnedLines.Clear();
 

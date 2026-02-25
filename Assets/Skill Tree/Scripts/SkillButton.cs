@@ -34,17 +34,16 @@ public class SkillButton : MonoBehaviour
 
     [Header("References")]
     public Image iconImage;
-    public GameObject popupPrefab;
 
     [Header("State")]
     public SkillState skillState = SkillState.Locked;
 
     private static readonly Vector2 PrimarySize = new Vector2(90f, 100f);
     private static readonly Vector2 SecondarySize = new Vector2(70f, 70f);
-    private static readonly Vector2 PrimaryIconSize = new Vector2(78f, 78f);
-    private static readonly Vector2 SecondaryIconSize = new Vector2(58f, 58f);
+    private static readonly Vector2 PrimaryIconSize = new Vector2(64f, 64f);
+    private static readonly Vector2 SecondaryIconSize = new Vector2(44f, 44f);
 
-    private static readonly Color LockedColor = new Color(0.4f, 0.4f, 0.4f, 1f);
+    private static readonly Color LockedColor = Color.gray;
     private static readonly Color AvailableColor = Color.white;
 
     private Button _button;
@@ -54,12 +53,16 @@ public class SkillButton : MonoBehaviour
         _button = GetComponent<Button>();
         if (_button != null)
             _button.onClick.AddListener(OnSkillClicked);
+    }
 
+    private void Start()
+    {
         Apply();
     }
 
     private void OnValidate()
     {
+        if (Application.isPlaying) return;
         Apply();
     }
 
@@ -67,27 +70,23 @@ public class SkillButton : MonoBehaviour
     {
         skillState = newState;
         Apply();
-
-        // Po změně stavu aktualizuj čáry
-        SkillTreeConnector connector = GetComponentInParent<SkillTreeConnector>();
-        if (connector == null)
-            connector = FindObjectOfType<SkillTreeConnector>();
-        if (connector != null)
-            connector.GenerateConnections();
+        // Záměrně NEVOLÁ GenerateConnections ani RefreshLineColors
+        // O to se stará SkillPopup
     }
 
     private void OnSkillClicked()
     {
         if (skillState == SkillState.Locked) return;
 
-        if (popupPrefab == null)
+        SkillTreeConnector connector = FindObjectOfType<SkillTreeConnector>();
+        if (connector == null || connector.popupPrefab == null)
         {
-            Debug.LogWarning($"SkillButton [{skillId}]: popupPrefab není přiřazen!");
+            Debug.LogWarning($"SkillButton [{skillId}]: popupPrefab není přiřazen na SkillTreeConnector!");
             return;
         }
 
         Canvas canvas = GetComponentInParent<Canvas>();
-        GameObject popup = Instantiate(popupPrefab, canvas.transform);
+        GameObject popup = Instantiate(connector.popupPrefab, canvas.transform);
         SkillPopup skillPopup = popup.GetComponent<SkillPopup>();
         if (skillPopup != null)
             skillPopup.Init(skillId, this);
@@ -146,10 +145,6 @@ public class SkillButton : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Volá se z SkillTreeConnectoru po odemčení parenta.
-    /// Zkontroluje jestli jsou všichni parenti unlocked a pokud ano, nastaví Available.
-    /// </summary>
     public void RefreshAvailability(bool allParentsUnlocked)
     {
         if (skillState == SkillState.Unlocked) return;
