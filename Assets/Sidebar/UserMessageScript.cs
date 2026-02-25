@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using PlayerChoice.DataSets;
 using PlayerChoice.Timing;
-using System.Text.Json;
 
+using Newtonsoft.Json; // newtonsoft cuz using System.Text.Json did't work for half an hour
+
+// gonna leave it for here cuz I don't wanna break anything
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -132,7 +134,7 @@ public class UserMessageScript : MonoBehaviour
 
                 try
                 {
-                    var dependentMessages = JsonSerializer.Deserialize<Dictionary<string, List<SocialPost_JSON>>>(jsonString);
+                    var dependentMessages = JsonConvert.DeserializeObject<Dictionary<string, List<SocialPost_JSON>>>(jsonString);
                     var stageKey = ((int)TimerBase.V_GameStage).ToString();
 
                     if (dependentMessages.TryGetValue(stageKey, out var messagesForStage) && messagesForStage.Count > 0)
