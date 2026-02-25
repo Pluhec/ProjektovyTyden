@@ -24,6 +24,10 @@ public class PerkInformation
 
 		if(DependsOnPerks == null || DependsOnPerks.Length == 0)
 		{
+			if(PerkName.Equals("Založení politické strany"))
+			{
+				ShowWebButtonOnUI();
+			}
 			IsBought = true;
 			return PerkCost;
 		}
@@ -36,6 +40,10 @@ public class PerkInformation
 			}
 		}
 
+		if(PerkName.Equals("Založení politické strany"))
+		{
+			ShowWebButtonOnUI();
+		}
 		IsBought = true;
 		return PerkCost;
 	}

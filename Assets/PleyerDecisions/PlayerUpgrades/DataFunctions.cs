@@ -52,6 +52,10 @@ public class DataFunctions
 		E_SendSocialSitePost.Invoke(V_PostType, PAR_SocialPost.Content, PAR_SocialPost.Description, PAR_SocialPost.UserName, PAR_SocialPost.UserImage);
 	}
 
+	public static void ShowWebButtonOnUI()
+	{
+
+	}
 
 	public static void StatAlteration(EnumStructs.S_StatData[] PAR_StatAlterations)
 	{
