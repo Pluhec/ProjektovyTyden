@@ -37,11 +37,15 @@ public class UserMessageScript : MonoBehaviour
 
     private static System.Random V_Random = new System.Random();
 
-    void Start() 
+    void Start() // here was the issue when we left off in school
     {
         if (Username == null || UserMessage == null) return;
-        setName(usernameInput);
-        setMessage(userMessageInput);
+        
+        if (string.IsNullOrEmpty(Username.text) || Username.text == "New Text" || Username.text == "Username")
+        {
+            setName(usernameInput);
+            setMessage(userMessageInput);
+        }
     }
 
     public void setName(string name) 
@@ -64,7 +68,6 @@ public class UserMessageScript : MonoBehaviour
         }
 
 #if UNITY_EDITOR
-
         SocialPost_JSON messageToPost = GetRandomPost();
         if (messageToPost == null)
         {
@@ -86,6 +89,7 @@ public class UserMessageScript : MonoBehaviour
             newScript.setMessage(messageToPost.Content);
             
             EditorUtility.SetDirty(newScript);
+            EditorUtility.SetDirty(spawned);
         }
 
         Undo.RegisterCreatedObjectUndo(spawned, "Spawn and Setup User");
@@ -98,20 +102,7 @@ public class UserMessageScript : MonoBehaviour
         
         byte V_SocialPostSpawnProb = 50; 
 
-        if (V_Random.Next(0, 101) > V_SocialPostSpawnProb)
-        {
-            var independentMessagesFile = Path.Combine(socialBasePath, "IndependentMessages.json");
-            if (!File.Exists(independentMessagesFile))
-            {
-                Debug.LogError($"File not found: {independentMessagesFile}");
-                return null;
-            }
-            var jsonString = File.ReadAllText(independentMessagesFile);
-            var independentMessages = JsonUtility.FromJson<IndependentMessageList>(jsonString);
-            if (independentMessages == null || independentMessages.IndependentZpravy == null || independentMessages.IndependentZpravy.Count == 0) return null;
-            return independentMessages.IndependentZpravy[V_Random.Next(0, independentMessages.IndependentZpravy.Count)];
-        }
-        else
+        if (V_Random.Next(0, 101) <= V_SocialPostSpawnProb)
         {
             var unlockedTopics = new List<EnumStructs.E_CampaignTopic>();
             if (PerkSet.Campaign_AntiImmigrants.IsBought) { unlockedTopics.Add(EnumStructs.E_CampaignTopic.Imigrants); }
@@ -125,30 +116,50 @@ public class UserMessageScript : MonoBehaviour
                 var selectedTopic = unlockedTopics[V_Random.Next(0, unlockedTopics.Count)];
                 var dependentMessageFile = Path.Combine(socialBasePath, "DependentMessages", $"T{(int)selectedTopic}_{selectedTopic}Messages.json");
                 
-                if (!File.Exists(dependentMessageFile))
+                if (File.Exists(dependentMessageFile))
                 {
-                    Debug.LogError($"File not found: {dependentMessageFile}");
-                    return null;
-                }
-                var jsonString = File.ReadAllText(dependentMessageFile);
+                    var jsonString = File.ReadAllText(dependentMessageFile);
 
-                try
-                {
-                    var dependentMessages = JsonConvert.DeserializeObject<Dictionary<string, List<SocialPost_JSON>>>(jsonString);
-                    var stageKey = ((int)TimerBase.V_GameStage).ToString();
-
-                    if (dependentMessages.TryGetValue(stageKey, out var messagesForStage) && messagesForStage.Count > 0)
+                    try
                     {
-                        return messagesForStage[V_Random.Next(0, messagesForStage.Count)];
+                        var dependentMessages = JsonConvert.DeserializeObject<Dictionary<string, List<SocialPost_JSON>>>(jsonString);
+                        var stageKey = ((int)TimerBase.V_GameStage).ToString();
+
+                        if (dependentMessages.TryGetValue(stageKey, out var messagesForStage) && messagesForStage.Count > 0)
+                        {
+                            return messagesForStage[V_Random.Next(0, messagesForStage.Count)];
+                        }
                     }
-                }
-                catch (System.Exception ex)
-                {
-                     Debug.LogError($"Failed to deserialize dependent messages: {ex.Message}");
-                     return null;
+                    catch (System.Exception ex)
+                    {
+                         Debug.LogError($"Failed to deserialize dependent messages: {ex.Message}");
+                    }
                 }
             }
         }
+        
+        var independentMessagesFile = Path.Combine(socialBasePath, "IndependentMessages.json");
+        if (!File.Exists(independentMessagesFile))
+        {
+            Debug.LogError($"File not found: {independentMessagesFile}");
+            return null;
+        }
+
+        try 
+        {
+            var jsonStringIndep = File.ReadAllText(independentMessagesFile);
+            var independentMessages = JsonConvert.DeserializeObject<IndependentMessageList>(jsonStringIndep);
+            
+            if (independentMessages != null && independentMessages.IndependentZpravy != null && independentMessages.IndependentZpravy.Count > 0)
+            {
+                return independentMessages.IndependentZpravy[V_Random.Next(0, independentMessages.IndependentZpravy.Count)];
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Failed to deserialize independent messages: {ex.Message}");
+        }
+
         return null;
     }
 }
