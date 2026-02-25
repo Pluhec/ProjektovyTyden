@@ -467,23 +467,6 @@ MonoBehaviour:
   cs: {fileID: 7200000, guid: 562b3f8db7d58d944a2a1aeccae5e028, type: 3}
   initialTexture: {fileID: 2800000, guid: f19d2d546f2a1a749a1e3efbff1a5f41, type: 3}
   regionTexture: {fileID: 2800000, guid: 02f3b69204fe7b3488885218cacb622a, type: 3}
-  propaganda:
-    young:
-      virality: 0
-      impact: 0
-      visibility: 0
-    adults:
-      virality: 0
-      impact: 0
-      visibility: 0
-    seniors:
-      virality: 1
-      impact: 1
-      visibility: 1
-    narrativeDirection: -0.949
-    youngMaxAge: 90
-    adultMaxAge: 190
-  propagandaLevelAdaptationPerDay: 0.2
   regionAverages: []
 --- !u!4 &1624458624
 Transform:
