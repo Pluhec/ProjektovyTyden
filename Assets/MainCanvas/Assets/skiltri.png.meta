@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0112d205987e08346a6ffc538ae7f95f
+guid: a139e24729e1d4044b31f46a99208ffa
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2907608346056623657
-    second: "Proti migrantu\u030Am_0"
+      213: 1199613445043712806
+    second: skiltri_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "Proti migrantu\u030Am_0"
+      name: skiltri_0
       rect:
         serializedVersion: 2
-        x: 33
+        x: 0
         y: 0
-        width: 175
-        height: 241
+        width: 234
+        height: 297
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9268aa4b266e95820800000000000000
-      internalID: 2907608346056623657
+      spriteID: 623fc9b8212e5a010800000000000000
+      internalID: 1199613445043712806
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "Proti migrantu\u030Am_0": 2907608346056623657
+      skiltri_0: 1199613445043712806
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
