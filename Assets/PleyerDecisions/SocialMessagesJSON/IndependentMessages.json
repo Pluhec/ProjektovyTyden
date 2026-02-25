@@ -163,6 +163,16 @@
     { "Type": false, "Topic": 0, "Agression": 0, "Content": "Dneska jsem si udělal výbornou kávu a nechal jsem ji vystydnout.", "Description": "", "UserImage": "", "UserName": "tom_bezi" },
     { "Type": false, "Topic": 0, "Agression": 0, "Content": "Přečetl jsem si notifikaci a hned jsem na ni zapomněl.", "Description": "", "UserImage": "", "UserName": "michal.s" },
     { "Type": false, "Topic": 0, "Agression": 0, "Content": "Dneska bylo všechno v pohodě a to je samo o sobě podezřelé.", "Description": "", "UserImage": "", "UserName": "petra.kova" },
-    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Chtěl jsem si dát pauzu od telefonu. Vydržel jsem dvacet minut.", "Description": "", "UserImage": "", "UserName": "maja_cerna" }
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Chtěl jsem si dát pauzu od telefonu. Vydržel jsem dvacet minut.", "Description": "", "UserImage": "", "UserName": "maja_cerna" },
+
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Good point...", "Description": "", "UserImage": "", "UserName": "zdechninamor" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Jak může být minecraft v Javě?", "Description": "", "UserImage": "", "UserName": "nemecluckyblok" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Internal pointer variable.", "Description": "", "UserImage": "", "UserName": "svejda123" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Ups to jsem trochu odbočil.", "Description": "", "UserImage": "", "UserName": "pometlo67" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Johnathane jsi v pořádku?", "Description": "", "UserImage": "", "UserName": "reditelka.ruze" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Mindware 20 vychazi už zítra.", "Description": "", "UserImage": "", "UserName": "kovacik25" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Cos říkal, neslyšela jsem tě.", "Description": "", "UserImage": "", "UserName": "2gregorova2" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Epizeuxis, kolikrát ti to budu říkat?", "Description": "", "UserImage": "", "UserName": "45adamcova84" }
+
   ]
 }
