@@ -18,6 +18,18 @@ public class popup_click : MonoBehaviour
     public float hoverHeight = 0.02f;
     public float hoverSpeed = 1.5f;
 
+    [Header("Near-End Pulse")]
+    public bool pulsePopupBody = false;
+    public float pulseStartSeconds = 3f;
+    public float pulseSpeed = 8f;
+    [Range(0f, 1f)]
+    public float pulseRedBlend = 0.55f;
+    public Color pulseColor = Color.red;
+
+    [Header("Particle Colors")]
+    public Color particleClickedColor = Color.white;
+    public Color particleTimeoutColor = Color.black;
+
     private Vector2 mousePos;
     private bool isInteractable = false;
     private bool isDying = false;
@@ -33,6 +45,11 @@ public class popup_click : MonoBehaviour
     private float mouseHoverScaleMultiplier = 1f;
 
     private SpriteRenderer ukazatelRenderer;
+    private SpriteRenderer bodyRenderer;
+    private IconShower iconShower;
+    private SpriteRenderer iconRenderer;
+    private Color bodyBaseColor;
+    private Color iconBaseColor;
 
     void Start()
     {
@@ -42,6 +59,22 @@ public class popup_click : MonoBehaviour
         {
             ukazatelInitialScale = ukazatel.transform.localScale;
             ukazatelRenderer = ukazatel.GetComponent<SpriteRenderer>();
+        }
+
+        bodyRenderer = GetComponent<SpriteRenderer>();
+        iconShower = GetComponent<IconShower>();
+        if (iconShower != null)
+        {
+            iconRenderer = iconShower.iconRenderer;
+        }
+
+        if (bodyRenderer != null)
+        {
+            bodyBaseColor = bodyRenderer.color;
+        }
+        if (iconRenderer != null)
+        {
+            iconBaseColor = iconRenderer.color;
         }
         
         currentScale = Vector3.zero;
@@ -76,6 +109,7 @@ public class popup_click : MonoBehaviour
 
         if(isMouseOver && Input.GetMouseButtonDown(0))
         {
+            EvaluateOutcome();
             StartCoroutine(DeathAnimation(true));
         }
     }
@@ -153,6 +187,9 @@ public class popup_click : MonoBehaviour
                     ukazatelRenderer.color = timerGradient.Evaluate(t);
                 }
             }
+
+            float timeLeft = lifetime - elapsed;
+            UpdateNearEndPulse(timeLeft);
             yield return null;
         }
 
@@ -160,12 +197,51 @@ public class popup_click : MonoBehaviour
         {
             StartCoroutine(DeathAnimation(false));
         }
+
+        ResetPulseColors();
+    }
+
+    private void UpdateNearEndPulse(float timeLeft)
+    {
+        if (timeLeft > pulseStartSeconds)
+        {
+            ResetPulseColors();
+            return;
+        }
+
+        float pulse = (Mathf.Sin(Time.time * pulseSpeed) + 1f) * 0.5f;
+        float nearEndFactor = 1f - Mathf.Clamp01(timeLeft / Mathf.Max(0.01f, pulseStartSeconds));
+        float blend = pulse * pulseRedBlend * Mathf.Lerp(0.6f, 1f, nearEndFactor);
+
+        if (iconRenderer != null)
+        {
+            iconRenderer.color = Color.Lerp(iconBaseColor, pulseColor, blend);
+        }
+
+        if (pulsePopupBody && bodyRenderer != null)
+        {
+            bodyRenderer.color = Color.Lerp(bodyBaseColor, pulseColor, blend * 0.75f);
+        }
+    }
+
+    private void ResetPulseColors()
+    {
+        if (iconRenderer != null)
+        {
+            iconRenderer.color = iconBaseColor;
+        }
+
+        if (bodyRenderer != null)
+        {
+            bodyRenderer.color = bodyBaseColor;
+        }
     }
 
     IEnumerator DeathAnimation(bool clicked)
     {
         isDying = true;
         isInteractable = false;
+        ResetPulseColors();
 
         float duration = 0.25f;
         float elapsed = 0f;
@@ -190,10 +266,30 @@ public class popup_click : MonoBehaviour
             spawnPos.z = -10f; 
             
             GameObject particl = Instantiate(particles, spawnPos, Quaternion.identity);
-            particl.GetComponent<ParticleSystem>().startColor = clicked ? Color.white : Color.black;
+            ParticleSystem ps = particl.GetComponent<ParticleSystem>();
+            ParticleSystem.MainModule main = ps.main;
+            main.startColor = clicked ? particleClickedColor : particleTimeoutColor;
             particl.GetComponent<ParticleSystemRenderer>().sortingOrder = 32767;
         }
 
         Destroy(gameObject);
+    }
+
+    public void EvaluateOutcome()
+    {
+        switch (GetComponent<IconShower>().GetCurrentIconType()) {
+            case IconType.Money:
+
+            Debug.Log("Money popup clicked!");
+            // TODO: Implement money effect, show popup text, etc.
+
+                break;
+            case IconType.Power:
+
+            Debug.Log("Power popup clicked!");
+            // TODO: Implement power-up effect, show popup text, etc.
+
+                break;
+        }
     }
 }

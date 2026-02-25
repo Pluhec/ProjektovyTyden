@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapCameraMovement
   zoomSpeed: 5
-  minZoom: 1
+  minZoom: 0.3
   maxZoom: 5
   zoomSmoothTime: 0.07
   panSmoothTime: 0.1
@@ -553,26 +553,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawningPointsByMap
   simulationHandler: {fileID: 1624458623}
+  prefabToSpawn: {fileID: 5313995338523933483, guid: 225a5556be659614090ae9ce4902b88c, type: 3}
   spawnInterval: 1
-  spawnAttemptsPerInterval: 10
+  moneySpawnAttemptsPerInterval: 10
+  powerSpawnAttemptsPerInterval: 5
+  minMoneyRedThreshold: 0.55
+  powerLowRedMin: 0.25
+  powerLowRedMax: 0.55
+  powerNearBlueMinRed: 0.6
+  nearbyBlueThreshold: 0.65
+  minSpawnProbability: 0
+  maxSpawnProbability: 1
   randomOffsetInCell: 0
-  iconTypes:
-  - iconType: 0
-    prefabToSpawn: {fileID: 5313995338523933483, guid: 225a5556be659614090ae9ce4902b88c, type: 3}
-    isBlue: 0
-    minColorThreshold: 0.95
-    maxColorThreshold: 1
-    minSpawnProbability: 0
-    maxSpawnProbability: 0.4
-    minSameColorNeighbors: 4
-  - iconType: 1
-    prefabToSpawn: {fileID: 5313995338523933483, guid: 225a5556be659614090ae9ce4902b88c, type: 3}
-    isBlue: 0
-    minColorThreshold: 0.5
-    maxColorThreshold: 0.7
-    minSpawnProbability: 0
-    maxSpawnProbability: 0.1
-    minSameColorNeighbors: 2
+  showSpawnDebugGizmos: 1
+  drawMoneySpawnZones: 1
+  drawPowerSpawnZones: 1
+  gizmoSizeFactor: 0.75
+  gizmoZOffset: -0.05
+  moneyGizmoColor: {r: 1, g: 0.15, b: 0.15, a: 0.35}
+  powerGizmoColor: {r: 0.2, g: 0.7, b: 1, a: 0.35}
 --- !u!4 &569946035
 Transform:
   m_ObjectHideFlags: 0

@@ -3,6 +3,8 @@ using UnityEngine.U2D;
 
 public class popup_awake : MonoBehaviour
 {
+    public float animSpeed = 1f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -15,14 +17,14 @@ public class popup_awake : MonoBehaviour
         if(transform.GetComponent<SpriteRenderer>()!= null)
         {if (transform.GetComponent<SpriteRenderer>().color.a < 1)
             {
-                transform.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, Time.deltaTime);
+                transform.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, Time.deltaTime * animSpeed);
             }
         }
         else
         {
             if (transform.GetComponent<SpriteShapeRenderer>().color.a < 1)
             {
-                transform.GetComponent<SpriteShapeRenderer>().color += new Color(0, 0, 0, Time.deltaTime);
+                transform.GetComponent<SpriteShapeRenderer>().color += new Color(0, 0, 0, Time.deltaTime * animSpeed);
             }
         }
     }

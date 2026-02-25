@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Camera))]
 public class MapCameraMovement : MonoBehaviour
