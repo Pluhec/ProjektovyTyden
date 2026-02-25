@@ -32,6 +32,14 @@ public class popup_click : MonoBehaviour
     public Color particleClickedColor = Color.white;
     public Color particleTimeoutColor = Color.black;
 
+    [Header("Camera Zoom Scaling")]
+    public bool scaleWithZoom = true;
+    [Tooltip("The orthographic size where the popup is at its normal (1x) scale.")]
+    public float baseOrthographicSize = 5f;
+    [Tooltip("How much the popup scales up as you zoom out. 0 = no scaling, 1 = scales exactly with zoom.")]
+    [Range(0f, 1f)]
+    public float zoomScaleFactor = 0.5f;
+
     private Vector2 mousePos;
     private bool isInteractable = false;
     private bool isDying = false;
@@ -119,8 +127,19 @@ public class popup_click : MonoBehaviour
 
     void LateUpdate()
     {
-        // 1. Apply scale with hover and pulse multipliers
-        float totalScaleMultiplier = mouseHoverScaleMultiplier * pulseScaleMultiplier;
+        // Calculate camera zoom scale multiplier
+        float cameraZoomMultiplier = 1f;
+        if (scaleWithZoom && Camera.main != null && Camera.main.orthographic)
+        {
+            float currentOrthoSize = Camera.main.orthographicSize;
+            // If current size is larger than base, we are zoomed out.
+            // We lerp between 1 (no scale change) and the actual ratio based on zoomScaleFactor.
+            float ratio = currentOrthoSize / baseOrthographicSize;
+            cameraZoomMultiplier = Mathf.Lerp(1f, ratio, zoomScaleFactor);
+        }
+
+        // 1. Apply scale with hover, pulse, and camera zoom multipliers
+        float totalScaleMultiplier = mouseHoverScaleMultiplier * pulseScaleMultiplier * cameraZoomMultiplier;
         Vector3 finalScale = Vector3.Scale(currentScale, new Vector3(totalScaleMultiplier, totalScaleMultiplier, 1f));
         transform.localScale = finalScale;
 
