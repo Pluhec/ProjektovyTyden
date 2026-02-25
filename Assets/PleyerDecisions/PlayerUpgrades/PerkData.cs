@@ -11,6 +11,8 @@ public class PerkSet
 	// Targeting: Young +++, Adult ++, Senior 0
 	public static PerkInformation Coms_Influencers1 = new PerkInformation
 	{
+		PerkName		= "Influenceři 1",
+		PerkDescription	= "Mikroinfluenceři s mladou fanouškovskou základnou.",
 		PerkCost		= 2,
 		DependsOnPerks = null,
 		IsBought		= false,
@@ -43,6 +45,8 @@ public class PerkSet
 	// Targeting: Young ++++, Adult ++, Senior +
 	public static PerkInformation Coms_Influencers2 = new PerkInformation
 	{
+		PerkName		= "Influenceři 2",
+		PerkDescription = "Větší mikroinfluenceři s rozšířenou fanouškovskou základnou.",
 		PerkCost		= 3,
 		DependsOnPerks = new[] { Coms_Influencers1 },
 		IsBought		= false,
@@ -75,6 +79,8 @@ public class PerkSet
 	// Targeting: Young +++++, Adult +++, Senior +
 	public static PerkInformation Coms_Influencers3 = new PerkInformation
 	{
+		PerkName		= "Influenceři 3",
+		PerkDescription = "Známí influenceři s velkou a loajální fanouškovskou základnou.",
 		PerkCost		= 4,
 		DependsOnPerks = new[] { Coms_Influencers2 },
 		IsBought		= false,
@@ -107,6 +113,8 @@ public class PerkSet
 	// Targeting: Young 0, Adult +, Senior +++
 	public static PerkInformation Coms_ChainEmails1 = new PerkInformation
 	{
+		PerkName		= "Řetězové e-maily 1",
+		PerkDescription = "Základní řetězové e-maily s malým rozsahem.",
 		PerkCost		= 1,
 		DependsOnPerks = null,
 		IsBought		= false,
@@ -139,6 +147,8 @@ public class PerkSet
 	// Targeting: Young 0, Adult +, Senior +++
 	public static PerkInformation Coms_ChainEmails2 = new PerkInformation
 	{
+		PerkName		= "Řetězové e-maily 2",
+		PerkDescription = "Pokročilé řetězové e-maily s rozšířeným dosahem.",
 		PerkCost		= 1,
 		DependsOnPerks = new[] { Coms_ChainEmails1 },
 		IsBought		= false,
@@ -172,10 +182,21 @@ public class PerkSet
 	// Special: Generates clickable money bubbles on the map
 	public static PerkInformation Coms_TVChannel = new PerkInformation
 	{
+		PerkName		= "Televizní kanál",
+		PerkDescription = "Vysokopříslušný televizní kanál s výrazným dosahem.",
 		PerkCost		= 4,
 		DependsOnPerks = null,
 		IsBought		= false,
-		SpecialEffect  = "Occasionally generates a clickable bubble on the map that grants money",
+		SpecialEffect  = new[] // Generates clickable money bubbles on the map
+		{
+			new EnumStructs.S_PerkSpecialEffect
+			{
+				EffectsType = EnumStructs.E_PerkSpecialType.FinancePopUp,
+				EffectsGroup = null,
+				EffectsEducation = null,
+				EffectAmmount = null
+			}
+		},
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -204,6 +225,8 @@ public class PerkSet
 	// Targeting: Young 0, Adult ++, Senior ++
 	public static PerkInformation Coms_Radio = new PerkInformation
 	{
+		PerkName		= "Rádio",
+		PerkDescription = "Celostátní rádio s výrazným dosahem.",
 		PerkCost		= 3,
 		DependsOnPerks = null,
 		IsBought		= false,
@@ -236,6 +259,8 @@ public class PerkSet
 	// Targeting: Young 0, Adult +, Senior ++
 	public static PerkInformation Coms_NewspapersFlyers = new PerkInformation
 	{
+		PerkName		= "Noviny a letáky",
+		PerkDescription = "Noviny a letáky s lokálním dosahem.",
 		PerkCost		= 2,
 		DependsOnPerks = null,
 		IsBought		= false,
@@ -269,6 +294,8 @@ public class PerkSet
 	// Note: All stats are 0, serves as gateway perk for sub-perks
 	public static PerkInformation Coms_SocialMedia = new PerkInformation
 	{
+		PerkName		= "Sociální sítě",
+		PerkDescription = "Založení účtů na sociálních sítích pro šíření zpráv.",
 		PerkCost		= 0,
 		DependsOnPerks = null,
 		IsBought		= false,
@@ -301,6 +328,8 @@ public class PerkSet
 	// Targeting: Young ++, Adult ++, Senior +
 	public static PerkInformation Coms_InternetTV = new PerkInformation
 	{
+		PerkName		= "Internetová televize",
+		PerkDescription = "Vysílání na internetové televizi s rozumným dosahem.",
 		PerkCost		= 2,
 		DependsOnPerks = new[] { Coms_SocialMedia },
 		IsBought		= false,
@@ -333,6 +362,8 @@ public class PerkSet
 	// Targeting: Young +, Adult ++, Senior ++
 	public static PerkInformation Coms_FakeNews = new PerkInformation
 	{
+		PerkName		= "Fake news a konspirační teorie",
+		PerkDescription = "Šíření dezinformací a konspiračních teorií.",
 		PerkCost		= 2,
 		DependsOnPerks = new[] { Coms_SocialMedia },
 		IsBought		= false,
@@ -363,8 +394,10 @@ public class PerkSet
 	// 1f-iii. Bots 1 (depends on Social Media, cost $$)
 	// Base stats: Virality +++, Impact +, Visibility +
 	// Targeting: Young +, Adult ++, Senior ++
-	public static PerkInformation Coms_Bots1 = new PerkInformation
+	public static PerkInformation Coms_Bots = new PerkInformation
 	{
+		PerkName		= "Boti",
+		PerkDescription = "Vytvoření botů pro automatizované šíření zpráv.",
 		PerkCost		= 2,
 		DependsOnPerks = new[] { Coms_SocialMedia },
 		IsBought		= false,
@@ -397,8 +430,10 @@ public class PerkSet
 	// Targeting: Young ++, Adult +++, Senior +++
 	public static PerkInformation Coms_Bots2 = new PerkInformation
 	{
+		PerkName		= "Pokročilí boti",
+		PerkDescription = "Pokročilí boti pro automatizované šíření zpráv.",
 		PerkCost		= 3,
-		DependsOnPerks = new[] { Coms_Bots1 },
+		DependsOnPerks = new[] { Coms_Bots },
 		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
@@ -429,6 +464,8 @@ public class PerkSet
 	// Targeting: Young +++, Adult +++, Senior ++
 	public static PerkInformation Coms_OwnSocialNetwork = new PerkInformation
 	{
+		PerkName		= "Vlastní sociální síť",
+		PerkDescription = "Vytvoření vlastní sociální sítě pro šíření zpráv a dezinformací.",
 		PerkCost		= 5,
 		DependsOnPerks = new[] { Coms_InternetTV, Coms_FakeNews, Coms_Bots2, Coms_Influencers3 },
 		IsBought		= false,
@@ -461,6 +498,8 @@ public class PerkSet
 	// Targeting: Young +++, Adult +, Senior 0
 	public static PerkInformation Coms_OnlineGames = new PerkInformation
 	{
+		PerkName		= "Online hry",
+		PerkDescription = "Vytvoření online hry pro šíření zpráv mezi mladými lidmi.",
 		PerkCost		= 3,
 		DependsOnPerks = null,
 		IsBought		= false,
