@@ -1,12 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Timers;
 using PlayerChoice.DataSets;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 
-namespace PlayerChoice.Timing;
-
+namespace PlayerChoice.Timing
+{
 public class TimerBase
 {
 	public static byte V_TimerCallColldown	= 2;
@@ -25,7 +26,7 @@ public class TimerBase
 	}
 	
 	public static EnumStructs.E_GameStage V_GameStage = EnumStructs.E_GameStage.Start;
-	private static Random V_Random			= new Random();
+	private static System.Random V_Random			= new System.Random();
 
 	public static string V_Str_ExePath	{get; private set;}
 	private static string V_SocialBasePath	= "";
@@ -33,7 +34,17 @@ public class TimerBase
 
 	public static void InvokeTimer()
 	{
-		V_Str_ExePath						= Environment.ProcessPath.Replace("\\", "/");
+        V_Str_ExePath = Application.dataPath;
+        if (Application.platform == RuntimePlatform.OSXPlayer)
+        {
+            V_Str_ExePath += "/../../";
+        }
+        else if (Application.platform == RuntimePlatform.WindowsPlayer)
+        {
+            V_Str_ExePath += "/../";
+        }
+
+            Debug.Log(V_Str_ExePath);
 		V_Str_ExePath						= V_Str_ExePath.Substring(0, V_Str_ExePath.LastIndexOf("/"));
         V_SocialBasePath                    = Path.Combine(V_Str_ExePath, "Assets/PleyerDecisions/SocialMessagesJSON/");
 
@@ -59,7 +70,7 @@ public class TimerBase
 	
 	public static void StrtRandPost()
 	{
-        if (V_Random.Next(0, 101) > V_SocialPostSpawnProb)
+        /*if (V_Random.Next(0, 101) > V_SocialPostSpawnProb)
         {
             var V_IndependentMessagesFile   = Path.Combine(V_SocialBasePath, "IndependentMessages.json");
             var V_IndependentMessages       = DataFunctions.LoadIndependentMessages(V_IndependentMessagesFile);
@@ -90,6 +101,7 @@ public class TimerBase
                     DataFunctions.SpawnSocialPost(V_MessageToPost);
                 }
             }
-        }
+        }*/
 	}
+}
 }

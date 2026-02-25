@@ -1,5 +1,5 @@
-namespace PlayerChoice.DataSets;
-
+namespace PlayerChoice.DataSets
+{
 public class PerkSet
 {
 	// =====================================================================
@@ -1002,7 +1002,7 @@ public class PerkSet
 		IsBought		= false,
 		SpecialEffect  = new[] { new EnumStructs.S_PerkSpecialEffect
 		{
-			EffectsType = EnumStructs.E_PerkSpecialType.DemocracyMeter,
+			EffectsType = EnumStructs.E_PerkSpecialType.Democracy,
 			EffectsGroup = null,
 			EffectsEducation = null,
 			EffectAmmount = -10, // Reduces democracy meter by 10%
@@ -1041,7 +1041,7 @@ public class PerkSet
 		IsBought		= false,
 		SpecialEffect  = new[] { new EnumStructs.S_PerkSpecialEffect
 		{
-			EffectsType = EnumStructs.E_PerkSpecialType.DemocracyMeter,
+			EffectsType = EnumStructs.E_PerkSpecialType.Democracy,
 			EffectsGroup = null,
 			EffectsEducation = null,
 			EffectAmmount = -15, // Reduces democracy meter by 15%
@@ -1074,7 +1074,7 @@ public class PerkSet
 	// No specific age targeting — uniform across all groups
 	public static PerkInformation Action_FakeCompromising = new PerkInformation
 	{
-		Perkname = "Falešné kompromitující materiály",
+		PerkName = "Falešné kompromitující materiály",
 		PerkDescription = "Vytvoření a šíření falešných kompromitujících materiálů o politických oponentech pro snížení jejich popularity.",
 		PerkCost		= 3,
 		DependsOnPerks = null,
@@ -1113,7 +1113,7 @@ public class PerkSet
 		PerkCost		= 5,
 		DependsOnPerks = null, // Special condition: requires 25% followers — checked in game logic
 		IsBought		= false,
-		SpecialEffect  = "Requires at least 25% followers in the population to unlock",
+		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1210,7 +1210,7 @@ public class PerkSet
 		PerkCost		= 0,
 		DependsOnPerks = new[] { Action_PoliticalCampaign2 },
 		IsBought		= false,
-		SpecialEffect  = "Elected to parliament — unlocks government actions",
+		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1242,7 +1242,7 @@ public class PerkSet
 		PerkCost		= 4,
 		DependsOnPerks = new[] { Action_ElectedToParliament },
 		IsBought		= false,
-		SpecialEffect  = "Participation in government — unlocks authoritarian actions",
+		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1392,7 +1392,15 @@ public class PerkSet
 			EffectsGroup = EnumStructs.E_Manipulatable.Immune,
 			EffectsEducation = null,
 			EffectAmmount = 10, // Increases immune people by 10%
-		} }, // Note: Visibility reduction (-20%) not implemented as no enum type exists; consider adding E_PerkSpecialType.Visibility
+		},
+            new EnumStructs.S_PerkSpecialEffect
+        {
+			EffectsType = EnumStructs.E_PerkSpecialType.Visibility,
+			EffectsGroup = null,
+			EffectsEducation = null,
+			EffectAmmount = -20, // Reduces visibility by 20%
+		}
+		},
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1425,7 +1433,13 @@ public class PerkSet
 		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_MediaControl },
 		IsBought		= false,
-		SpecialEffect  = "Reduces visibility by 20%",
+		SpecialEffect  = new[] { new EnumStructs.S_PerkSpecialEffect
+		{
+			EffectsType = EnumStructs.E_PerkSpecialType.Visibility,
+			EffectsGroup = null,
+			EffectsEducation = null,
+			EffectAmmount = -20, // Reduces visibility by 20%
+		}},
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1458,7 +1472,13 @@ public class PerkSet
 		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_IntimidateJournalists },
 		IsBought		= false,
-		SpecialEffect  = "Reduces visibility by 20%",
+		SpecialEffect  = new[] { new EnumStructs.S_PerkSpecialEffect
+		{
+			EffectsType = EnumStructs.E_PerkSpecialType.Visibility,
+			EffectsGroup = null,
+			EffectsEducation = null,
+			EffectAmmount = -20, // Reduces visibility by 20%
+		}},
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1491,7 +1511,7 @@ public class PerkSet
 		PerkCost		= 3,
 		DependsOnPerks = new[] { Action_IntroduceCensorship, Action_PersecuteUndesirables1 },
 		IsBought		= false,
-		SpecialEffect  = "END OF GAME — totalitarian regime fully established",
+		SpecialEffect  = null, // MARK: Note: This is a special case and may require custom handling in game logic
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1514,4 +1534,5 @@ public class PerkSet
 			Visibility = 0,
 		},
 	};
+}
 }
