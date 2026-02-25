@@ -501,10 +501,12 @@ public class PerkSet
 	// Young: V-, I--  |  Adult: V+, I+  |  Senior: V++, I++
 	public static PerkInformation Campaign_AntiImmigrants = new PerkInformation
 	{
+		PerkName = "Anti-Immigrantská kampaň",
+		PerkDescription = "Otevře kampaň proti imigrantům.",
 		PerkCost		= 2,
 		DependsOnPerks = null,
 		IsBought		= false,
-		SpecialEffect  = "Opens immigration campaign topic; increases visibility",
+		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -532,10 +534,12 @@ public class PerkSet
 	// Young: V-, I-  |  Adult: V-, I+  |  Senior: V+, I+
 	public static PerkInformation Campaign_AntiNationalMinorities = new PerkInformation
 	{
+		PerkName = "Anti-Národnostní menšiny",
+		PerkDescription = "Otevře kampaň proti národnostním menšinám.",
 		PerkCost		= 2,
 		DependsOnPerks = null,
 		IsBought		= false,
-		SpecialEffect  = "Opens national minorities campaign topic; increases visibility",
+		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -563,10 +567,12 @@ public class PerkSet
 	// Young: V---, I---  |  Adult: V+, I+  |  Senior: V++, I++
 	public static PerkInformation Campaign_AntiSexualMinorities = new PerkInformation
 	{
+		PerkName = "Anti-Sexuální menšiny",
+		PerkDescription = "Otevře kampaň proti sexuálním menšinám.",
 		PerkCost		= 2,
 		DependsOnPerks = null,
 		IsBought		= false,
-		SpecialEffect  = "Opens sexual minorities campaign topic; increases visibility",
+		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -594,10 +600,12 @@ public class PerkSet
 	// Young: V--, I-  |  Adult: V+, I+  |  Senior: V++, I++
 	public static PerkInformation Campaign_AntiReligiousMinorities = new PerkInformation
 	{
+		PerkName = "Proti náboženským menšinám",
+		PerkDescription = "Otevírá kampaň proti náboženský menšinám",
 		PerkCost		= 2,
 		DependsOnPerks = null,
 		IsBought		= false,
-		SpecialEffect  = "Opens religious minorities campaign topic; increases visibility",
+		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -625,10 +633,12 @@ public class PerkSet
 	// Young: V+++, I++  |  Adult: V+, I+  |  Senior: V--, I-
 	public static PerkInformation Campaign_AntiElites = new PerkInformation
 	{
+		PerkName = "Anti-elity",
+		PerkDescription = "otevírá kampaň proti elitám",
 		PerkCost		= 2,
 		DependsOnPerks = null,
 		IsBought		= false,
-		SpecialEffect  = "Opens elites campaign topic; increases visibility",
+		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -658,10 +668,21 @@ public class PerkSet
 	// Special: University-educated people -5%
 	public static PerkInformation Manif_CommonSense = new PerkInformation
 	{
+		PerkName = "Selský rozum",
+		PerkDescription = "Zvyšuje virálnost, dopad a viditelnost kampaní mezi všemi věkovými skupinami, ale snižuje je mezi vysokoškolsky vzdělanými lidmi.",
 		PerkCost		= 2,
 		DependsOnPerks = null,
 		IsBought		= false,
-		SpecialEffect  = "University-educated people -5%",
+		SpecialEffect  = new[]
+		{
+			new EnumStructs.S_PerkSpecialEffect
+			{
+				EffectsType = EnumStructs.E_PerkSpecialType.School,
+				EffectsEducation = EnumStructs.E_Education.High,
+				EffectsGroup = null,
+				EffectAmmount = -5, 
+			}
+		},
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -669,7 +690,7 @@ public class PerkSet
 			Impact		= 1,  // 1 * 1
 			Visibility = 1,  // 1 * 1
 		},
-		AdultStat = new EnumStructs.S_StatData
+		AdultStat = new EnumStructs.S_StatData 
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 2,  // 1 * 2
@@ -691,10 +712,21 @@ public class PerkSet
 	// Special: University-educated people -5%
 	public static PerkInformation Manif_TruthRelativism = new PerkInformation
 	{
+		PerkName = "Relativizace pravdy",
+		PerkDescription = "Zvyšuje virálnost, dopad a viditelnost kampaní mezi všemi věkovými skupinami, ale snižuje je mezi vysokoškolsky vzdělanými lidmi.",
 		PerkCost		= 2,
 		DependsOnPerks = new[] { Manif_CommonSense },
 		IsBought		= false,
-		SpecialEffect  = "University-educated people -5%",
+		SpecialEffect  = new[]
+		{
+			new EnumStructs.S_PerkSpecialEffect
+			{
+				EffectsType = EnumStructs.E_PerkSpecialType.School,
+				EffectsEducation = EnumStructs.E_Education.High,
+				EffectsGroup = null,
+				EffectAmmount = -5, 
+			}
+		},
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -723,6 +755,8 @@ public class PerkSet
 	// Targeting: Young +, Adult ++, Senior +++
 	public static PerkInformation Manif_Demonstrations1 = new PerkInformation
 	{
+		PerkName = "Demonstrace 1",
+		PerkDescription = "Zvyšuje virálnost, dopad a viditelnost demonstrací mezi všemi věkovými skupinami.",
 		PerkCost		= 4,
 		DependsOnPerks = null,
 		IsBought		= false,
@@ -756,10 +790,21 @@ public class PerkSet
 	// Special: Generates clickable money bubbles on the map
 	public static PerkInformation Manif_Demonstrations2 = new PerkInformation
 	{
+		PerkName = "Demonstrace 2",
+		PerkDescription = "Vylepšuje demonstrace a občas generuje peněžní bubliny na mapě.",
 		PerkCost		= 4,
 		DependsOnPerks = new[] { Manif_Demonstrations1 },
 		IsBought		= false,
-		SpecialEffect  = "Occasionally generates a clickable bubble on the map that grants money",
+		SpecialEffect  = new[] // Generates clickable money bubbles on the map
+        {
+            new EnumStructs.S_PerkSpecialEffect
+            {
+                EffectsType = EnumStructs.E_PerkSpecialType.FinancePopUp,
+                EffectsGroup = null,
+                EffectsEducation = null,
+                EffectAmmount = null
+            }
+        },
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -789,10 +834,28 @@ public class PerkSet
 	// Special: Followers +10%, Immune people +5%
 	public static PerkInformation Manif_ParamilitaryGroups = new PerkInformation
 	{
+		PerkName = "Polovojenské skupiny",
+		PerkDescription = "Zvyšuje virálnost, dopad a viditelnost demonstrací mezi všemi věkovými skupinami a zvyšuje počet následovníků.",
 		PerkCost		= 4,
 		DependsOnPerks = new[] { Manif_Demonstrations2 },
 		IsBought		= false,
-		SpecialEffect  = "Followers +10%, Immune people +5%",
+		SpecialEffect  = new[] // Followers +10%, Immune people +5%
+        {
+            new EnumStructs.S_PerkSpecialEffect
+            {
+                EffectsType = EnumStructs.E_PerkSpecialType.SocialGroup,
+                EffectsGroup = EnumStructs.E_Manipulatable.Collaborator,
+                EffectsEducation = null,
+                EffectAmmount = 10
+            },
+            new EnumStructs.S_PerkSpecialEffect
+            {
+                EffectsType = EnumStructs.E_PerkSpecialType.SocialGroup,
+                EffectsGroup = EnumStructs.E_Manipulatable.Immune,
+                EffectsEducation = null,
+                EffectAmmount = 5
+            }
+        },
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -821,6 +884,8 @@ public class PerkSet
 	// Targeting: Young ++, Adult ++, Senior ++
 	public static PerkInformation Manif_VerbalAggressivity = new PerkInformation
 	{
+		PerkName = "Verbální agresivita",
+		PerkDescription = "Zvyšuje virálnost, dopad a viditelnost kampaní mezi všemi věkovými skupinami.",
 		PerkCost		= 3,
 		DependsOnPerks = null,
 		IsBought		= false,
@@ -853,6 +918,8 @@ public class PerkSet
 	// Targeting: Young +, Adult ++, Senior ++
 	public static PerkInformation Manif_BoycottEconomicPressure = new PerkInformation
 	{
+		PerkName = "Bojkot a ekonomický tlak",
+		PerkDescription = "Zvyšuje virálnost, dopad a viditelnost kampaní mezi všemi věkovými skupinami.",
 		PerkCost		= 3,
 		DependsOnPerks = null,
 		IsBought		= false,
