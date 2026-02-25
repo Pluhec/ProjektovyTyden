@@ -57,6 +57,11 @@ public class SimulationHandler : MonoBehaviour
     public Texture2D initialTexture;
     public Texture2D regionTexture;
 
+    [Header("Visual Style")]
+    [Range(2, 64)] public float posterizeLevels = 16f;
+    [Range(0f, 10f)] public float ditherStrength = 0.3f;
+    [Range(0, 5)] public int blurRadius = 1;
+
     [Header("Propaganda")]
     public PropagandaLevels propaganda = new PropagandaLevels
     {
@@ -186,6 +191,12 @@ public class SimulationHandler : MonoBehaviour
         propertyBlock.SetFloat("_CellSizeY", 1f / gridSize.y * simulationQuadTransform.localScale.y);
         propertyBlock.SetFloat("_PosOffsetX", simulationQuadTransform.position.x);
         propertyBlock.SetFloat("_PosOffsetY", simulationQuadTransform.position.y);
+        propertyBlock.SetFloat("_PosterizeLevels", Mathf.Max(posterizeLevels, 2f));
+        propertyBlock.SetFloat("_DitherStrength", Mathf.Clamp01(ditherStrength));
+        propertyBlock.SetInt("_BlurRadius", blurRadius);
+        gridMaterial.SetFloat("_PosterizeLevels", Mathf.Max(posterizeLevels, 2f));
+        gridMaterial.SetFloat("_DitherStrength", Mathf.Clamp01(ditherStrength));
+        gridMaterial.SetInt("_BlurRadius", blurRadius);
         Graphics.DrawProcedural(
             gridMaterial,
             new Bounds(Vector3.zero, Vector3.one * 1000),
