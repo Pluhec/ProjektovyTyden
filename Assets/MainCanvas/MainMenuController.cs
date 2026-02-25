@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class MainMenuController : MonoBehaviour
     public GameObject settingsCanvas;   // Nastavení
     public GameObject skillTreeCanvas;  // Strom dovedností
     public GameObject webCanvas;        // Webové rozhraní
+
+    public GameObject WebButton;
 
     [Header("UI Animations")]
     public List<AnimatedUIElement> uiElementsToAnimate = new List<AnimatedUIElement>();
@@ -120,5 +123,10 @@ public class MainMenuController : MonoBehaviour
         if (settingsCanvas != null) settingsCanvas.SetActive(false);
         if (skillTreeCanvas != null) skillTreeCanvas.SetActive(false);
         if (webCanvas != null) webCanvas.SetActive(false);
+    }
+
+    public void ShowWebButton()
+    {
+        WebButton.SetActive(true);
     }
 }
