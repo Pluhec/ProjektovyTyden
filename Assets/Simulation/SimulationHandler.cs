@@ -414,6 +414,7 @@ public class SimulationHandler : MonoBehaviour
         if (regionEducationAverages == null || regionIndex < 0 || regionIndex >= regionEducationAverages.Length)
             return 0f;
         return regionEducationAverages[regionIndex];
+    }
     public void PaintStance(int gridX, int gridY, float stanceOffset)
     {
         int radius = Mathf.Max(1, paintingBrushRadius);
