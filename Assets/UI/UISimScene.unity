@@ -153,8 +153,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 83.71}
-  m_SizeDelta: {x: 2870.0327, y: 1610.1628}
+  m_AnchoredPosition: {x: 6.2643, y: 82.48652}
+  m_SizeDelta: {x: 2882.561, y: 1631.9255}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &67348992
 MonoBehaviour:
@@ -361,7 +361,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &275206339
 RectTransform:
   m_ObjectHideFlags: 0
@@ -818,6 +818,23 @@ MonoBehaviour:
   cs: {fileID: 7200000, guid: 562b3f8db7d58d944a2a1aeccae5e028, type: 3}
   initialTexture: {fileID: 2800000, guid: f19d2d546f2a1a749a1e3efbff1a5f41, type: 3}
   regionTexture: {fileID: 2800000, guid: 02f3b69204fe7b3488885218cacb622a, type: 3}
+  propaganda:
+    young:
+      virality: 1
+      impact: 1
+      visibility: 1
+    adults:
+      virality: 1
+      impact: 1
+      visibility: 1
+    seniors:
+      virality: 1
+      impact: 1
+      visibility: 1
+    narrativeDirection: 1
+    youngMaxAge: 85
+    adultMaxAge: 170
+  propagandaLevelAdaptationPerDay: 0.2
   regionAverages: []
 --- !u!4 &886417933
 Transform:
