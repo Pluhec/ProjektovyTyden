@@ -11,29 +11,29 @@ public class PerkSet
 	// Targeting: Young +++, Adult ++, Senior 0
 	public static PerkInformation Coms_Influencers1 = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 9,  // 3 * 3
-			Impact     = 0,  // 0 * 3
+			Impact		= 0,  // 0 * 3
 			Visibility = 0,  // 0 * 3
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 6,  // 3 * 2
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 	};
@@ -43,29 +43,29 @@ public class PerkSet
 	// Targeting: Young ++++, Adult ++, Senior +
 	public static PerkInformation Coms_Influencers2 = new PerkInformation
 	{
-		PerkCost       = 3,
+		PerkCost		= 3,
 		DependsOnPerks = new[] { Coms_Influencers1 },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 8,  // 2 * 4
-			Impact     = 4,  // 1 * 4
+			Impact		= 4,  // 1 * 4
 			Visibility = 4,  // 1 * 4
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 4,  // 2 * 2
-			Impact     = 2,  // 1 * 2
+			Impact		= 2,  // 1 * 2
 			Visibility = 2,  // 1 * 2
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 2,  // 2 * 1
-			Impact     = 1,  // 1 * 1
+			Impact		= 1,  // 1 * 1
 			Visibility = 1,  // 1 * 1
 		},
 	};
@@ -75,29 +75,29 @@ public class PerkSet
 	// Targeting: Young +++++, Adult +++, Senior +
 	public static PerkInformation Coms_Influencers3 = new PerkInformation
 	{
-		PerkCost       = 4,
+		PerkCost		= 4,
 		DependsOnPerks = new[] { Coms_Influencers2 },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 15, // 3 * 5
-			Impact     = 10, // 2 * 5
+			Impact		= 10, // 2 * 5
 			Visibility = 10, // 2 * 5
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 9,  // 3 * 3
-			Impact     = 6,  // 2 * 3
+			Impact		= 6,  // 2 * 3
 			Visibility = 6,  // 2 * 3
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 3,  // 3 * 1
-			Impact     = 2,  // 2 * 1
+			Impact		= 2,  // 2 * 1
 			Visibility = 2,  // 2 * 1
 		},
 	};
@@ -107,29 +107,29 @@ public class PerkSet
 	// Targeting: Young 0, Adult +, Senior +++
 	public static PerkInformation Coms_ChainEmails1 = new PerkInformation
 	{
-		PerkCost       = 1,
+		PerkCost		= 1,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 2,  // 2 * 1
-			Impact     = 1,  // 1 * 1
+			Impact		= 1,  // 1 * 1
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 6,  // 2 * 3
-			Impact     = 3,  // 1 * 3
+			Impact		= 3,  // 1 * 3
 			Visibility = 0,
 		},
 	};
@@ -139,29 +139,29 @@ public class PerkSet
 	// Targeting: Young 0, Adult +, Senior +++
 	public static PerkInformation Coms_ChainEmails2 = new PerkInformation
 	{
-		PerkCost       = 1,
+		PerkCost		= 1,
 		DependsOnPerks = new[] { Coms_ChainEmails1 },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 2,  // 2 * 1
-			Impact     = 1,  // 1 * 1
+			Impact		= 1,  // 1 * 1
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 6,  // 2 * 3
-			Impact     = 3,  // 1 * 3
+			Impact		= 3,  // 1 * 3
 			Visibility = 0,
 		},
 	};
@@ -172,29 +172,29 @@ public class PerkSet
 	// Special: Generates clickable money bubbles on the map
 	public static PerkInformation Coms_TVChannel = new PerkInformation
 	{
-		PerkCost       = 4,
+		PerkCost		= 4,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Occasionally generates a clickable bubble on the map that grants money",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 4,  // 2 * 2
-			Impact     = 4,  // 2 * 2
+			Impact		= 4,  // 2 * 2
 			Visibility = 4,  // 2 * 2
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 4,  // 2 * 2
-			Impact     = 4,  // 2 * 2
+			Impact		= 4,  // 2 * 2
 			Visibility = 4,  // 2 * 2
 		},
 	};
@@ -204,29 +204,29 @@ public class PerkSet
 	// Targeting: Young 0, Adult ++, Senior ++
 	public static PerkInformation Coms_Radio = new PerkInformation
 	{
-		PerkCost       = 3,
+		PerkCost		= 3,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 2,  // 1 * 2
-			Impact     = 2,  // 1 * 2
+			Impact		= 2,  // 1 * 2
 			Visibility = 4,  // 2 * 2
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 2,  // 1 * 2
-			Impact     = 2,  // 1 * 2
+			Impact		= 2,  // 1 * 2
 			Visibility = 4,  // 2 * 2
 		},
 	};
@@ -236,29 +236,29 @@ public class PerkSet
 	// Targeting: Young 0, Adult +, Senior ++
 	public static PerkInformation Coms_NewspapersFlyers = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 0,  // 0 * 1
-			Impact     = 1,  // 1 * 1
+			Impact		= 1,  // 1 * 1
 			Visibility = 1,  // 1 * 1
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,  // 0 * 2
-			Impact     = 2,  // 1 * 2
+			Impact		= 2,  // 1 * 2
 			Visibility = 2,  // 1 * 2
 		},
 	};
@@ -269,29 +269,29 @@ public class PerkSet
 	// Note: All stats are 0, serves as gateway perk for sub-perks
 	public static PerkInformation Coms_SocialMedia = new PerkInformation
 	{
-		PerkCost       = 0,
+		PerkCost		= 0,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 	};
@@ -301,29 +301,29 @@ public class PerkSet
 	// Targeting: Young ++, Adult ++, Senior +
 	public static PerkInformation Coms_InternetTV = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = new[] { Coms_SocialMedia },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 2,  // 1 * 2
-			Impact     = 4,  // 2 * 2
+			Impact		= 4,  // 2 * 2
 			Visibility = 2,  // 1 * 2
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 2,  // 1 * 2
-			Impact     = 4,  // 2 * 2
+			Impact		= 4,  // 2 * 2
 			Visibility = 2,  // 1 * 2
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 1,  // 1 * 1
-			Impact     = 2,  // 2 * 1
+			Impact		= 2,  // 2 * 1
 			Visibility = 1,  // 1 * 1
 		},
 	};
@@ -333,29 +333,29 @@ public class PerkSet
 	// Targeting: Young +, Adult ++, Senior ++
 	public static PerkInformation Coms_FakeNews = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = new[] { Coms_SocialMedia },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 2,  // 2 * 1
-			Impact     = 1,  // 1 * 1
+			Impact		= 1,  // 1 * 1
 			Visibility = 1,  // 1 * 1
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 4,  // 2 * 2
-			Impact     = 2,  // 1 * 2
+			Impact		= 2,  // 1 * 2
 			Visibility = 2,  // 1 * 2
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 4,  // 2 * 2
-			Impact     = 2,  // 1 * 2
+			Impact		= 2,  // 1 * 2
 			Visibility = 2,  // 1 * 2
 		},
 	};
@@ -365,29 +365,29 @@ public class PerkSet
 	// Targeting: Young +, Adult ++, Senior ++
 	public static PerkInformation Coms_Bots1 = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = new[] { Coms_SocialMedia },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 3,  // 3 * 1
-			Impact     = 1,  // 1 * 1
+			Impact		= 1,  // 1 * 1
 			Visibility = 1,  // 1 * 1
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 6,  // 3 * 2
-			Impact     = 2,  // 1 * 2
+			Impact		= 2,  // 1 * 2
 			Visibility = 2,  // 1 * 2
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 6,  // 3 * 2
-			Impact     = 2,  // 1 * 2
+			Impact		= 2,  // 1 * 2
 			Visibility = 2,  // 1 * 2
 		},
 	};
@@ -397,29 +397,29 @@ public class PerkSet
 	// Targeting: Young ++, Adult +++, Senior +++
 	public static PerkInformation Coms_Bots2 = new PerkInformation
 	{
-		PerkCost       = 3,
+		PerkCost		= 3,
 		DependsOnPerks = new[] { Coms_Bots1 },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 8,  // 4 * 2
-			Impact     = 4,  // 2 * 2
+			Impact		= 4,  // 2 * 2
 			Visibility = 4,  // 2 * 2
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 12, // 4 * 3
-			Impact     = 6,  // 2 * 3
+			Impact		= 6,  // 2 * 3
 			Visibility = 6,  // 2 * 3
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 12, // 4 * 3
-			Impact     = 6,  // 2 * 3
+			Impact		= 6,  // 2 * 3
 			Visibility = 6,  // 2 * 3
 		},
 	};
@@ -429,29 +429,29 @@ public class PerkSet
 	// Targeting: Young +++, Adult +++, Senior ++
 	public static PerkInformation Coms_OwnSocialNetwork = new PerkInformation
 	{
-		PerkCost       = 5,
+		PerkCost		= 5,
 		DependsOnPerks = new[] { Coms_InternetTV, Coms_FakeNews, Coms_Bots2, Coms_Influencers3 },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 12, // 4 * 3
-			Impact     = 12, // 4 * 3
+			Impact		= 12, // 4 * 3
 			Visibility = 12, // 4 * 3
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 12, // 4 * 3
-			Impact     = 12, // 4 * 3
+			Impact		= 12, // 4 * 3
 			Visibility = 12, // 4 * 3
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 8,  // 4 * 2
-			Impact     = 8,  // 4 * 2
+			Impact		= 8,  // 4 * 2
 			Visibility = 8,  // 4 * 2
 		},
 	};
@@ -461,29 +461,29 @@ public class PerkSet
 	// Targeting: Young +++, Adult +, Senior 0
 	public static PerkInformation Coms_OnlineGames = new PerkInformation
 	{
-		PerkCost       = 3,
+		PerkCost		= 3,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 9,  // 3 * 3
-			Impact     = 3,  // 1 * 3
+			Impact		= 3,  // 1 * 3
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 3,  // 3 * 1
-			Impact     = 1,  // 1 * 1
+			Impact		= 1,  // 1 * 1
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 	};
@@ -501,29 +501,29 @@ public class PerkSet
 	// Young: V-, I--  |  Adult: V+, I+  |  Senior: V++, I++
 	public static PerkInformation Campaign_AntiImmigrants = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Opens immigration campaign topic; increases visibility",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = -1,
-			Impact     = -2,
+			Impact		= -2,
 			Visibility = 1,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 1,
-			Impact     = 1,
+			Impact		= 1,
 			Visibility = 1,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 2,
-			Impact     = 2,
+			Impact		= 2,
 			Visibility = 1,
 		},
 	};
@@ -532,29 +532,29 @@ public class PerkSet
 	// Young: V-, I-  |  Adult: V-, I+  |  Senior: V+, I+
 	public static PerkInformation Campaign_AntiNationalMinorities = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Opens national minorities campaign topic; increases visibility",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = -1,
-			Impact     = -1,
+			Impact		= -1,
 			Visibility = 1,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = -1,
-			Impact     = 1,
+			Impact		= 1,
 			Visibility = 1,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 1,
-			Impact     = 1,
+			Impact		= 1,
 			Visibility = 1,
 		},
 	};
@@ -563,29 +563,29 @@ public class PerkSet
 	// Young: V---, I---  |  Adult: V+, I+  |  Senior: V++, I++
 	public static PerkInformation Campaign_AntiSexualMinorities = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Opens sexual minorities campaign topic; increases visibility",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = -3,
-			Impact     = -3,
+			Impact		= -3,
 			Visibility = 1,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 1,
-			Impact     = 1,
+			Impact		= 1,
 			Visibility = 1,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 2,
-			Impact     = 2,
+			Impact		= 2,
 			Visibility = 1,
 		},
 	};
@@ -594,29 +594,29 @@ public class PerkSet
 	// Young: V--, I-  |  Adult: V+, I+  |  Senior: V++, I++
 	public static PerkInformation Campaign_AntiReligiousMinorities = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Opens religious minorities campaign topic; increases visibility",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = -2,
-			Impact     = -1,
+			Impact		= -1,
 			Visibility = 1,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 1,
-			Impact     = 1,
+			Impact		= 1,
 			Visibility = 1,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 2,
-			Impact     = 2,
+			Impact		= 2,
 			Visibility = 1,
 		},
 	};
@@ -625,29 +625,29 @@ public class PerkSet
 	// Young: V+++, I++  |  Adult: V+, I+  |  Senior: V--, I-
 	public static PerkInformation Campaign_AntiElites = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Opens elites campaign topic; increases visibility",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 3,
-			Impact     = 2,
+			Impact		= 2,
 			Visibility = 1,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 1,
-			Impact     = 1,
+			Impact		= 1,
 			Visibility = 1,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = -2,
-			Impact     = -1,
+			Impact		= -1,
 			Visibility = 1,
 		},
 	};
@@ -658,29 +658,29 @@ public class PerkSet
 	// Special: University-educated people -5%
 	public static PerkInformation Manif_CommonSense = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "University-educated people -5%",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 1,  // 1 * 1
-			Impact     = 1,  // 1 * 1
+			Impact		= 1,  // 1 * 1
 			Visibility = 1,  // 1 * 1
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 2,  // 1 * 2
-			Impact     = 2,  // 1 * 2
+			Impact		= 2,  // 1 * 2
 			Visibility = 2,  // 1 * 2
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 3,  // 1 * 3
-			Impact     = 3,  // 1 * 3
+			Impact		= 3,  // 1 * 3
 			Visibility = 3,  // 1 * 3
 		},
 	};
@@ -691,29 +691,29 @@ public class PerkSet
 	// Special: University-educated people -5%
 	public static PerkInformation Manif_TruthRelativism = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = new[] { Manif_CommonSense },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "University-educated people -5%",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 1,
-			Impact     = 1,
+			Impact		= 1,
 			Visibility = 1,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 2,
-			Impact     = 2,
+			Impact		= 2,
 			Visibility = 2,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 3,
-			Impact     = 3,
+			Impact		= 3,
 			Visibility = 3,
 		},
 	};
@@ -723,29 +723,29 @@ public class PerkSet
 	// Targeting: Young +, Adult ++, Senior +++
 	public static PerkInformation Manif_Demonstrations1 = new PerkInformation
 	{
-		PerkCost       = 4,
+		PerkCost		= 4,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 2,  // 2 * 1
-			Impact     = 2,  // 2 * 1
+			Impact		= 2,  // 2 * 1
 			Visibility = 2,  // 2 * 1
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 4,  // 2 * 2
-			Impact     = 4,  // 2 * 2
+			Impact		= 4,  // 2 * 2
 			Visibility = 4,  // 2 * 2
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 6,  // 2 * 3
-			Impact     = 6,  // 2 * 3
+			Impact		= 6,  // 2 * 3
 			Visibility = 6,  // 2 * 3
 		},
 	};
@@ -756,29 +756,29 @@ public class PerkSet
 	// Special: Generates clickable money bubbles on the map
 	public static PerkInformation Manif_Demonstrations2 = new PerkInformation
 	{
-		PerkCost       = 4,
+		PerkCost		= 4,
 		DependsOnPerks = new[] { Manif_Demonstrations1 },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Occasionally generates a clickable bubble on the map that grants money",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 2,
-			Impact     = 2,
+			Impact		= 2,
 			Visibility = 2,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 4,
-			Impact     = 4,
+			Impact		= 4,
 			Visibility = 4,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 6,
-			Impact     = 6,
+			Impact		= 6,
 			Visibility = 6,
 		},
 	};
@@ -789,29 +789,29 @@ public class PerkSet
 	// Special: Followers +10%, Immune people +5%
 	public static PerkInformation Manif_ParamilitaryGroups = new PerkInformation
 	{
-		PerkCost       = 4,
+		PerkCost		= 4,
 		DependsOnPerks = new[] { Manif_Demonstrations2 },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Followers +10%, Immune people +5%",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 3,  // 3 * 1
-			Impact     = 3,  // 3 * 1
+			Impact		= 3,  // 3 * 1
 			Visibility = 5,  // 5 * 1
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 6,  // 3 * 2
-			Impact     = 6,  // 3 * 2
+			Impact		= 6,  // 3 * 2
 			Visibility = 10, // 5 * 2
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 9,  // 3 * 3
-			Impact     = 9,  // 3 * 3
+			Impact		= 9,  // 3 * 3
 			Visibility = 15, // 5 * 3
 		},
 	};
@@ -821,29 +821,29 @@ public class PerkSet
 	// Targeting: Young ++, Adult ++, Senior ++
 	public static PerkInformation Manif_VerbalAggressivity = new PerkInformation
 	{
-		PerkCost       = 3,
+		PerkCost		= 3,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 4,  // 2 * 2
-			Impact     = 4,  // 2 * 2
+			Impact		= 4,  // 2 * 2
 			Visibility = 6,  // 3 * 2
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 4,  // 2 * 2
-			Impact     = 4,  // 2 * 2
+			Impact		= 4,  // 2 * 2
 			Visibility = 6,  // 3 * 2
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 4,  // 2 * 2
-			Impact     = 4,  // 2 * 2
+			Impact		= 4,  // 2 * 2
 			Visibility = 6,  // 3 * 2
 		},
 	};
@@ -853,29 +853,29 @@ public class PerkSet
 	// Targeting: Young +, Adult ++, Senior ++
 	public static PerkInformation Manif_BoycottEconomicPressure = new PerkInformation
 	{
-		PerkCost       = 3,
+		PerkCost		= 3,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 3,  // 3 * 1
-			Impact     = 2,  // 2 * 1
+			Impact		= 2,  // 2 * 1
 			Visibility = 2,  // 2 * 1
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 6,  // 3 * 2
-			Impact     = 4,  // 2 * 2
+			Impact		= 4,  // 2 * 2
 			Visibility = 4,  // 2 * 2
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 6,  // 3 * 2
-			Impact     = 4,  // 2 * 2
+			Impact		= 4,  // 2 * 2
 			Visibility = 4,  // 2 * 2
 		},
 	};
@@ -889,29 +889,29 @@ public class PerkSet
 	// No combat stats — purely strategic effect
 	public static PerkInformation Action_EncryptedComms1 = new PerkInformation
 	{
-		PerkCost       = 3,
+		PerkCost		= 3,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Reduces democracy meter by 10%",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 	};
@@ -920,29 +920,29 @@ public class PerkSet
 	// Special: Reduces democracy meter by 15%
 	public static PerkInformation Action_EncryptedComms2 = new PerkInformation
 	{
-		PerkCost       = 5,
+		PerkCost		= 5,
 		DependsOnPerks = new[] { Action_EncryptedComms1 },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Reduces democracy meter by 15%",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 	};
@@ -952,29 +952,29 @@ public class PerkSet
 	// No specific age targeting — uniform across all groups
 	public static PerkInformation Action_FakeCompromising = new PerkInformation
 	{
-		PerkCost       = 3,
+		PerkCost		= 3,
 		DependsOnPerks = null,
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 3,
-			Impact     = 2,
+			Impact		= 2,
 			Visibility = 2,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 3,
-			Impact     = 2,
+			Impact		= 2,
 			Visibility = 2,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 3,
-			Impact     = 2,
+			Impact		= 2,
 			Visibility = 2,
 		},
 	};
@@ -984,29 +984,29 @@ public class PerkSet
 	// Targeting: Young +, Adult ++, Senior +++
 	public static PerkInformation Action_PoliticalParty = new PerkInformation
 	{
-		PerkCost       = 5,
+		PerkCost		= 5,
 		DependsOnPerks = null, // Special condition: requires 25% followers — checked in game logic
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Requires at least 25% followers in the population to unlock",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 5,  // 5 * 1
-			Impact     = 4,  // 4 * 1
+			Impact		= 4,  // 4 * 1
 			Visibility = 4,  // 4 * 1
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 10, // 5 * 2
-			Impact     = 8,  // 4 * 2
+			Impact		= 8,  // 4 * 2
 			Visibility = 8,  // 4 * 2
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 15, // 5 * 3
-			Impact     = 12, // 4 * 3
+			Impact		= 12, // 4 * 3
 			Visibility = 12, // 4 * 3
 		},
 	};
@@ -1015,29 +1015,29 @@ public class PerkSet
 	// Strategic milestone perk
 	public static PerkInformation Action_PoliticalCampaign1 = new PerkInformation
 	{
-		PerkCost       = 4,
+		PerkCost		= 4,
 		DependsOnPerks = new[] { Action_PoliticalParty },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 	};
@@ -1045,29 +1045,29 @@ public class PerkSet
 	// 3d-i. Political Campaign 2 (depends on Political Campaign 1, cost $$$$)
 	public static PerkInformation Action_PoliticalCampaign2 = new PerkInformation
 	{
-		PerkCost       = 4,
+		PerkCost		= 4,
 		DependsOnPerks = new[] { Action_PoliticalCampaign1 },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 	};
@@ -1075,29 +1075,29 @@ public class PerkSet
 	// 3e. Elected to Parliament (depends on Political Campaign 2, cost 0)
 	public static PerkInformation Action_ElectedToParliament = new PerkInformation
 	{
-		PerkCost       = 0,
+		PerkCost		= 0,
 		DependsOnPerks = new[] { Action_PoliticalCampaign2 },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Elected to parliament — unlocks government actions",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 	};
@@ -1105,29 +1105,29 @@ public class PerkSet
 	// 3e-i. Government Participation (depends on Elected to Parliament, cost $$$$)
 	public static PerkInformation Action_GovernmentParticipation = new PerkInformation
 	{
-		PerkCost       = 4,
+		PerkCost		= 4,
 		DependsOnPerks = new[] { Action_ElectedToParliament },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Participation in government — unlocks authoritarian actions",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 	};
@@ -1136,29 +1136,29 @@ public class PerkSet
 	// Visibility ++, Virality +, Impact -
 	public static PerkInformation Action_IntimidateOpponents = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_GovernmentParticipation },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 1,
-			Impact     = -1,
+			Impact		= -1,
 			Visibility = 2,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 1,
-			Impact     = -1,
+			Impact		= -1,
 			Visibility = 2,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 1,
-			Impact     = -1,
+			Impact		= -1,
 			Visibility = 2,
 		},
 	};
@@ -1167,29 +1167,29 @@ public class PerkSet
 	// Special: Removes 20% immune people from the map
 	public static PerkInformation Action_PersecuteUndesirables1 = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_IntimidateOpponents },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Removes 20% of immune people from the map",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 	};
@@ -1198,29 +1198,29 @@ public class PerkSet
 	// Special: Removes another 20% immune people from the map
 	public static PerkInformation Action_PersecuteUndesirables2 = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_PersecuteUndesirables1 },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Removes 20% of immune people from the map",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 	};
@@ -1229,29 +1229,29 @@ public class PerkSet
 	// Special: Reduces visibility by 20%, increases immune people by 10%
 	public static PerkInformation Action_MediaControl = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_GovernmentParticipation },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Reduces visibility by 20%, increases immune people by 10%",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 	};
@@ -1260,29 +1260,29 @@ public class PerkSet
 	// Special: Reduces visibility by 20%
 	public static PerkInformation Action_IntimidateJournalists = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_MediaControl },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Reduces visibility by 20%",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 	};
@@ -1291,29 +1291,29 @@ public class PerkSet
 	// Special: Reduces visibility by 20%
 	public static PerkInformation Action_IntroduceCensorship = new PerkInformation
 	{
-		PerkCost       = 2,
+		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_IntimidateJournalists },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "Reduces visibility by 20%",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 	};
@@ -1322,29 +1322,29 @@ public class PerkSet
 	// Special: END OF GAME — totalitarian regime established
 	public static PerkInformation Action_ChangeConstitution = new PerkInformation
 	{
-		PerkCost       = 3,
+		PerkCost		= 3,
 		DependsOnPerks = new[] { Action_IntroduceCensorship, Action_PersecuteUndesirables1 },
-		IsBought       = false,
+		IsBought		= false,
 		SpecialEffect  = "END OF GAME — totalitarian regime fully established",
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		AdultStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Adult,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 		SeniorStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Senior,
 			Virality   = 0,
-			Impact     = 0,
+			Impact		= 0,
 			Visibility = 0,
 		},
 	};

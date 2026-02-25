@@ -4,6 +4,8 @@ namespace PlayerChoice.DataSets;
 
 public class PerkInformation
 {
+	public string PerkName;
+	public string PerkDescription;
 	public int PerkCost;
 	public EnumStructs.S_StatData YouthStat;
 	public EnumStructs.S_StatData AdultStat;
