@@ -1,8 +1,14 @@
 using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace PlayerChoice.DataSets
 {
+public class PlayerStats
+{
+	public static int Money;
+}
+
 public class PerkInformation
 {
 	public string PerkName;
@@ -15,11 +21,11 @@ public class PerkInformation
 	public bool IsBought;
 	public EnumStructs.S_PerkSpecialEffect[] SpecialEffect; // NULL if there is no special effect
 
-	public int PerkPurchase(int PAR_CurrentMoney)
+	public bool PerkPurchase()
 	{
 		if(PAR_CurrentMoney < PerkCost)
 		{
-			return 0;
+			return false;
 		}
 
 		if(DependsOnPerks == null || DependsOnPerks.Length == 0)
@@ -28,15 +34,16 @@ public class PerkInformation
 			{
 				ShowWebButtonOnUI();
 			}
+			PlayerStats.Money	-= PerkCost;
 			IsBought = true;
-			return PerkCost;
+			return true;
 		}
 
 		foreach (var dep in DependsOnPerks)
 		{
 			if(!dep.IsBought)
 			{
-				return 0; // A required dependency has not been purchased
+				return false; // A required dependency has not been purchased
 			}
 		}
 
@@ -44,8 +51,9 @@ public class PerkInformation
 		{
 			ShowWebButtonOnUI();
 		}
+		PlayerStats.Money	-= PerkCost;
 		IsBought = true;
-		return PerkCost;
+		return true;
 	}
 }
 
