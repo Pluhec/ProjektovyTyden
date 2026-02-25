@@ -46,7 +46,6 @@ public class SimulationHandler : MonoBehaviour
     public Material gridMaterial;
     public Transform simulationQuadTransform;
     [Header("Render Settings")]
-    public Camera renderCamera;
     private MaterialPropertyBlock propertyBlock;
     public ComputeShader cs;
     public ComputeBuffer npcBuffer;
@@ -206,7 +205,7 @@ public class SimulationHandler : MonoBehaviour
             MeshTopology.Triangles,
             numNPCs * 6,                // 6 vertices (1 quad = 2 triangles) per NPC
             1,
-            renderCamera,
+            null,
             propertyBlock,
             ShadowCastingMode.Off,
             false,
