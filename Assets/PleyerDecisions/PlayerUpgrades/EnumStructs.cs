@@ -1,3 +1,4 @@
+using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 
 namespace PlayerChoice.DataSets;
@@ -12,14 +13,16 @@ public class PerkInformation
 	public EnumStructs.S_StatData SeniorStat;
 	public PerkInformation[] DependsOnPerks; // Can be null or empty — ALL must be bought
 	public bool IsBought;
-	public string SpecialEffect; // Description of special effects (e.g. "Removes 20% immune people")
+	public EnumStructs.S_PerkSpecialEffect[] SpecialEffect; // NULL if there is no special effect
 
 	public int PerkPurchase(int PAR_CurrentMoney)
 	{
-		if (PAR_CurrentMoney < PerkCost)
+		if(PAR_CurrentMoney < PerkCost)
+		{
 			return 0;
+		}
 
-		if (DependsOnPerks == null || DependsOnPerks.Length == 0)
+		if(DependsOnPerks == null || DependsOnPerks.Length == 0)
 		{
 			IsBought = true;
 			return PerkCost;
@@ -27,8 +30,10 @@ public class PerkInformation
 
 		foreach (var dep in DependsOnPerks)
 		{
-			if (!dep.IsBought)
+			if(!dep.IsBought)
+			{
 				return 0; // A required dependency has not been purchased
+			}
 		}
 
 		IsBought = true;
@@ -36,8 +41,37 @@ public class PerkInformation
 	}
 }
 
+public class EventInfo
+{
+	public string EventName;
+	public string EventDescription;
+	public EnumStructs.S_EventOption OptionFree;
+	public EnumStructs.S_EventOption OptionMoney;
+	public EnumStructs.S_EventOption OptionPerk;
+
+}
+
 public class EnumStructs
 {
+	public struct S_PerkSpecialEffect
+	{
+		public E_PerkSpecialType EffectsType;
+		public E_Manipulatable EffectsGroup; // IF EffectType is School, Democracy, FinancePopUp this is NULL
+		public E_Education EffectsEducation; // IF EffectType is SocialGroup, Democracy, FinancePopUp this is NULL
+		public sbyte EffectAmmount; // IF EffectType FinancePopUp this is NULL
+	}
+
+	public struct S_EventOption
+	{
+		public int OptionCost; // ZERO/NULL for free and Perk option
+		public PerkInformation OptionPerk; // NULL for any option that Perk
+		public string OptionName;
+		public string OptionEffect;
+		public S_StatData OptionEffectYoung;
+		public S_StatData OptionEffectAdult;
+		public S_StatData OptionEffectSenior;
+	}
+
 	public struct S_StatData
 	{
 		public E_Age AgeGroup;
@@ -46,6 +80,19 @@ public class EnumStructs
 		public sbyte Visibility;
 	}
 
+	public struct S_EventPredisposition
+	{
+		public sbyte Collaborator; // If not zero, it shall be considered as requirement
+		public PerkInformation Perk; // If Class, it shall be considered as requirement
+	}
+
+	public enum E_PerkSpecialType
+	{
+		School,
+		Democracy,
+		FinancePopUp,
+		SocialGroup,
+	}
 
 	public enum E_CampaignTopic
 	{
@@ -83,7 +130,7 @@ public class EnumStructs
 		Immune		= 0,
 		Neutral		= 1,
 		Sympathizing= 2,
-		Following	= 3
+		Collaborator= 3
 	}
 
 	public enum E_PostType
