@@ -22,6 +22,10 @@ public class SkillTreeConnector : MonoBehaviour
     private List<GameObject> _spawnedLines = new List<GameObject>();
     private RectTransform _rectTransform;
 
+#if UNITY_EDITOR
+    private bool _needsRegenerate = false;
+#endif
+
     private void OnEnable()
     {
         _rectTransform = GetComponent<RectTransform>();
@@ -31,13 +35,9 @@ public class SkillTreeConnector : MonoBehaviour
     private void OnValidate()
     {
         if (Application.isPlaying) return;
-        // OnValidate nesmí měnit RectTransform přímo - odložíme na další frame
-        UnityEditor.EditorApplication.delayCall += () =>
-        {
-            if (this == null) return;
-            _rectTransform = GetComponent<RectTransform>();
-            GenerateConnections();
-        };
+#if UNITY_EDITOR
+        _needsRegenerate = true;
+#endif
     }
 
     [ContextMenu("Regenerate Connections")]
@@ -95,7 +95,6 @@ public class SkillTreeConnector : MonoBehaviour
         Vector3 worldCenter = rt.TransformPoint(Vector3.zero);
         Vector3 local = _rectTransform.InverseTransformPoint(worldCenter);
 
-        // Kompenzace pivotu na ose Y
         float pivotOffsetY = (_rectTransform.pivot.y - 2f) * _rectTransform.rect.height;
 
         return new Vector2(local.x, local.y - pivotOffsetY);
@@ -120,7 +119,6 @@ public class SkillTreeConnector : MonoBehaviour
         float length = dir.magnitude;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
-        // Anchor (0,0) = levý dolní roh - konzistentní s tím co vrací ScreenPointToLocalPointInRectangle
         rt.anchorMin = Vector2.zero;
         rt.anchorMax = Vector2.zero;
         rt.pivot = new Vector2(0f, 0.5f);
@@ -158,8 +156,9 @@ public class SkillTreeConnector : MonoBehaviour
 #if UNITY_EDITOR
     private void Update()
     {
-        if (!Application.isPlaying)
+        if (!Application.isPlaying && _needsRegenerate)
         {
+            _needsRegenerate = false;
             if (_rectTransform == null)
                 _rectTransform = GetComponent<RectTransform>();
             GenerateConnections();
