@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.4, g: 0.4, b: 0.4, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -151,16 +151,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab9c566171598b4dbc09c3f26a512e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkillButton
+  skillId: 0
   isPrimarySkill: 0
   primarySkillTier: 0
   primaryTier1Sprite: {fileID: -5168405929131087891, guid: acd74d4c665d896428f1e4fbad2f335b, type: 3}
   primaryTier2Sprite: {fileID: -6951111806383355833, guid: 91295ccb23f7fd749b8aba0892b7b9d3, type: 3}
+  primaryTier1UnlockedSprite: {fileID: 5968101741461866168, guid: 08ee3c0cc6460954bbd1355844b1900e, type: 3}
+  primaryTier2UnlockedSprite: {fileID: 5913084178148218879, guid: ab8b6a1d06878d04cab385f62850ce46, type: 3}
   skillTier: 0
   secondaryTier1Sprite: {fileID: 6807997743808271659, guid: e21e78c095b56764da0f6e95eda47c9c, type: 3}
   secondaryTier2Sprite: {fileID: -6365798163944024646, guid: f21fb329050a10842b3de2a839bcea24, type: 3}
   secondaryTier3Sprite: {fileID: 7070407076147553645, guid: 7a30602c2ee88264c93de905c3a6fa0d, type: 3}
+  secondaryTier1UnlockedSprite: {fileID: 3846788785518743792, guid: 3055f157d8d2da94383fb517225df86c, type: 3}
+  secondaryTier2UnlockedSprite: {fileID: 3037539873911497722, guid: 9e2eaacac7914be468c8e07f295e1e06, type: 3}
+  secondaryTier3UnlockedSprite: {fileID: -3724980562735174195, guid: 78506c0e8c0720648a1e0dfb68f6394d, type: 3}
   skillIcon: {fileID: 0}
   iconImage: {fileID: 4416754546196926834}
+  popupPrefab: {fileID: 0}
+  skillState: 0
 --- !u!1 &9006277805772853772
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,7 +204,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 1.9163818}
-  m_SizeDelta: {x: 44, y: 44}
+  m_SizeDelta: {x: 58, y: 58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6201182958924545268
 CanvasRenderer:
@@ -219,7 +227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.4, g: 0.4, b: 0.4, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
