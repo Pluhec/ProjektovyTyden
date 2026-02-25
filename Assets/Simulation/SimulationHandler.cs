@@ -45,6 +45,7 @@ public class SimulationHandler : MonoBehaviour
     private int numNPCs;
     public Material gridMaterial;
     public Transform simulationQuadTransform;
+    [Header("Render Settings")]
     private MaterialPropertyBlock propertyBlock;
     public ComputeShader cs;
     public ComputeBuffer npcBuffer;
@@ -54,6 +55,11 @@ public class SimulationHandler : MonoBehaviour
 
     public Texture2D initialTexture;
     public Texture2D regionTexture;
+
+    [Header("Visual Style")]
+    [Range(2, 64)] public float posterizeLevels = 16f;
+    [Range(0f, 10f)] public float ditherStrength = 0.3f;
+    [Range(0, 5)] public int blurRadius = 1;
 
     [Header("Propaganda")]
     public PropagandaLevels propaganda = new PropagandaLevels
@@ -100,6 +106,8 @@ public class SimulationHandler : MonoBehaviour
         for (int i = 0; i < numNPCs; i++)
             npcs[i].friendIndex = (uint)Random.Range(0, numNPCs);
         npcBuffer.SetData(npcs);
+
+        RegionAverage(); // compute initial averages for tooltip
     }
 
     void Update()
@@ -120,6 +128,7 @@ public class SimulationHandler : MonoBehaviour
 
     void NextDay(){
         SimulationStep();
+        RegionAverage();
     }
 
     void SimulationStep(){
@@ -184,6 +193,12 @@ public class SimulationHandler : MonoBehaviour
         propertyBlock.SetFloat("_CellSizeY", 1f / gridSize.y * simulationQuadTransform.localScale.y);
         propertyBlock.SetFloat("_PosOffsetX", simulationQuadTransform.position.x);
         propertyBlock.SetFloat("_PosOffsetY", simulationQuadTransform.position.y);
+        propertyBlock.SetFloat("_PosterizeLevels", Mathf.Max(posterizeLevels, 2f));
+        propertyBlock.SetFloat("_DitherStrength", Mathf.Clamp01(ditherStrength));
+        propertyBlock.SetInt("_BlurRadius", blurRadius);
+        gridMaterial.SetFloat("_PosterizeLevels", Mathf.Max(posterizeLevels, 2f));
+        gridMaterial.SetFloat("_DitherStrength", Mathf.Clamp01(ditherStrength));
+        gridMaterial.SetInt("_BlurRadius", blurRadius);
         Graphics.DrawProcedural(
             gridMaterial,
             new Bounds(Vector3.zero, Vector3.one * 1000),
@@ -310,6 +325,13 @@ public class SimulationHandler : MonoBehaviour
             }
             regionAverages[r] = totalCount > 0 ? totalSum / totalCount : 0f;
         }
+    }
+
+    public float GetRegionAverage(int regionIndex)
+    {
+        if (regionAverages == null || regionIndex < 0 || regionIndex >= regionAverages.Length)
+            return 0f;
+        return regionAverages[regionIndex];
     }
 
     void OnDestroy()
