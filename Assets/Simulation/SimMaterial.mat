@@ -25,9 +25,12 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
+    - _BlurRadius: 2
     - _CellSize: 0.1
+    - _DitherStrength: 0.3
     - _GridHeight: 400
     - _GridWidth: 600
+    - _PosterizeLevels: 12
     - _Zoom: 10.62
     m_Colors: []
   m_BuildTextureStacks: []
