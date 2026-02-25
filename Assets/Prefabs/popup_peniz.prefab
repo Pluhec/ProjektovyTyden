@@ -602,6 +602,9 @@ MonoBehaviour:
   pulseScaleAmount: 1.1
   particleClickedColor: {r: 0.89949375, g: 1, b: 0.8283019, a: 0.6666667}
   particleTimeoutColor: {r: 0.335849, g: 0.18440008, b: 0.18440008, a: 0.6666667}
+  scaleWithZoom: 1
+  baseOrthographicSize: 2
+  zoomScaleFactor: 0.5
 --- !u!114 &799764018914423979
 MonoBehaviour:
   m_ObjectHideFlags: 0
