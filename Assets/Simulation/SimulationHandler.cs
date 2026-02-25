@@ -272,10 +272,7 @@ public class SimulationHandler : MonoBehaviour
         int texH = readableTex.height;
 
         // Discover unique colors -> region indices
-        // Quantize to avoid anti-aliasing artifacts (round to nearest 8)
-        Dictionary<int, int> colorToRegion = new Dictionary<int, int>();
-        int nextRegion = 0;
-
+        // Use same formula as RaycastRegion in RegionMapHover: floor(r / 256 * 10)
         for (int i = 0; i < numNPCs; i++)
         {
             int gridX = i % gridSize.x;
@@ -289,19 +286,11 @@ public class SimulationHandler : MonoBehaviour
             int texY = Mathf.Clamp((int)(v * texH), 0, texH - 1);
 
             Color32 c = pixels[texY * texW + texX];
-            // Quantize red channel to reduce noise from compression/anti-aliasing
-            int key = (c.r + 4) / 8;
-
-            if (!colorToRegion.TryGetValue(key, out int region))
-            {
-                region = nextRegion;
-                colorToRegion[key] = region;
-                nextRegion++;
-            }
+            int region = Mathf.FloorToInt(c.r / 256f * 10f);
             regionMap[i] = Mathf.Clamp(region, 0, NUM_REGIONS - 1);
         }
 
-        Debug.Log($"[RegionMap] Found {colorToRegion.Count} unique regions (quantized)");
+        Debug.Log($"[RegionMap] Region map computed (10 regions from red channel)");
     }
 
     // Pass 2 & 3: Parallel accumulation + merge
@@ -350,13 +339,14 @@ public class SimulationHandler : MonoBehaviour
 
             for (int i = start; i < end; i++)
             {
-                if (npcArray[i].population == 0) continue;
+                int pop = npcArray[i].population;
+                if (pop == 0) continue;
                 int region = regionMapLocal[i];
-                stSums[region] += npcArray[i].stance;
-                agSums[region] += npcArray[i].age;
-                edSums[region] += npcArray[i].education;
-                popSums[region] += npcArray[i].population;
-                counts[region]++;
+                stSums[region] += npcArray[i].stance * pop;     // population-weighted
+                agSums[region] += npcArray[i].age * pop;        // population-weighted
+                edSums[region] += npcArray[i].education * pop;  // population-weighted
+                popSums[region] += pop;                         // total population weight
+                counts[region]++;                               // number of cells in region
             }
         });
 
@@ -381,10 +371,10 @@ public class SimulationHandler : MonoBehaviour
                 popSum += localPopSums[t][r];
                 count += localCounts[t][r];
             }
-            regionAverages[r] = count > 0 ? stanceSum / count : 0f;
-            regionPopulations[r] = popSum;
-            regionAgeAverages[r] = count > 0 ? ageSum / count : 0f;
-            regionEducationAverages[r] = count > 0 ? eduSum / count : 0f;
+            regionAverages[r] = popSum > 0 ? stanceSum / popSum : 0f;
+            regionPopulations[r] = count > 0 ? popSum / count : 0;    // average population density per cell
+            regionAgeAverages[r] = popSum > 0 ? (ageSum / popSum) / 255f * 75f + 15f : 0f;      // remap 0-255 -> 15-90
+            regionEducationAverages[r] = popSum > 0 ? (eduSum / popSum) / 255f * 100f : 0f;      // remap 0-255 -> 0-100
         }
     }
 
