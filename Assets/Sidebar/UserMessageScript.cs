@@ -100,7 +100,7 @@ public class UserMessageScript : MonoBehaviour
     {
         string socialBasePath = Path.Combine(Application.dataPath, "PleyerDecisions/SocialMessagesJSON/");
         
-        byte V_SocialPostSpawnProb = 50; 
+        byte V_SocialPostSpawnProb = 50; // we'll set this later automatically hopefully
 
         if (V_Random.Next(0, 101) <= V_SocialPostSpawnProb)
         {
