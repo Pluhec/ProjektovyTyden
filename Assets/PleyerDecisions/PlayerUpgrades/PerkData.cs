@@ -1002,7 +1002,7 @@ public class PerkSet
 		IsBought		= false,
 		SpecialEffect  = new[] { new EnumStructs.S_PerkSpecialEffect
 		{
-			EffectsType = EnumStructs.E_PerkSpecialType.DemocracyMeter,
+			EffectsType = EnumStructs.E_PerkSpecialType.Democracy,
 			EffectsGroup = null,
 			EffectsEducation = null,
 			EffectAmmount = -10, // Reduces democracy meter by 10%
@@ -1041,7 +1041,7 @@ public class PerkSet
 		IsBought		= false,
 		SpecialEffect  = new[] { new EnumStructs.S_PerkSpecialEffect
 		{
-			EffectsType = EnumStructs.E_PerkSpecialType.DemocracyMeter,
+			EffectsType = EnumStructs.E_PerkSpecialType.Democracy,
 			EffectsGroup = null,
 			EffectsEducation = null,
 			EffectAmmount = -15, // Reduces democracy meter by 15%
@@ -1074,7 +1074,7 @@ public class PerkSet
 	// No specific age targeting — uniform across all groups
 	public static PerkInformation Action_FakeCompromising = new PerkInformation
 	{
-		Perkname = "Falešné kompromitující materiály",
+		PerkName = "Falešné kompromitující materiály",
 		PerkDescription = "Vytvoření a šíření falešných kompromitujících materiálů o politických oponentech pro snížení jejich popularity.",
 		PerkCost		= 3,
 		DependsOnPerks = null,
@@ -1113,7 +1113,7 @@ public class PerkSet
 		PerkCost		= 5,
 		DependsOnPerks = null, // Special condition: requires 25% followers — checked in game logic
 		IsBought		= false,
-		SpecialEffect  = "Requires at least 25% followers in the population to unlock",
+		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1393,7 +1393,8 @@ public class PerkSet
 			EffectsEducation = null,
 			EffectAmmount = 10, // Increases immune people by 10%
 		},
-		{
+            new EnumStructs.S_PerkSpecialEffect
+        {
 			EffectsType = EnumStructs.E_PerkSpecialType.Visibility,
 			EffectsGroup = null,
 			EffectsEducation = null,
@@ -1510,7 +1511,7 @@ public class PerkSet
 		PerkCost		= 3,
 		DependsOnPerks = new[] { Action_IntroduceCensorship, Action_PersecuteUndesirables1 },
 		IsBought		= false,
-		SpecialEffect  = "END OF GAME — totalitarian regime fully established", // Note: This is a special case and may require custom handling in game logic
+		SpecialEffect  = null, // MARK: Note: This is a special case and may require custom handling in game logic
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,

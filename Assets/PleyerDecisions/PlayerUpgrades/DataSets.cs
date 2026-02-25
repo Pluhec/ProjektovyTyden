@@ -1,5 +1,8 @@
+using System;
+
 namespace PlayerChoice.DataSets
 {
+	[Serializable]
 	public class SocialPost_JSON
 	{
 		public bool Type { get; set; }

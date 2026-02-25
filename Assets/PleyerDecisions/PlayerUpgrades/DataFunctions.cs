@@ -1,6 +1,7 @@
 using System;
+using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text.Json;
+using UnityEngine;
 
 namespace PlayerChoice.DataSets
 {
@@ -30,7 +31,7 @@ public class DataFunctions
 	{
 		StreamReader V_StrRead_SocialJSON	= new StreamReader(File.OpenRead(PAR_FileName));
 
-		SocialPost_JSON V_SocialJSON		= JsonSerializer.Deserialize<SocialPost_JSON>(V_StrRead_SocialJSON.ReadToEnd());
+		SocialPost_JSON V_SocialJSON		= JsonUtility.FromJson<SocialPost_JSON>(V_StrRead_SocialJSON.ReadToEnd());
 
 		return V_SocialJSON;
 	}
