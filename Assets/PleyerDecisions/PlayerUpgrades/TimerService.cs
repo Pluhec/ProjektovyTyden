@@ -68,7 +68,7 @@ public class TimerBase
 
 	}
 	
-	public static void StrtRandPost()
+	public static void StrtRandPost() // depricated and moved to UserMessageScript
 	{
         /*if (V_Random.Next(0, 101) > V_SocialPostSpawnProb)
         {
