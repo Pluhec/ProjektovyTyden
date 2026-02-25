@@ -62,7 +62,6 @@ public class UserMessageScript : MonoBehaviour
         }
 
 #if UNITY_EDITOR
-        // --- Logic from TimerService.StrtRandPost ---
 
         SocialPost_JSON messageToPost = GetRandomPost();
         if (messageToPost == null)
@@ -71,7 +70,6 @@ public class UserMessageScript : MonoBehaviour
             return;
         }
 
-        // --- Original Spawning Logic ---
         GameObject spawned = (GameObject)PrefabUtility.InstantiatePrefab(prefabToSpawn);
         spawned.transform.SetParent(parentTransform, false);
 
@@ -94,10 +92,8 @@ public class UserMessageScript : MonoBehaviour
 
     private SocialPost_JSON GetRandomPost()
     {
-        // Using Application.dataPath to get the path to the Assets folder
         string socialBasePath = Path.Combine(Application.dataPath, "PleyerDecisions/SocialMessagesJSON/");
         
-        // Hardcoded probability as in TimerService it's not clear where it's set
         byte V_SocialPostSpawnProb = 50; 
 
         if (V_Random.Next(0, 101) > V_SocialPostSpawnProb)
@@ -134,7 +130,6 @@ public class UserMessageScript : MonoBehaviour
                 }
                 var jsonString = File.ReadAllText(dependentMessageFile);
 
-                // Using System.Text.Json to handle dictionaries, as JsonUtility cannot.
                 try
                 {
                     var dependentMessages = JsonSerializer.Deserialize<Dictionary<string, List<SocialPost_JSON>>>(jsonString);
@@ -152,6 +147,6 @@ public class UserMessageScript : MonoBehaviour
                 }
             }
         }
-        return null; // Return null if no conditions are met
+        return null;
     }
 }
