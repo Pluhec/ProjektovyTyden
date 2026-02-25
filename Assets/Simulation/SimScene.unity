@@ -589,6 +589,7 @@ MonoBehaviour:
     youngMaxAge: 85
     adultMaxAge: 170
   propagandaLevelAdaptationPerDay: 0.2
+  paintingBrushRadius: 16
   regionAverages: []
 --- !u!4 &1624458624
 Transform:
