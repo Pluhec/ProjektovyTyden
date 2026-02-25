@@ -7,6 +7,7 @@ public class MainMenuController : MonoBehaviour
     [Header("Canvases")]
     public GameObject mainCanvas;       // Tvůj hlavní HUD
     public GameObject stopCanvas;       // StopMenu (Esc menu)
+    public GameObject settingsCanvas;   // Nastavení
     public GameObject skillTreeCanvas;  // Strom dovedností
     public GameObject webCanvas;        // Webové rozhraní
 
@@ -69,6 +70,16 @@ public class MainMenuController : MonoBehaviour
         // Vypne MainCanvas a zapne StopCanvas
         mainCanvas.SetActive(false); // Pokud chceš vidět animaci MainCanvasu i při zavření, musel bys ho nechat chvíli aktivní
         stopCanvas.SetActive(true);
+        if (settingsCanvas != null) settingsCanvas.SetActive(false);
+        skillTreeCanvas.SetActive(false);
+        webCanvas.SetActive(false);
+    }
+
+    public void OpenSettings()
+    {
+        mainCanvas.SetActive(false);
+        stopCanvas.SetActive(false);
+        if (settingsCanvas != null) settingsCanvas.SetActive(true);
         skillTreeCanvas.SetActive(false);
         webCanvas.SetActive(false);
     }
@@ -76,7 +87,9 @@ public class MainMenuController : MonoBehaviour
     public void OpenSkillTree()
     {
         // Vypne MainCanvas a zapne SkillTreeCanvas
+        mainCanvas.SetActive(false);
         stopCanvas.SetActive(false);
+        if (settingsCanvas != null) settingsCanvas.SetActive(false);
         skillTreeCanvas.SetActive(true);
         webCanvas.SetActive(false);
     }
@@ -84,7 +97,9 @@ public class MainMenuController : MonoBehaviour
     public void OpenWeb()
     {
         // Vypne MainCanvas a zapne WebCanvas
+        mainCanvas.SetActive(false);
         stopCanvas.SetActive(false);
+        if (settingsCanvas != null) settingsCanvas.SetActive(false);
         skillTreeCanvas.SetActive(false);
         webCanvas.SetActive(true);
     }
@@ -102,6 +117,7 @@ public class MainMenuController : MonoBehaviour
     {
         if (mainCanvas != null) mainCanvas.SetActive(true);
         if (stopCanvas != null) stopCanvas.SetActive(false);
+        if (settingsCanvas != null) settingsCanvas.SetActive(false);
         if (skillTreeCanvas != null) skillTreeCanvas.SetActive(false);
         if (webCanvas != null) webCanvas.SetActive(false);
     }
