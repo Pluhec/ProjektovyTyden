@@ -102,6 +102,8 @@ public class SimulationHandler : MonoBehaviour
         for (int i = 0; i < numNPCs; i++)
             npcs[i].friendIndex = (uint)Random.Range(0, numNPCs);
         npcBuffer.SetData(npcs);
+
+        RegionAverage(); // compute initial averages for tooltip
     }
 
     void Update()
@@ -122,6 +124,7 @@ public class SimulationHandler : MonoBehaviour
 
     void NextDay(){
         SimulationStep();
+        RegionAverage();
     }
 
     void SimulationStep(){
@@ -312,6 +315,13 @@ public class SimulationHandler : MonoBehaviour
             }
             regionAverages[r] = totalCount > 0 ? totalSum / totalCount : 0f;
         }
+    }
+
+    public float GetRegionAverage(int regionIndex)
+    {
+        if (regionAverages == null || regionIndex < 0 || regionIndex >= regionAverages.Length)
+            return 0f;
+        return regionAverages[regionIndex];
     }
 
     void OnDestroy()
