@@ -80,6 +80,9 @@ public class SimulationHandler : MonoBehaviour
     private const int NUM_REGIONS = 10;
     private int[] regionMap;
     public float[] regionAverages;
+    public int[] regionPopulations;
+    public float[] regionAgeAverages;
+    public float[] regionEducationAverages;
 
     void Start()
     {
@@ -280,11 +283,17 @@ public class SimulationHandler : MonoBehaviour
         int chunkSize = (numNPCs + threadCount - 1) / threadCount;
 
         // Thread-local accumulators to avoid synchronization
-        float[][] localSums = new float[threadCount][];
+        float[][] localStanceSums = new float[threadCount][];
+        float[][] localAgeSums = new float[threadCount][];
+        float[][] localEduSums = new float[threadCount][];
+        int[][] localPopSums = new int[threadCount][];
         int[][] localCounts = new int[threadCount][];
         for (int t = 0; t < threadCount; t++)
         {
-            localSums[t] = new float[NUM_REGIONS];
+            localStanceSums[t] = new float[NUM_REGIONS];
+            localAgeSums[t] = new float[NUM_REGIONS];
+            localEduSums[t] = new float[NUM_REGIONS];
+            localPopSums[t] = new int[NUM_REGIONS];
             localCounts[t] = new int[NUM_REGIONS];
         }
 
@@ -298,32 +307,49 @@ public class SimulationHandler : MonoBehaviour
         {
             int start = t * chunkSize;
             int end = System.Math.Min(start + chunkSize, npcCount);
-            float[] sums = localSums[t];
+            float[] stSums = localStanceSums[t];
+            float[] agSums = localAgeSums[t];
+            float[] edSums = localEduSums[t];
+            int[] popSums = localPopSums[t];
             int[] counts = localCounts[t];
 
             for (int i = start; i < end; i++)
             {
-                if (npcArray[i].population == 0) continue; // skip empty cells
+                if (npcArray[i].population == 0) continue;
                 int region = regionMapLocal[i];
-                sums[region] += npcArray[i].stance;
+                stSums[region] += npcArray[i].stance;
+                agSums[region] += npcArray[i].age;
+                edSums[region] += npcArray[i].education;
+                popSums[region] += npcArray[i].population;
                 counts[region]++;
             }
         });
 
         // Pass 3: Merge thread-local results into final averages
         if (regionAverages == null || regionAverages.Length != NUM_REGIONS)
+        {
             regionAverages = new float[NUM_REGIONS];
+            regionPopulations = new int[NUM_REGIONS];
+            regionAgeAverages = new float[NUM_REGIONS];
+            regionEducationAverages = new float[NUM_REGIONS];
+        }
 
         for (int r = 0; r < NUM_REGIONS; r++)
         {
-            float totalSum = 0f;
-            int totalCount = 0;
+            float stanceSum = 0f, ageSum = 0f, eduSum = 0f;
+            int popSum = 0, count = 0;
             for (int t = 0; t < threadCount; t++)
             {
-                totalSum += localSums[t][r];
-                totalCount += localCounts[t][r];
+                stanceSum += localStanceSums[t][r];
+                ageSum += localAgeSums[t][r];
+                eduSum += localEduSums[t][r];
+                popSum += localPopSums[t][r];
+                count += localCounts[t][r];
             }
-            regionAverages[r] = totalCount > 0 ? totalSum / totalCount : 0f;
+            regionAverages[r] = count > 0 ? stanceSum / count : 0f;
+            regionPopulations[r] = popSum;
+            regionAgeAverages[r] = count > 0 ? ageSum / count : 0f;
+            regionEducationAverages[r] = count > 0 ? eduSum / count : 0f;
         }
     }
 
@@ -332,6 +358,27 @@ public class SimulationHandler : MonoBehaviour
         if (regionAverages == null || regionIndex < 0 || regionIndex >= regionAverages.Length)
             return 0f;
         return regionAverages[regionIndex];
+    }
+
+    public int GetRegionPopulation(int regionIndex)
+    {
+        if (regionPopulations == null || regionIndex < 0 || regionIndex >= regionPopulations.Length)
+            return 0;
+        return regionPopulations[regionIndex];
+    }
+
+    public float GetRegionAgeAverage(int regionIndex)
+    {
+        if (regionAgeAverages == null || regionIndex < 0 || regionIndex >= regionAgeAverages.Length)
+            return 0f;
+        return regionAgeAverages[regionIndex];
+    }
+
+    public float GetRegionEducationAverage(int regionIndex)
+    {
+        if (regionEducationAverages == null || regionIndex < 0 || regionIndex >= regionEducationAverages.Length)
+            return 0f;
+        return regionEducationAverages[regionIndex];
     }
 
     void OnDestroy()
