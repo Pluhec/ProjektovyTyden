@@ -1,8 +1,8 @@
 using System.Timers;
 using PlayerChoice.DataSets;
 
-namespace PlayerChoice.Timing;
-
+namespace PlayerChoice.Timing
+{
 public class TimerBase
 {
 	public static byte V_TimerCallColldown	= 2;
@@ -51,4 +51,5 @@ public class TimerBase
 	{
 
 	}
+}
 }

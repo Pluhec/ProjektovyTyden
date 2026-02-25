@@ -1,8 +1,8 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 
-namespace PlayerChoice.DataSets;
-
+namespace PlayerChoice.DataSets
+{
 public class PerkInformation
 {
 	public string PerkName;
@@ -139,4 +139,5 @@ public class EnumStructs
 		Image,
 		Video
 	}
+}
 }

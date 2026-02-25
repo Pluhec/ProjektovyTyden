@@ -1,5 +1,5 @@
-namespace PlayerChoice.DataSets;
-
+namespace PlayerChoice.DataSets
+{
 public class PerkSet
 {
 	// =====================================================================
@@ -1348,4 +1348,5 @@ public class PerkSet
 			Visibility = 0,
 		},
 	};
+}
 }

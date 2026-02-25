@@ -2,7 +2,8 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 
-namespace PlayerChoice.DataSets;
+namespace PlayerChoice.DataSets
+{
 
 public interface ISocialSitePost
 {
@@ -55,4 +56,5 @@ public class DataFunctions
 	{
 		E_SendSimulationInfo.Invoke(PAR_StatAlterations);
 	}
+}
 }
