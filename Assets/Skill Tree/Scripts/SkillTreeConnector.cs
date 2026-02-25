@@ -49,7 +49,6 @@ public class SkillTreeConnector : MonoBehaviour
     {
         _rectTransform = GetComponent<RectTransform>();
 
-        // Vždy smaž všechny existující SkillLine objekty při startu
         for (int i = transform.childCount - 1; i >= 0; i--)
         {
             GameObject child = transform.GetChild(i).gameObject;
@@ -72,11 +71,48 @@ public class SkillTreeConnector : MonoBehaviour
         }
 
         GenerateConnections();
+
+        // Debug - vypis všechny nody a jejich počet parentů
+        if (Application.isPlaying)
+            DebugPrintParents();
+    }
+
+    private void DebugPrintParents()
+    {
+        Queue<SkillNode> queue = new Queue<SkillNode>();
+        HashSet<SkillNode> enqueued = new HashSet<SkillNode>();
+
+        foreach (var root in rootNodes)
+        {
+            if (root == null || enqueued.Contains(root)) continue;
+            queue.Enqueue(root);
+            enqueued.Add(root);
+        }
+
+        while (queue.Count > 0)
+        {
+            SkillNode current = queue.Dequeue();
+            if (current?.skillButton == null) continue;
+
+            List<SkillNode> parents = new List<SkillNode>();
+            FindParents(rootNodes, current, parents);
+
+            string parentNames = parents.Count == 0 ? "žádný" :
+                string.Join(", ", parents.ConvertAll(p => p.skillButton?.name ?? "null"));
+
+            Debug.Log($"Node: {current.skillButton.name} | Počet parentů: {parents.Count} | Parenti: {parentNames}");
+
+            foreach (var child in current.children)
+            {
+                if (child == null || enqueued.Contains(child)) continue;
+                queue.Enqueue(child);
+                enqueued.Add(child);
+            }
+        }
     }
 
     private void OnDisable()
     {
-        // Při vypnutí hry smaž všechny runtime čáry
         for (int i = transform.childCount - 1; i >= 0; i--)
         {
             GameObject child = transform.GetChild(i).gameObject;
@@ -196,163 +232,165 @@ public class SkillTreeConnector : MonoBehaviour
     }
 
     public void RefreshLineColors()
-{
-    HashSet<string> unlockedConnections = new HashSet<string>();
-
-    foreach (var line in _spawnedLines)
     {
-        if (line?.lineObject == null) continue;
+        HashSet<string> unlockedConnections = new HashSet<string>();
 
-        SkillButton fromSkill = line.from?.GetComponent<SkillButton>();
-        SkillButton toSkill = line.to?.GetComponent<SkillButton>();
-
-        bool shouldBeRed = fromSkill != null && toSkill != null &&
-                           fromSkill.skillState == SkillButton.SkillState.Unlocked &&
-                           toSkill.skillState == SkillButton.SkillState.Unlocked;
-
-        if (shouldBeRed)
-            unlockedConnections.Add(line.connectionId);
-    }
-
-    foreach (string connId in unlockedConnections)
-    {
-        List<SkillLine> connLines = _spawnedLines.FindAll(l => l.connectionId == connId);
-
-        List<(Vector2 start, Vector2 end, RectTransform from, RectTransform to)> lineData =
-            new List<(Vector2, Vector2, RectTransform, RectTransform)>();
-
-        foreach (var line in connLines)
-            lineData.Add((line.start, line.end, line.from, line.to));
-
-        foreach (var line in connLines)
+        foreach (var line in _spawnedLines)
         {
-            _spawnedLines.Remove(line);
-            if (Application.isPlaying)
-                Destroy(line.lineObject);
-            else
-                DestroyImmediate(line.lineObject);
+            if (line?.lineObject == null) continue;
+
+            SkillButton fromSkill = line.from?.GetComponent<SkillButton>();
+            SkillButton toSkill = line.to?.GetComponent<SkillButton>();
+
+            bool shouldBeRed = fromSkill != null && toSkill != null &&
+                               fromSkill.skillState == SkillButton.SkillState.Unlocked &&
+                               toSkill.skillState == SkillButton.SkillState.Unlocked;
+
+            if (shouldBeRed)
+                unlockedConnections.Add(line.connectionId);
         }
 
-        foreach (var data in lineData)
-            CreateLine(data.start, data.end, unlockedLineColor, data.from, data.to, connId);
-    }
-}
+        foreach (string connId in unlockedConnections)
+        {
+            List<SkillLine> connLines = _spawnedLines.FindAll(l => l.connectionId == connId);
 
-public void AnimateUnlockedLines(RectTransform unlockedSkill)
-{
-    // Najdi všechna unikátní spojení která patří tomuto skillu
-    HashSet<string> connIds = new HashSet<string>();
+            List<(Vector2 start, Vector2 end, RectTransform from, RectTransform to)> lineData =
+                new List<(Vector2, Vector2, RectTransform, RectTransform)>();
 
-    foreach (var line in _spawnedLines)
-    {
-        if (line?.lineObject == null) continue;
-        if (line.from != unlockedSkill && line.to != unlockedSkill) continue;
+            foreach (var line in connLines)
+                lineData.Add((line.start, line.end, line.from, line.to));
 
-        Image img = line.lineObject.GetComponent<Image>();
-        if (img != null && img.color == unlockedLineColor)
-            connIds.Add(line.connectionId);
-    }
+            foreach (var line in connLines)
+            {
+                _spawnedLines.Remove(line);
+                if (Application.isPlaying)
+                    Destroy(line.lineObject);
+                else
+                    DestroyImmediate(line.lineObject);
+            }
 
-    foreach (string connId in connIds)
-    {
-        List<SkillLine> connLines = _spawnedLines.FindAll(l => l.connectionId == connId);
-        if (connLines.Count > 0)
-            StartCoroutine(AnimateConnectionCoroutine(connLines));
-    }
-}
-
-private IEnumerator AnimateConnectionCoroutine(List<SkillLine> lines)
-{
-    // Ulož plné délky a nastav šedé pozadí + červenou délku na 0
-    List<(RectTransform rt, Image img, float fullLength, GameObject bgLine)> lineInfos =
-        new List<(RectTransform, Image, float, GameObject)>();
-
-    foreach (var skillLine in lines)
-    {
-        if (skillLine?.lineObject == null) continue;
-
-        RectTransform rt = skillLine.lineObject.GetComponent<RectTransform>();
-        Image img = skillLine.lineObject.GetComponent<Image>();
-        if (rt == null || img == null) continue;
-
-        float fullLength = rt.sizeDelta.x;
-
-        // Vytvoř šedé pozadí pod červenou čárou
-        GameObject bgObj = new GameObject("SkillLineBG");
-        bgObj.transform.SetParent(skillLine.lineObject.transform.parent, false);
-        bgObj.transform.SetSiblingIndex(skillLine.lineObject.transform.GetSiblingIndex());
-
-        Image bgImg = bgObj.AddComponent<Image>();
-        bgImg.color = lineColor;
-        bgImg.raycastTarget = false;
-
-        RectTransform bgRt = bgObj.GetComponent<RectTransform>();
-        bgRt.anchorMin = rt.anchorMin;
-        bgRt.anchorMax = rt.anchorMax;
-        bgRt.pivot = rt.pivot;
-        bgRt.sizeDelta = rt.sizeDelta;
-        bgRt.anchoredPosition = rt.anchoredPosition;
-        bgRt.localRotation = rt.localRotation;
-
-        // Červená čára začíná na délce 0
-        rt.sizeDelta = new Vector2(0f, lineWidth);
-
-        lineInfos.Add((rt, img, fullLength, bgObj));
+            foreach (var data in lineData)
+                CreateLine(data.start, data.end, unlockedLineColor, data.from, data.to, connId);
+        }
     }
 
-    // Animuj všechny čáry spojení NAJEDNOU
-    float currentLength = 0f;
-    float maxLength = 0f;
-    foreach (var info in lineInfos)
-        if (info.fullLength > maxLength) maxLength = info.fullLength;
-
-    while (currentLength < maxLength)
+    public void AnimateUnlockedLines(RectTransform unlockedSkill)
     {
-        currentLength += lineAnimationSpeed * Time.deltaTime;
-        currentLength = Mathf.Min(currentLength, maxLength);
+        HashSet<string> connIds = new HashSet<string>();
+
+        foreach (var line in _spawnedLines)
+        {
+            if (line?.lineObject == null) continue;
+            if (line.from != unlockedSkill && line.to != unlockedSkill) continue;
+
+            Image img = line.lineObject.GetComponent<Image>();
+            if (img != null && img.color == unlockedLineColor)
+                connIds.Add(line.connectionId);
+        }
+
+        foreach (string connId in connIds)
+        {
+            List<SkillLine> connLines = _spawnedLines.FindAll(l => l.connectionId == connId);
+            if (connLines.Count > 0)
+                StartCoroutine(AnimateConnectionCoroutine(connLines));
+        }
+    }
+
+    private IEnumerator AnimateConnectionCoroutine(List<SkillLine> lines)
+    {
+        List<(RectTransform rt, float fullLength, GameObject bgLine)> lineInfos =
+            new List<(RectTransform, float, GameObject)>();
+
+        foreach (var skillLine in lines)
+        {
+            if (skillLine?.lineObject == null) continue;
+
+            RectTransform rt = skillLine.lineObject.GetComponent<RectTransform>();
+            Image img = skillLine.lineObject.GetComponent<Image>();
+            if (rt == null || img == null) continue;
+
+            float fullLength = rt.sizeDelta.x;
+
+            GameObject bgObj = new GameObject("SkillLineBG");
+            bgObj.transform.SetParent(skillLine.lineObject.transform.parent, false);
+            bgObj.transform.SetSiblingIndex(skillLine.lineObject.transform.GetSiblingIndex());
+
+            Image bgImg = bgObj.AddComponent<Image>();
+            bgImg.color = lineColor;
+            bgImg.raycastTarget = false;
+
+            RectTransform bgRt = bgObj.GetComponent<RectTransform>();
+            bgRt.anchorMin = rt.anchorMin;
+            bgRt.anchorMax = rt.anchorMax;
+            bgRt.pivot = rt.pivot;
+            bgRt.sizeDelta = new Vector2(fullLength, lineWidth);
+            bgRt.anchoredPosition = rt.anchoredPosition;
+            bgRt.localRotation = rt.localRotation;
+
+            rt.sizeDelta = new Vector2(0f, lineWidth);
+            lineInfos.Add((rt, fullLength, bgObj));
+        }
+
+        float maxLength = 0f;
+        foreach (var info in lineInfos)
+            if (info.fullLength > maxLength) maxLength = info.fullLength;
+
+        float elapsed = 0f;
+        float duration = maxLength / lineAnimationSpeed;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+
+            foreach (var info in lineInfos)
+            {
+                float len = Mathf.Lerp(0f, info.fullLength, t);
+                info.rt.sizeDelta = new Vector2(len, lineWidth);
+            }
+
+            yield return null;
+        }
 
         foreach (var info in lineInfos)
         {
-            float len = Mathf.Min(currentLength, info.fullLength);
-            info.rt.sizeDelta = new Vector2(len, lineWidth);
+            info.rt.sizeDelta = new Vector2(info.fullLength, lineWidth);
+            if (info.bgLine != null)
+                Destroy(info.bgLine);
         }
-
-        yield return null;
     }
-
-    // Ujisti se že všechny čáry mají plnou délku a smaž pozadí
-    foreach (var info in lineInfos)
-    {
-        info.rt.sizeDelta = new Vector2(info.fullLength, lineWidth);
-        if (info.bgLine != null)
-            Destroy(info.bgLine);
-    }
-}
 
     public void RefreshAllAvailability()
     {
+        // BFS - každý node se zpracuje jednou ve správném pořadí (parenti před childy)
+        Queue<SkillNode> queue = new Queue<SkillNode>();
+        HashSet<SkillNode> enqueued = new HashSet<SkillNode>();
+
         foreach (var root in rootNodes)
         {
-            if (root != null)
-                RefreshNodeAvailability(root);
+            if (root == null || enqueued.Contains(root)) continue;
+            queue.Enqueue(root);
+            enqueued.Add(root);
         }
-    }
 
-    private void RefreshNodeAvailability(SkillNode node)
-    {
-        if (node.skillButton == null) return;
-
-        foreach (var child in node.children)
+        while (queue.Count > 0)
         {
-            if (child?.skillButton == null) continue;
+            SkillNode current = queue.Dequeue();
+            if (current?.skillButton == null) continue;
 
-            SkillButton childBtn = child.skillButton.GetComponent<SkillButton>();
-            if (childBtn == null) continue;
+            SkillButton btn = current.skillButton.GetComponent<SkillButton>();
+            if (btn != null && btn.skillState != SkillButton.SkillState.Unlocked)
+            {
+                bool allParentsUnlocked = IsAllParentsUnlocked(current);
+                btn.RefreshAvailability(allParentsUnlocked);
+            }
 
-            bool allParentsUnlocked = IsAllParentsUnlocked(child);
-            childBtn.RefreshAvailability(allParentsUnlocked);
-
-            RefreshNodeAvailability(child);
+            foreach (var child in current.children)
+            {
+                if (child == null || enqueued.Contains(child)) continue;
+                queue.Enqueue(child);
+                enqueued.Add(child);
+            }
         }
     }
 
@@ -361,10 +399,8 @@ private IEnumerator AnimateConnectionCoroutine(List<SkillLine> lines)
         List<SkillNode> parents = new List<SkillNode>();
         FindParents(rootNodes, targetNode, parents);
 
-        // Pokud nemá žádného parenta je to root - vždy dostupný
         if (parents.Count == 0) return true;
 
-        // VŠICHNI parenti musí být Unlocked
         foreach (var parent in parents)
         {
             SkillButton btn = parent.skillButton?.GetComponent<SkillButton>();
@@ -376,14 +412,24 @@ private IEnumerator AnimateConnectionCoroutine(List<SkillLine> lines)
 
     private void FindParents(List<SkillNode> nodes, SkillNode target, List<SkillNode> parents)
     {
+        // Projdi každý node ve stromu a zkontroluj jestli má target mezi svými childy
+        // Pokud ano, tento node je parentem targetu
         foreach (var node in nodes)
         {
             if (node == null) continue;
+        
             foreach (var child in node.children)
             {
-                if (child == target)
+                // Porovnáváme podle RectTransform reference (stejný GameObject = stejný button)
+                if (child?.skillButton != null && target?.skillButton != null &&
+                    child.skillButton == target.skillButton &&
+                    !parents.Contains(node))
+                {
                     parents.Add(node);
+                }
             }
+        
+            // Rekurzivně projdi childy
             FindParents(node.children, target, parents);
         }
     }

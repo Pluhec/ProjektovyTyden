@@ -70,8 +70,6 @@ public class SkillButton : MonoBehaviour
     {
         skillState = newState;
         Apply();
-        // Záměrně NEVOLÁ GenerateConnections ani RefreshLineColors
-        // O to se stará SkillPopup
     }
 
     private void OnSkillClicked()
@@ -148,6 +146,12 @@ public class SkillButton : MonoBehaviour
     public void RefreshAvailability(bool allParentsUnlocked)
     {
         if (skillState == SkillState.Unlocked) return;
-        SetState(allParentsUnlocked ? SkillState.Available : SkillState.Locked);
+
+        SkillState newState = allParentsUnlocked ? SkillState.Available : SkillState.Locked;
+        if (skillState == newState) return;
+
+        skillState = newState;
+        Apply();
+        // Záměrně NEVOLÁ SetState aby nedošlo k rekurzi
     }
 }
