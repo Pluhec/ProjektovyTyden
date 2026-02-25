@@ -92,6 +92,7 @@ public class EnumStructs
 		Democracy,
 		FinancePopUp,
 		SocialGroup,
+		Visibility,
 	}
 
 	public enum E_CampaignTopic

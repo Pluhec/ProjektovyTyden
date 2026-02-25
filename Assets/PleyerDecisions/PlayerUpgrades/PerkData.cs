@@ -1210,7 +1210,7 @@ public class PerkSet
 		PerkCost		= 0,
 		DependsOnPerks = new[] { Action_PoliticalCampaign2 },
 		IsBought		= false,
-		SpecialEffect  = "Elected to parliament — unlocks government actions",
+		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1242,7 +1242,7 @@ public class PerkSet
 		PerkCost		= 4,
 		DependsOnPerks = new[] { Action_ElectedToParliament },
 		IsBought		= false,
-		SpecialEffect  = "Participation in government — unlocks authoritarian actions",
+		SpecialEffect  = null,
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1425,7 +1425,13 @@ public class PerkSet
 		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_MediaControl },
 		IsBought		= false,
-		SpecialEffect  = "Reduces visibility by 20%",
+		SpecialEffect  = new[] { new EnumStructs.S_PerkSpecialEffect
+		{
+			EffectsType = EnumStructs.E_PerkSpecialType.Visibility,
+			EffectsGroup = null,
+			EffectsEducation = null,
+			EffectAmmount = -20, // Reduces visibility by 20%
+		}},
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1458,7 +1464,13 @@ public class PerkSet
 		PerkCost		= 2,
 		DependsOnPerks = new[] { Action_IntimidateJournalists },
 		IsBought		= false,
-		SpecialEffect  = "Reduces visibility by 20%",
+		SpecialEffect  = new[] { new EnumStructs.S_PerkSpecialEffect
+		{
+			EffectsType = EnumStructs.E_PerkSpecialType.Visibility,
+			EffectsGroup = null,
+			EffectsEducation = null,
+			EffectAmmount = -20, // Reduces visibility by 20%
+		}},
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
@@ -1491,7 +1503,7 @@ public class PerkSet
 		PerkCost		= 3,
 		DependsOnPerks = new[] { Action_IntroduceCensorship, Action_PersecuteUndesirables1 },
 		IsBought		= false,
-		SpecialEffect  = "END OF GAME — totalitarian regime fully established",
+		SpecialEffect  = "END OF GAME — totalitarian regime fully established", // Note: This is a special case and may require custom handling in game logic
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
