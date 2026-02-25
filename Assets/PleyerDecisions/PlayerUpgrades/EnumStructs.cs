@@ -56,9 +56,9 @@ public class EnumStructs
 	public struct S_PerkSpecialEffect
 	{
 		public E_PerkSpecialType EffectsType;
-		public E_Manipulatable EffectsGroup;
-		public E_Education EffectsEducation;
-		public sbyte EffectAmmount;
+		public E_Manipulatable EffectsGroup; // IF EffectType is School, Democracy, FinancePopUp this is NULL
+		public E_Education EffectsEducation; // IF EffectType is SocialGroup, Democracy, FinancePopUp this is NULL
+		public sbyte EffectAmmount; // IF EffectType FinancePopUp this is NULL
 	}
 
 	public struct S_EventOption
