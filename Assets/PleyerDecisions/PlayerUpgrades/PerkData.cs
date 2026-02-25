@@ -1392,7 +1392,14 @@ public class PerkSet
 			EffectsGroup = EnumStructs.E_Manipulatable.Immune,
 			EffectsEducation = null,
 			EffectAmmount = 10, // Increases immune people by 10%
-		} }, // Note: Visibility reduction (-20%) not implemented as no enum type exists; consider adding E_PerkSpecialType.Visibility
+		},
+		{
+			EffectsType = EnumStructs.E_PerkSpecialType.Visibility,
+			EffectsGroup = null,
+			EffectsEducation = null,
+			EffectAmmount = -20, // Reduces visibility by 20%
+		}
+		},
 		YouthStat = new EnumStructs.S_StatData
 		{
 			AgeGroup   = EnumStructs.E_Age.Young,
