@@ -1025,6 +1025,7 @@ MonoBehaviour:
     youngMaxAge: 85
     adultMaxAge: 170
   propagandaLevelAdaptationPerDay: 0.2
+  paintingBrushRadius: 8
   regionAverages: []
   regionPopulations: 
   regionAgeAverages: []
@@ -1575,10 +1576,10 @@ RectTransform:
   - {fileID: 1692447610}
   m_Father: {fileID: 1907628101}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.97, y: 0}
-  m_SizeDelta: {x: 283.94, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -91.97003, y: 0}
+  m_SizeDelta: {x: -1636.06, y: -980}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1457337090
 GameObject:
