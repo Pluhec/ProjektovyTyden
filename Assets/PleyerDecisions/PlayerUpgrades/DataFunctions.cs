@@ -28,7 +28,7 @@ public class DataFunctions
 		V_EventDataReceiver	= PAR_EDR;
 	}
 
-	public static List<EventInfo> LoadEventsFromJSON(string PAR_FilePath)
+	public static void LoadEventsFromJSON(string PAR_FilePath)
 	{
 		StreamReader V_StrRead_EventsJSON	= new StreamReader(File.OpenRead(PAR_FilePath));
 		string V_JsonContent				= V_StrRead_EventsJSON.ReadToEnd();
@@ -42,7 +42,6 @@ public class DataFunctions
 		}
 
 		Debug.Log("[DataFunctions] Loaded " + EventsList.Count + " events from JSON.");
-		return EventsList;
 	}
 
 	public static SocialPost_JSON LoadJSONFile(string PAR_FileName)
