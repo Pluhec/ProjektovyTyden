@@ -1,10 +1,15 @@
 using UnityEngine;
 using UnityEngine.Video;
 using TMPro;
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+using PlayerChoice.DataSets;
 
 /// <summary>
 /// Přijímá data od logiky týmu - cestu k videu a text k zobrazení.
-/// Obsahuje simulaci pro testování.
+/// Načítá eventy z Events.json.
+/// Script zatim bete videa od 16-30 pro testování potom udelejte vsechny videa co budou
 /// </summary>
 public class EventDataReceiver : MonoBehaviour
 {
@@ -12,60 +17,195 @@ public class EventDataReceiver : MonoBehaviour
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private TextMeshProUGUI eventText;
 
+    [Header("=== JSON DATA ===")]
+    [Tooltip("Cesta k Events.json (relativní k Assets)")]
+    [SerializeField] private string eventsJsonPath = "Assets/PleyerDecisions/Events/Events.json";
+
     [Header("=== SIMULACE (pro testování) ===")]
     [Tooltip("Zapni pro automatické testování při startu")]
     [SerializeField] private bool simulateOnStart = true;
+    
+    [Tooltip("ID eventu pro testování (1-30)")]
+    [SerializeField] private int testEventId = 1;
+    
+    // Dostupné eventy pro testování (1-30)
+    private int[] availableEventIds = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 };
 
     [Header("=== DEBUG ===")]
     [Tooltip("Zobrazí detailní debug informace v Console")]
     [SerializeField] private bool enableDebug = true;
 
-    // Základní cesta k videím
-    private const string VIDEO_BASE_PATH = "Assets/Video/";
+    // Seznam načtených eventů z JSON
+    private List<EventData> loadedEvents = new List<EventData>();
 
-    // Dostupná videa (16-30, kromě 26)
-    private int[] availableVideos = { 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 27, 28, 29, 30 };
+    // Wrapper třída pro JSON deserializaci
+    [System.Serializable]
+    private class EventsWrapper
+    {
+        public List<EventData> Events;
+    }
 
-    // Ukázkové texty pro simulaci (4 věty každý)
-    private string[] sampleTexts = {
-        "Vaše firma stojí před důležitým rozhodnutím. Nový investor nabízí velkou částku, ale požaduje kontrolu nad projektem. Tým je rozdělený a čas tlačí. Jak se rozhodnete?",
-        "Nastala neočekávaná krize v dodavatelském řetězci. Klíčový partner oznámil ukončení spolupráce. Zákazníci čekají na dodávky a reputace firmy je v sázce. Co uděláte jako první?",
-        "Konkurence právě představila revoluční produkt. Vaše pozice na trhu je ohrožena a tým potřebuje jasné vedení. Máte tři možnosti jak reagovat. Která cesta je ta správná?",
-        "Jeden z vašich klíčových zaměstnanců dostal nabídku od konkurence. Jeho odchod by znamenal ztrátu důležitých znalostí. Nabízí se několik řešení situace. Jak si ho udržíte?"
-    };
+    // Třída pro option data z JSON
+    [System.Serializable]
+    public class OptionData
+    {
+        public int OptionCost;
+        public string OptionPerk;
+        public string OptionName;
+        public string OptionEffect;
+    }
+
+    // Třída pro data eventu z JSON
+    [System.Serializable]
+    private class EventData
+    {
+        public int EventId;
+        public string EventName;
+        public string EventDescription;
+        public string VideoPath;
+        public string RequiredPerk;
+        public int? CollaboratorsRequired;
+        public OptionData OptionFree;
+        public OptionData OptionMoney;
+        public OptionData OptionPerk;
+    }
+
+    // Aktuálně zobrazený event
+    private EventData currentEvent;
+
+    // Event pro notifikaci změny dat (pro UI)
+    public System.Action<OptionData, OptionData, OptionData> OnOptionsLoaded;
+
+    void Awake()
+    {
+        // Registruj tento receiver do DataFunctions
+        DataFunctions.SetEventDataReceiver(this);
+    }
 
     void Start()
     {
+        // Načti eventy z JSON
+        LoadEventsFromJSON();
+
         if (simulateOnStart)
         {
             Log("========================================");
-            Log("SIMULACE AKTIVNÍ - Generuji testovací data");
+            Log("SIMULACE AKTIVNÍ - Zobrazuji náhodný event (16-30)");
             Log("========================================");
             
-            SimulateLogicTeamData();
+            // Vždy použij náhodný event z 16-30 (ignoruj testEventId kvůli Unity serialization)
+            DisplayRandomEvent();
         }
     }
 
     /// <summary>
-    /// SIMULACE: Vygeneruje náhodná data jako by přišla od logiky
+    /// Načte eventy z Events.json souboru
     /// </summary>
-    public void SimulateLogicTeamData()
+    public void LoadEventsFromJSON()
     {
-        // Náhodné video
-        int randomIndex = Random.Range(0, availableVideos.Length);
-        int videoNumber = availableVideos[randomIndex];
-        string videoPath = $"{VIDEO_BASE_PATH}{videoNumber}.mp4";
+        string fullPath = Path.Combine(Application.dataPath, eventsJsonPath.Replace("Assets/", ""));
+        
+        if (!File.Exists(fullPath))
+        {
+            LogError($"Events.json nenalezen na cestě: {fullPath}");
+            return;
+        }
 
-        // Náhodný text
-        string randomText = sampleTexts[Random.Range(0, sampleTexts.Length)];
+        try
+        {
+            string jsonContent = File.ReadAllText(fullPath);
+            EventsWrapper wrapper = JsonConvert.DeserializeObject<EventsWrapper>(jsonContent);
+            
+            if (wrapper != null && wrapper.Events != null)
+            {
+                loadedEvents = wrapper.Events;
+                Log($"Načteno {loadedEvents.Count} eventů z JSON.");
+            }
+            else
+            {
+                LogError("Nepodařilo se deserializovat Events.json");
+            }
+        }
+        catch (System.Exception ex)
+        {
+            LogError($"Chyba při načítání JSON: {ex.Message}");
+        }
+    }
 
-        Log("--- SIMULACE: Data od logiky ---");
-        Log($"Video path: {videoPath}");
-        Log($"Text: {randomText}");
-        Log("--------------------------------");
+    /// <summary>
+    /// Zobrazí event podle jeho ID
+    /// </summary>
+    /// <param name="eventId">ID eventu (16-30)</param>
+    public void DisplayEventById(int eventId)
+    {
+        EventData eventData = loadedEvents.Find(e => e.EventId == eventId);
+        
+        if (eventData == null)
+        {
+            LogError($"Event s ID {eventId} nenalezen!");
+            return;
+        }
 
-        // Nastav data
-        SetEventData(videoPath, randomText);
+        // Ulož aktuální event
+        currentEvent = eventData;
+
+        Log($"--- ZOBRAZUJI EVENT {eventId}: {eventData.EventName} ---");
+        Log($"Video path: {eventData.VideoPath}");
+        Log($"Description: {eventData.EventDescription}");
+        Log($"OptionFree: {eventData.OptionFree?.OptionName}");
+        Log($"OptionMoney: {eventData.OptionMoney?.OptionName} (cena: {eventData.OptionMoney?.OptionCost})");
+        Log($"OptionPerk: {eventData.OptionPerk?.OptionName} (perk: {eventData.OptionPerk?.OptionPerk})");
+        Log("----------------------------------------");
+
+        SetEventData(eventData.VideoPath, eventData.EventDescription);
+
+        // Notifikuj UI o nových options
+        OnOptionsLoaded?.Invoke(eventData.OptionFree, eventData.OptionMoney, eventData.OptionPerk);
+    }
+
+    /// <summary>
+    /// Vrátí aktuální options pro UI
+    /// </summary>
+    public (OptionData free, OptionData money, OptionData perk) GetCurrentOptions()
+    {
+        if (currentEvent == null)
+            return (null, null, null);
+        
+        return (currentEvent.OptionFree, currentEvent.OptionMoney, currentEvent.OptionPerk);
+    }
+
+    /// <summary>
+    /// Vrátí data eventu podle ID (pro použití v jiných skriptech)
+    /// </summary>
+    public (string videoPath, string description, string name) GetEventDataById(int eventId)
+    {
+        EventData eventData = loadedEvents.Find(e => e.EventId == eventId);
+        
+        if (eventData == null)
+        {
+            return (null, null, null);
+        }
+
+        return (eventData.VideoPath, eventData.EventDescription, eventData.EventName);
+    }
+
+    /// <summary>
+    /// Zobrazí náhodný event z dostupných (16-30)
+    /// </summary>
+    public void DisplayRandomEvent()
+    {
+        if (loadedEvents.Count == 0)
+        {
+            LogError("Žádné eventy nejsou načteny!");
+            return;
+        }
+
+        // Vyber náhodný event z dostupných (16-30)
+        int randomIndex = Random.Range(0, availableEventIds.Length);
+        int randomEventId = availableEventIds[randomIndex];
+        
+        Log($"--- NÁHODNÝ EVENT ID: {randomEventId} ---");
+        DisplayEventById(randomEventId);
     }
 
     /// <summary>
@@ -155,21 +295,30 @@ public class EventDataReceiver : MonoBehaviour
     }
 
     /// <summary>
-    /// Alternativní metoda - nastaví jen video podle čísla
+    /// Alternativní metoda - zobrazí event podle čísla videa
     /// </summary>
     public void SetVideoByNumber(int videoNumber)
     {
-        string videoPath = $"{VIDEO_BASE_PATH}{videoNumber}.mp4";
-        SetVideo(videoPath);
+        DisplayEventById(videoNumber);
     }
 
     /// <summary>
-    /// Pro testování - vygeneruj nová náhodná data
+    /// Pro testování - zobrazí nový náhodný event z JSON
     /// </summary>
-    [ContextMenu("Simulovat nová data")]
+    [ContextMenu("Zobrazit náhodný event")]
     public void TestNewRandomData()
     {
-        SimulateLogicTeamData();
+        DisplayRandomEvent();
+    }
+
+    /// <summary>
+    /// Pro testování - znovu načti JSON a zobraz testovací event
+    /// </summary>
+    [ContextMenu("Znovu načíst JSON")]
+    public void ReloadJSON()
+    {
+        LoadEventsFromJSON();
+        DisplayEventById(testEventId);
     }
 
     // === DEBUG METODY ===
