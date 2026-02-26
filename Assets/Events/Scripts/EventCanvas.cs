@@ -62,6 +62,9 @@ public class EventCanvas : MonoBehaviour
         if (eventDataReceiver != null)
         {
             eventDataReceiver.OnOptionsLoaded += UpdateDecisionButtons;
+            // Immediately update buttons in case the receiver already has options loaded
+            var opts = eventDataReceiver.GetCurrentOptions();
+            UpdateDecisionButtons(opts.free, opts.money, opts.perk);
         }
 
         // Na začátku zobraz Video Canvas
