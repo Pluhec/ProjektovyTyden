@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using PlayerChoice.DataSets;
 using UnityEngine;
 
 public enum PowerInfluenceMode
@@ -418,11 +419,16 @@ public class popup_click : MonoBehaviour
         // (it survives this object's destruction)
         if (clicked && hasPendingPowerInfluence && pendingSimHandler != null)
         {
+            Debug.Log($"[DeathAnim] Starting AnimatedPowerExpand on '{pendingSimHandler.name}', grid({pendingGridX},{pendingGridY}), strength={pendingSignedStrength:F3}, totalWeight={pendingTotalWeight:F4}");
             pendingSimHandler.StartCoroutine(AnimatedPowerExpand(
                 pendingSimHandler, pendingGridX, pendingGridY,
                 pendingSignedStrength, pendingCellAspectXY,
                 pendingRingWeights, pendingRingRadii, pendingTotalWeight,
                 powerExpandDuration));
+        }
+        else if (clicked)
+        {
+            Debug.LogWarning($"[DeathAnim] Power expand NOT started: hasPending={hasPendingPowerInfluence}, simHandler={(pendingSimHandler != null ? pendingSimHandler.name : "NULL")}");
         }
 
         Destroy(gameObject);
@@ -475,12 +481,24 @@ public class popup_click : MonoBehaviour
         float[] ringWeights, int[] ringRadii, float totalWeight,
         float expandDuration)
     {
-        if (totalWeight <= 0.0001f)
+        Debug.Log($"[PowerExpand] START - grid({gridX},{gridY}), strength={signedStrength:F3}, rings={ringWeights.Length}, totalWeight={totalWeight:F4}, duration={expandDuration}s, simHandler={simHandler.name}");
+
+        if (simHandler == null)
+        {
+            Debug.LogError("[PowerExpand] SimulationHandler is null! Aborting.");
             yield break;
+        }
+
+        if (totalWeight <= 0.0001f)
+        {
+            Debug.LogWarning("[PowerExpand] totalWeight near zero, aborting.");
+            yield break;
+        }
 
         int sampleCount = ringWeights.Length;
         float elapsed = 0f;
         int lastAppliedIndex = -1;
+        int totalRingsApplied = 0;
 
         while (elapsed < expandDuration)
         {
@@ -502,6 +520,7 @@ public class popup_click : MonoBehaviour
                 if (Mathf.Abs(passStrength) > 0.0001f)
                 {
                     simHandler.PaintStance(gridX, gridY, passStrength, ringRadii[lastAppliedIndex], cellAspectXY);
+                    totalRingsApplied++;
                 }
             }
 
@@ -517,17 +536,31 @@ public class popup_click : MonoBehaviour
             if (Mathf.Abs(passStrength) > 0.0001f)
             {
                 simHandler.PaintStance(gridX, gridY, passStrength, ringRadii[lastAppliedIndex], cellAspectXY);
+                totalRingsApplied++;
             }
         }
+
+        Debug.Log($"[PowerExpand] DONE - applied {totalRingsApplied}/{sampleCount} rings at grid({gridX},{gridY})");
     }
 
     public void EvaluateOutcome()
     {
-        switch (GetComponent<IconShower>().GetCurrentIconType()) {
+        IconShower shower = GetComponent<IconShower>();
+        if (shower == null)
+        {
+            Debug.LogWarning("EvaluateOutcome: No IconShower component found on popup!");
+            return;
+        }
+
+        IconType currentType = shower.GetCurrentIconType();
+        Debug.Log($"EvaluateOutcome: detected icon type = {currentType}");
+
+        switch (currentType) {
             case IconType.Money:
 
             Debug.Log("Money popup clicked!");
-            // TODO: Implement money effect, show popup text, etc.
+            int moneyToAdd = Random.Range(1, 5);
+            FloatingTextAnimator.SpawnMultiple(transform.position, moneyToAdd);
 
                 break;
             case IconType.Power:
@@ -590,5 +623,120 @@ public class popup_click : MonoBehaviour
 
                 break;
         }
+    }
+}
+
+public class FloatingTextAnimator : MonoBehaviour
+{
+    public static void SpawnMultiple(Vector3 position, int amount)
+    {
+        GameObject managerGo = new GameObject("FloatingTextManager");
+        managerGo.transform.position = position;
+        var manager = managerGo.AddComponent<FloatingTextAnimator>();
+        manager.StartCoroutine(manager.SpawnSequence(position, amount));
+    }
+
+    private IEnumerator SpawnSequence(Vector3 position, int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            SpawnSingle(position, 1);
+            PlayerChoice.DataSets.PlayerStats.AddMoney((byte)1);
+            yield return new WaitForSeconds(0.15f); // 0.15s delay between each coin
+        }
+        Destroy(gameObject); // Destroy manager when done
+    }
+
+    private void SpawnSingle(Vector3 position, int amount)
+    {
+        GameObject go = new GameObject("FloatingText");
+        go.transform.position = position;
+        
+        var tmp = go.AddComponent<TMPro.TextMeshPro>();
+        tmp.text = $"+{amount}";
+        tmp.color = new Color(1f, 0.84f, 0f); // Gold color
+        tmp.fontSize = 1.5f;
+        tmp.alignment = TMPro.TextAlignmentOptions.Center;
+        tmp.fontStyle = TMPro.FontStyles.Bold;
+        tmp.sortingOrder = 32767;
+        
+        tmp.outlineWidth = 0.2f;
+        tmp.outlineColor = new Color(0, 0, 0, 0.8f);
+
+        var animator = go.AddComponent<FloatingTextAnimator>();
+        animator.StartCoroutine(animator.AnimateRoutine(tmp));
+    }
+
+    private IEnumerator AnimateRoutine(TMPro.TextMeshPro tmp)
+    {
+        float duration = 1.5f;
+        float elapsed = 0f;
+        
+        Vector3 startPos = transform.position;
+        // Random trajectory for each coin
+        float randomX = Random.Range(-1.5f, 1.5f);
+        float randomY = Random.Range(1.5f, 2.5f);
+        Vector3 endPos = startPos + new Vector3(randomX, randomY, 0f);
+        
+        // Control points for Bezier curve (arc)
+        Vector3 controlPoint = startPos + new Vector3(randomX * 0.5f, randomY + 1f, 0f);
+        
+        Color startColor = tmp.color;
+        Color outlineStartColor = tmp.outlineColor;
+        
+        Vector3 startScale = Vector3.zero;
+        Vector3 midScale = Vector3.one * 1.3f;
+        Vector3 endScale = Vector3.one;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            
+            // Position: Quadratic Bezier curve for a nice arc
+            float easeT = 1f - Mathf.Pow(1f - t, 3f); // Ease out cubic for movement
+            Vector3 m1 = Vector3.Lerp(startPos, controlPoint, easeT);
+            Vector3 m2 = Vector3.Lerp(controlPoint, endPos, easeT);
+            transform.position = Vector3.Lerp(m1, m2, easeT);
+            
+            // Scale: Bouncy pop in
+            if (t < 0.2f)
+            {
+                float scaleT = t / 0.2f;
+                float c1 = 1.70158f;
+                float c3 = c1 + 1f;
+                float scaleEase = 1f + c3 * Mathf.Pow(scaleT - 1f, 3f) + c1 * Mathf.Pow(scaleT - 1f, 2f);
+                transform.localScale = Vector3.LerpUnclamped(startScale, midScale, scaleEase);
+            }
+            else if (t < 0.4f)
+            {
+                float scaleT = (t - 0.2f) / 0.2f;
+                float scaleEase = scaleT < 0.5f ? 2f * scaleT * scaleT : 1f - Mathf.Pow(-2f * scaleT + 2f, 2f) / 2f;
+                transform.localScale = Vector3.Lerp(midScale, endScale, scaleEase);
+            }
+            else
+            {
+                transform.localScale = endScale;
+            }
+            
+            // Fade out: Start fading after 50% of duration
+            if (t > 0.5f)
+            {
+                float fadeT = (t - 0.5f) / 0.5f;
+                float fadeEase = fadeT * fadeT; // Ease in quad
+                
+                Color newColor = startColor;
+                newColor.a = Mathf.Lerp(1f, 0f, fadeEase);
+                tmp.color = newColor;
+                
+                Color newOutlineColor = outlineStartColor;
+                newOutlineColor.a = Mathf.Lerp(outlineStartColor.a, 0f, fadeEase);
+                tmp.outlineColor = newOutlineColor;
+            }
+            
+            yield return null;
+        }
+        
+        Destroy(gameObject);
     }
 }

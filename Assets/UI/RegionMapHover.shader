@@ -83,7 +83,7 @@ Shader "Custom/RegionMapHover"
                 float4 regionsTextureData = SAMPLE_TEXTURE2D(_RegionsTexture, sampler_RegionsTexture, pixelUV);
                 int regionIndex = DecodeRegionIndex(regionsTextureData.r);
                 float alphaMask = _RegionHovers[regionIndex] * regionsTextureData.a;
-                return float4(saturate(_HoverColor.rgb), saturate(alphaMask));
+                return float4(saturate(_HoverColor.rgb), saturate(alphaMask) * _HoverColor.a);
             }
             ENDHLSL
         }

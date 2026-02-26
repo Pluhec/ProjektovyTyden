@@ -46,7 +46,7 @@ public class TimeManager : MonoBehaviour
 
         float timeOfTheDay = Mathf.Cos((simulationHandler.simulationTime % 60 + timer) / 60f * Mathf.PI * 2)*0.5f+0.5f;
         foreach (var img in allMapResources)
-            img.color = dayNightGradient.Evaluate(timeOfTheDay);
+            img.color = dayNightGradient.Evaluate(Mathf.Clamp01(1f-timeOfTheDay));
 
         if (daySlider != null)
         {
