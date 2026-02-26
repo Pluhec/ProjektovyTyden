@@ -1,34 +1,58 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using PlayerChoice.DataSets;
+using System.Reflection;
 
 public class SkillPopup : MonoBehaviour
 {
     [Header("References")]
+    public Image skillIconImageBg;
+    public Image skillIconImageFg;
     public TextMeshProUGUI skillNameText;
+    public TextMeshProUGUI skillDescriptionText;
+    public TextMeshProUGUI skillCostText;
     public Button unlockButton;
     public Button closeButton;
 
-    private int _skillId;
-    private SkillButton _skillButton;
+    [Header("Button Sprites")]
+    public Sprite unlockButtonSprite;
+    public Sprite unlockButtonDisabledSprite;
 
-    public void Init(int skillId, SkillButton skillButton)
+    private SkillButton _skillButton;
+    private PerkInformation _perkInfo;
+
+    public void Init(SkillButton skillButton)
     {
-        _skillId = skillId;
         _skillButton = skillButton;
+        _perkInfo = FindPerk(skillButton.perkFieldName);
+
+        if (_perkInfo == null)
+        {
+            Debug.LogWarning($"SkillPopup: Field '{skillButton.perkFieldName}' nebyl nalezen v PerkSet!");
+            Close();
+            return;
+        }
+
+        if (skillIconImageBg != null)
+            skillIconImageBg.sprite = skillButton.GetComponent<Image>().sprite;
+
+        if (skillIconImageFg != null && skillButton.iconImage != null)
+            skillIconImageFg.sprite = skillButton.iconImage.sprite;
 
         if (skillNameText != null)
-            skillNameText.text = $"Skill {skillId}";
+            skillNameText.text = _perkInfo.PerkName;
+
+        if (skillDescriptionText != null)
+            skillDescriptionText.text = _perkInfo.PerkDescription;
+
+        if (skillCostText != null)
+            skillCostText.text = $"Cena: {_perkInfo.PerkCost}$";
+
+        RefreshUnlockButton();
 
         if (unlockButton != null)
         {
-            bool alreadyUnlocked = skillButton.skillState == SkillButton.SkillState.Unlocked;
-            unlockButton.interactable = !alreadyUnlocked;
-
-            TextMeshProUGUI btnText = unlockButton.GetComponentInChildren<TextMeshProUGUI>();
-            if (btnText != null)
-                btnText.text = alreadyUnlocked ? "Odemčeno" : "Odemknout";
-
             unlockButton.onClick.RemoveAllListeners();
             unlockButton.onClick.AddListener(OnUnlockClicked);
         }
@@ -40,8 +64,35 @@ public class SkillPopup : MonoBehaviour
         }
     }
 
+    private void RefreshUnlockButton()
+    {
+        if (unlockButton == null) return;
+
+        bool alreadyBought = _perkInfo.IsBought;
+        bool canAfford = PlayerStats.Money >= _perkInfo.PerkCost;
+        bool canUnlock = !alreadyBought && canAfford;
+
+        unlockButton.interactable = canUnlock;
+
+        Image btnImage = unlockButton.GetComponent<Image>();
+        if (btnImage != null)
+            btnImage.sprite = canUnlock ? unlockButtonSprite : unlockButtonDisabledSprite;
+    }
+
     private void OnUnlockClicked()
     {
+        if (_perkInfo == null) return;
+
+        // bool success = _perkInfo.PerkPurchase();
+
+        bool success = true;
+        
+        if (!success)
+        {
+            RefreshUnlockButton();
+            return;
+        }
+
         _skillButton.SetState(SkillButton.SkillState.Unlocked);
 
         SkillTreeConnector connector = FindObjectOfType<SkillTreeConnector>();
@@ -52,9 +103,19 @@ public class SkillPopup : MonoBehaviour
             connector.AnimateUnlockedLines(_skillButton.GetComponent<RectTransform>());
         }
 
-        Debug.Log("Před Close");
         Close();
-        Debug.Log("Po Close - tento log se už neukáže pokud Destroy funguje");
+    }
+
+    // Hledá podle názvu fieldu v PerkSet, např. "Coms_TVChannel"
+    private PerkInformation FindPerk(string fieldName)
+    {
+        FieldInfo field = typeof(PerkSet).GetField(fieldName, BindingFlags.Public | BindingFlags.Static);
+        if (field == null)
+        {
+            Debug.LogWarning($"FindPerk: Field '{fieldName}' neexistuje v PerkSet!");
+            return null;
+        }
+        return field.GetValue(null) as PerkInformation;
     }
 
     private void Close()
