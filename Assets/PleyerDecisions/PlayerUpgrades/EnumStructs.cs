@@ -21,6 +21,7 @@ public class PerkInformation
 	public bool IsBought;
 	public EnumStructs.S_PerkSpecialEffect[] SpecialEffect; // NULL if there is no special effect
 
+	
 	public bool PerkPurchase()
 	{
 		if(PAR_CurrentMoney < PerkCost)
@@ -30,13 +31,7 @@ public class PerkInformation
 
 		if(DependsOnPerks == null || DependsOnPerks.Length == 0)
 		{
-			if(PerkName.Equals("Založení politické strany"))
-			{
-				ShowWebButtonOnUI();
-			}
-			PlayerStats.Money	-= PerkCost;
-			IsBought = true;
-			return true;
+			return SimulationChangeNotify();
 		}
 
 		foreach (var dep in DependsOnPerks)
@@ -47,12 +42,33 @@ public class PerkInformation
 			}
 		}
 
+		return PurchaseChangeNotify();
+	}
+
+	private bool PurchaseChangeNotify()
+	{
+		if(PerkName.Equals("Změna ústavy"))
+		{
+			DataFunctions.NotifyVictory();
+		}
+
 		if(PerkName.Equals("Založení politické strany"))
 		{
 			ShowWebButtonOnUI();
 		}
 		PlayerStats.Money	-= PerkCost;
 		IsBought = true;
+
+		DataFunctions.SendDataToSimulation(new EnumStructs.S_StatData[] {YouthStat, AdultStat, SeniorStat});
+
+		foreach(var SEffect in SpecialEffect)
+		{
+			if(SEffect.EffectsType	== EnumStructs.E_PerkSpecialType.Democracy)
+			{
+				InformChangeDemocracyMeter(SEffect.EffectAmmount);
+			}
+		}
+
 		return true;
 	}
 }
