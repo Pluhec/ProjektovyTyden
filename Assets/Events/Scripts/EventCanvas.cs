@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class EventCanvas : MonoBehaviour
 {
@@ -26,10 +27,11 @@ public class EventCanvas : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textMoney;
     [SerializeField] private TextMeshProUGUI textPerk;
 
-    [Header("Tooltip")]
-    [Tooltip("Panel GameObject used as tooltip (set inactive by default)")]
-    [SerializeField] private GameObject tooltipPanel;
-    [SerializeField] private TextMeshProUGUI tooltipLabel;
+    [Header("Tooltips")]
+    [Tooltip("Specifické panely pro jednotlivá tlačítka")]
+    public GameObject TooltipPanel1; // Pro buttonFree
+    public GameObject TooltipPanel2; // Pro buttonMoney
+    public GameObject TooltipPanel3; // Pro buttonPerk
 
     [Header("References")]
     [SerializeField] private EventDataReceiver eventDataReceiver;
@@ -78,9 +80,10 @@ public class EventCanvas : MonoBehaviour
 
     void Awake()
     {
-        // Ensure tooltip is hidden at start
-        if (tooltipPanel != null)
-            tooltipPanel.SetActive(false);
+        // Skryj všechny tooltipy na začátku
+        if (TooltipPanel1 != null) TooltipPanel1.SetActive(false);
+        if (TooltipPanel2 != null) TooltipPanel2.SetActive(false);
+        if (TooltipPanel3 != null) TooltipPanel3.SetActive(false);
     }
 
     /// <summary>
@@ -113,89 +116,155 @@ public class EventCanvas : MonoBehaviour
 
         Debug.Log($"[EventCanvas] Buttons updated: Free='{optionFree?.OptionName}', Money='{optionMoney?.OptionName}', Perk='{optionPerk?.OptionName}'");
 
-        // Wire hover handlers with option data so tooltip can show effect descriptions
-        AttachHover(buttonFree, optionFree);
-        AttachHover(buttonMoney, optionMoney);
-        AttachHover(buttonPerk, optionPerk);
-    }
-
-    private void AttachHover(Button btn, EventDataReceiver.OptionData option)
-    {
-        if (btn == null) return;
-
-        var hover = btn.gameObject.GetComponent<EventDecisionHover>();
-        if (hover == null)
-            hover = btn.gameObject.AddComponent<EventDecisionHover>();
-
-        hover.parentCanvas = this;
-        hover.option = option;
+        // Navěšení správných tooltip panelů na příslušná tlačítka (předáme i data option)
+        SetupButtonTooltip(buttonFree, TooltipPanel1, optionFree);
+        SetupButtonTooltip(buttonMoney, TooltipPanel2, optionMoney);
+        SetupButtonTooltip(buttonPerk, TooltipPanel3, optionPerk);
     }
 
     /// <summary>
-    /// Show tooltip with given text at screen position.
+    /// Přidá EventTrigger pro zobrazení/skrytí konkrétního tooltip panelu při najetí myši.
     /// </summary>
-    public void ShowTooltip(string text, Vector2 screenPosition)
+    private void SetupButtonTooltip(Button btn, GameObject targetTooltipPanel, EventDataReceiver.OptionData option)
     {
-        if (tooltipPanel == null || tooltipLabel == null) return;
-        // Activate first so RectTransform sizes are valid
-        tooltipPanel.SetActive(true);
-        tooltipLabel.text = text;
+        if (btn == null || targetTooltipPanel == null) return;
 
-        Canvas parent = GetComponentInParent<Canvas>();
-        RectTransform tooltipRect = tooltipPanel.GetComponent<RectTransform>();
+        // Najdi TextMeshPro komponentu v panelu (předpokládá se, že tam je)
+        TextMeshProUGUI tooltipText = targetTooltipPanel.GetComponentInChildren<TextMeshProUGUI>();
 
-        if (parent == null || tooltipRect == null) return;
+        EventTrigger trigger = btn.gameObject.GetComponent<EventTrigger>();
+        if (trigger == null)
+            trigger = btn.gameObject.AddComponent<EventTrigger>();
+        else
+            // Vyčisti předchozí hovery, aby se neduplikovaly
+            trigger.triggers.RemoveAll(e => e.eventID == EventTriggerType.PointerEnter || e.eventID == EventTriggerType.PointerExit);
 
-        // Position and clamp tooltip inside parent canvas
-        UpdateTooltipPosition(screenPosition, parent, tooltipRect);
-    }
+        // Zobrazení tooltipu
+        var entryEnter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
+        entryEnter.callback.AddListener((data) => {
+            if (tooltipText != null)
+            {
+                tooltipText.text = FormatOptionEffects(option);
+            }
+            targetTooltipPanel.SetActive(true);
+        });
+        trigger.triggers.Add(entryEnter);
 
-    // Helper that calculates and applies tooltip anchored position inside parent canvas
-    private void UpdateTooltipPosition(Vector2 screenPosition, Canvas parent, RectTransform tooltipRect)
-    {
-        if (parent == null || tooltipRect == null) return;
-
-        RectTransform canvasRect = parent.transform as RectTransform;
-        Vector2 localPoint;
-        Camera cam = parent.renderMode == RenderMode.ScreenSpaceOverlay ? null : parent.worldCamera;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPosition, cam, out localPoint);
-
-        // Small offset from cursor
-        Vector2 offset = new Vector2(12f, -12f);
-        Vector2 desired = localPoint + offset;
-
-        // Clamp tooltip inside canvas bounds
-        Vector2 canvasSize = canvasRect.rect.size;
-        Vector2 tooltipSize = tooltipRect.rect.size;
-
-        float minX = -canvasSize.x * 0.5f + tooltipSize.x * tooltipRect.pivot.x;
-        float maxX = canvasSize.x * 0.5f - tooltipSize.x * (1f - tooltipRect.pivot.x);
-        float minY = -canvasSize.y * 0.5f + tooltipSize.y * tooltipRect.pivot.y;
-        float maxY = canvasSize.y * 0.5f - tooltipSize.y * (1f - tooltipRect.pivot.y);
-
-        desired.x = Mathf.Clamp(desired.x, minX, maxX);
-        desired.y = Mathf.Clamp(desired.y, minY, maxY);
-
-        tooltipRect.anchoredPosition = desired;
-    }
-
-    // Make active tooltip follow the mouse while visible
-    void Update()
-    {
-        if (tooltipPanel == null || !tooltipPanel.activeSelf) return;
-        Canvas parent = GetComponentInParent<Canvas>();
-        RectTransform tooltipRect = tooltipPanel.GetComponent<RectTransform>();
-        if (parent == null || tooltipRect == null) return;
-        UpdateTooltipPosition(Input.mousePosition, parent, tooltipRect);
+        // Skrytí tooltipu
+        var entryExit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+        entryExit.callback.AddListener((data) => { targetTooltipPanel.SetActive(false); });
+        trigger.triggers.Add(entryExit);
     }
 
     /// <summary>
-    /// Hide tooltip.
+    /// Sestaví text efektů z OptionData pro zobrazení v tooltipu.
     /// </summary>
-    public void HideTooltip()
+    private string FormatOptionEffects(EventDataReceiver.OptionData option)
     {
-        if (tooltipPanel == null) return;
-        tooltipPanel.SetActive(false);
+        if (option == null) return "";
+
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+        // Hlavní popis (pokud existuje) - očistíme strojové názvy
+        if (!string.IsNullOrEmpty(option.OptionEffect))
+        {
+            sb.AppendLine(CleanLabel(option.OptionEffect));
+        }
+
+        // Statistiky podle věkových skupin (česky a s plus/minus)
+        if (option.OptionEffectYoung != null)
+            sb.AppendLine(FormatStatLine(0, option.OptionEffectYoung));
+        if (option.OptionEffectAdult != null)
+            sb.AppendLine(FormatStatLine(1, option.OptionEffectAdult));
+        if (option.OptionEffectSenior != null)
+            sb.AppendLine(FormatStatLine(2, option.OptionEffectSenior));
+
+        // Special effect - přeložíme typ a doplníme detaily
+        if (option.OptionSpecialEffect != null)
+        {
+            int t = option.OptionSpecialEffect.EffectsType;
+            string typeName = MapSpecialType(t);
+            sb.Append(typeName);
+
+            if (option.OptionSpecialEffect.EffectsGroup.HasValue)
+            {
+                sb.Append($" - skupina: {MapManipulatable(option.OptionSpecialEffect.EffectsGroup.Value)}");
+            }
+
+            if (option.OptionSpecialEffect.EffectsEducation.HasValue)
+            {
+                sb.Append($" - vzdělání: {MapEducation(option.OptionSpecialEffect.EffectsEducation.Value)}");
+            }
+
+            if (option.OptionSpecialEffect.EffectAmmount.HasValue)
+            {
+                sb.Append($" (množství: {option.OptionSpecialEffect.EffectAmmount.Value})");
+            }
+
+            sb.AppendLine();
+        }
+
+        string outText = sb.ToString().Trim();
+        return string.IsNullOrEmpty(outText) ? "(Žádné efekty)" : outText;
+    }
+
+    private string CleanLabel(string raw)
+    {
+        if (string.IsNullOrEmpty(raw)) return "";
+        string s = raw.Replace("_", " ");
+        if (s.Length == 1) return s.ToUpper();
+        s = char.ToUpperInvariant(s[0]) + s.Substring(1).ToLowerInvariant();
+        return s;
+    }
+
+    private string FormatStatLine(int ageIndex, EventDataReceiver.StatData sd)
+    {
+        string ageLabel = ageIndex == 0 ? "Mladí" : ageIndex == 1 ? "Dospělí" : "Senioři";
+        string v = FormatSigned(sd.Virality);
+        string i = FormatSigned(sd.Impact);
+        string vi = FormatSigned(sd.Visibility);
+        return $"{ageLabel}: viralita {v}, dopad {i}, viditelnost {vi}";
+    }
+
+    private string FormatSigned(int val)
+    {
+        return val > 0 ? $"+{val}" : val.ToString();
+    }
+
+    private string MapSpecialType(int t)
+    {
+        switch (t)
+        {
+            case 0: return "Speciální efekt: Školství";
+            case 1: return "Speciální efekt: Demokracie";
+            case 2: return "Speciální efekt: Finance (pop-up)";
+            case 3: return "Speciální efekt: Sociální skupina";
+            case 4: return "Speciální efekt: Viditelnost";
+            default: return $"Speciální efekt: Typ {t}";
+        }
+    }
+
+    private string MapManipulatable(int g)
+    {
+        switch (g)
+        {
+            case 0: return "Imunní";
+            case 1: return "Neutrální";
+            case 2: return "Sympatizující";
+            case 3: return "Spolupracovníci";
+            default: return g.ToString();
+        }
+    }
+
+    private string MapEducation(int e)
+    {
+        switch (e)
+        {
+            case 0: return "Základní";
+            case 1: return "Střední";
+            case 2: return "Vysokoškolské";
+            default: return e.ToString();
+        }
     }
 
     void OnDestroy()
@@ -255,6 +324,12 @@ public class EventCanvas : MonoBehaviour
     {
         if (videoCanvas != null) videoCanvas.SetActive(false);
         if (decisionCanvas != null) decisionCanvas.SetActive(false);
+        
+        // Zde doporučuji skrýt i tooltipy, kdyby náhodou zůstaly viset při zavření canvasu
+        if (TooltipPanel1 != null) TooltipPanel1.SetActive(false);
+        if (TooltipPanel2 != null) TooltipPanel2.SetActive(false);
+        if (TooltipPanel3 != null) TooltipPanel3.SetActive(false);
+        
         gameObject.SetActive(false);
     }
 
@@ -284,7 +359,6 @@ public class EventCanvas : MonoBehaviour
 
         rt.anchoredPosition = originalPos;
     }
-
 
     /// <summary>
     /// Zavolá se když video dohraje
