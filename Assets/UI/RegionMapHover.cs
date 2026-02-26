@@ -56,18 +56,26 @@ public class RegionMapHover : MonoBehaviour
 
     void Update()
     {
-        int region = RaycastRegion();
-
-        if (region != hoveredRegion)
+        if (Input.GetMouseButton(0))
         {
-            hoveredRegion = region;
-            tooltipObject.SetActive(hoveredRegion >= 0);
+            int region = RaycastRegion();
+
+            if (region != hoveredRegion)
+            {
+                hoveredRegion = region;
+                tooltipObject.SetActive(hoveredRegion >= 0);
+            }
+
+            if (hoveredRegion >= 0)
+            {
+                RefreshTooltipText();
+                PositionTooltip();
+            }
         }
-
-        if (hoveredRegion >= 0)
+        else if (hoveredRegion >= 0)
         {
-            RefreshTooltipText();
-            PositionTooltip();
+            hoveredRegion = -1;
+            tooltipObject.SetActive(false);
         }
     }
     // ──────────────────────── Texture cache ───────────────────────────────
