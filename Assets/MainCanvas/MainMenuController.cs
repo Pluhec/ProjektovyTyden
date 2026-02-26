@@ -1,46 +1,112 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
     [Header("Canvases")]
     public GameObject mainCanvas;       // Tvůj hlavní HUD
     public GameObject stopCanvas;       // StopMenu (Esc menu)
+    public GameObject settingsCanvas;   // Nastavení
     public GameObject skillTreeCanvas;  // Strom dovedností
     public GameObject webCanvas;        // Webové rozhraní
 
-    [Header("UI Animations")]
-    public List<AnimatedUIElement> uiElementsToAnimate = new List<AnimatedUIElement>();
+
+    public GameObject webButton; // CamelCase pro field
+
+    [Header("Animation Settings")]
     public float animationDuration = 0.5f;
+    
+    
+    public string gameSceneName = "MainMenu";
 
     [System.Serializable]
     public class AnimatedUIElement
     {
         public RectTransform element;
-        public Vector2 startPosition; // Pozice, odkud prvek vyjíždí
-        public Vector2 targetPosition; // Finální pozice (nyní veřejná, nastavíme přes tlačítko)
+        public Vector2 startPosition; 
+        public Vector2 targetPosition; 
     }
+
+    [Header("Animations per Canvas")]
+    public List<AnimatedUIElement> mainCanvasElements = new List<AnimatedUIElement>();
+    public List<AnimatedUIElement> stopCanvasElements = new List<AnimatedUIElement>();
+    public List<AnimatedUIElement> settingsCanvasElements = new List<AnimatedUIElement>();
+    public List<AnimatedUIElement> skillTreeCanvasElements = new List<AnimatedUIElement>();
+    public List<AnimatedUIElement> webCanvasElements = new List<AnimatedUIElement>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         // Ujistíme se, že na začátku je zapnutý jen MainCanvas a ostatní jsou vypnuté
         ShowMainCanvasOnly();
-        
-        // Spustíme úvodní animaci pro MainCanvas prvky
-        AnimateElementsIn();
     }
 
-    private void AnimateElementsIn()
+    // --- Metody pro tlačítka ---
+
+    public void OpenStopMenu()
     {
-        foreach (var item in uiElementsToAnimate)
+        ConsoleOpenCanvas(stopCanvas, stopCanvasElements);
+    }
+
+    public void OpenSettings()
+    {
+        ConsoleOpenCanvas(settingsCanvas, settingsCanvasElements);
+    }
+
+    public void OpenSkillTree()
+    {
+        ConsoleOpenCanvas(skillTreeCanvas, skillTreeCanvasElements);
+    }
+
+    public void OpenWeb()
+    {
+        ConsoleOpenCanvas(webCanvas, webCanvasElements);
+    }
+
+    public void BackToGame()
+    {
+        ConsoleOpenCanvas(mainCanvas, mainCanvasElements);
+    }
+
+    public void ShowWebButton()
+    {
+        if (webButton != null) webButton.SetActive(true);
+    }
+    
+    // Hlavní metoda pro přepínání
+    private void ConsoleOpenCanvas(GameObject activeCanvas, List<AnimatedUIElement> animationsToPlay)
+    {
+        // 1. Vypnout vše
+        if (stopCanvas != null) stopCanvas.SetActive(false);
+        if (settingsCanvas != null) settingsCanvas.SetActive(false);
+        if (skillTreeCanvas != null) skillTreeCanvas.SetActive(false);
+        if (webCanvas != null) webCanvas.SetActive(false);
+
+        // 2. Zapnout ten správný
+        if (activeCanvas != null)
+        {
+            activeCanvas.SetActive(true);
+            AnimateElements(animationsToPlay);
+        }
+    }
+
+    private void ShowMainCanvasOnly()
+    {
+         ConsoleOpenCanvas(mainCanvas, mainCanvasElements);
+    }
+
+    private void AnimateElements(List<AnimatedUIElement> elements)
+    {
+        foreach (var item in elements)
         {
             if (item.element != null)
             {
-                // Nastavíme na startovní pozici
+                // Reset na startovní pozici
                 item.element.anchoredPosition = item.startPosition;
-                // Spustíme coroutinu pro plynulý přesun
+                // Spuštění animace
                 StartCoroutine(MoveElement(item.element, item.startPosition, item.targetPosition));
             }
         }
@@ -61,48 +127,11 @@ public class MainMenuController : MonoBehaviour
         }
         rect.anchoredPosition = to;
     }
-
-    // --- Metody pro tlačítka ---
-
-    public void OpenStopMenu()
+    
+    public void BackToMenu()
     {
-        // Vypne MainCanvas a zapne StopCanvas
-        mainCanvas.SetActive(false); // Pokud chceš vidět animaci MainCanvasu i při zavření, musel bys ho nechat chvíli aktivní
-        stopCanvas.SetActive(true);
-        skillTreeCanvas.SetActive(false);
-        webCanvas.SetActive(false);
-    }
-
-    public void OpenSkillTree()
-    {
-        // Vypne MainCanvas a zapne SkillTreeCanvas
-        stopCanvas.SetActive(false);
-        skillTreeCanvas.SetActive(true);
-        webCanvas.SetActive(false);
-    }
-
-    public void OpenWeb()
-    {
-        // Vypne MainCanvas a zapne WebCanvas
-        stopCanvas.SetActive(false);
-        skillTreeCanvas.SetActive(false);
-        webCanvas.SetActive(true);
-    }
-
-    public void BackToGame()
-    {
-        // Návrat do hry - zobrazí pouze MainCanvas
-        ShowMainCanvasOnly();
-        // Znovu spustíme animaci příletu, když se vrátíme do hry
-        AnimateElementsIn();
-    }
-
-    // Pomocná metoda pro reset stavu
-    private void ShowMainCanvasOnly()
-    {
-        if (mainCanvas != null) mainCanvas.SetActive(true);
-        if (stopCanvas != null) stopCanvas.SetActive(false);
-        if (skillTreeCanvas != null) skillTreeCanvas.SetActive(false);
-        if (webCanvas != null) webCanvas.SetActive(false);
+        // Načte herní scénu
+        // Ujisti se, že scéna je přidaná v File -> Build Settings!
+        SceneManager.LoadScene(gameSceneName);
     }
 }
