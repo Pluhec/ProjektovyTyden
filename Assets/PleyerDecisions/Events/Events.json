@@ -1,0 +1,994 @@
+{
+  "Events": [
+    {
+      "EventId": 1,
+      "EventName": "Protest odborníků",
+      "EventDescription": "Expertní kritika ekonomických témat.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Ignorovat",
+        "OptionEffect": "imunní obyvatelé +10%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -2, "Impact": -2, "Visibility": -1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -2, "Impact": -2, "Visibility": -1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -2, "Impact": -2, "Visibility": -1 }
+      },
+      "OptionMoney": {
+        "OptionCost": 3,
+        "OptionPerk": null,
+        "OptionName": "Vlastní expert",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 2, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 2, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 2, "Visibility": 2 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Téma: Proti elitám",
+        "OptionName": "Zesměšnění závěrů",
+        "OptionEffect": "snížení dopadu u vysokoškolsky vzdělaných o 30%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 0, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 0, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 0, "Visibility": 2 }
+      }
+    },
+    {
+      "EventId": 2,
+      "EventName": "Uniklá nahrávka",
+      "EventDescription": "Někdo zveřejnil nahrávku tajné konverzace ve vaší straně.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Vyloučit člena strany",
+        "OptionEffect": "snížení počtu stoupenců o 30%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 0, "Impact": -2, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 0, "Impact": -2, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 0, "Impact": -2, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 2,
+        "OptionPerk": null,
+        "OptionName": "Označit za AI podvrh",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 0, "Impact": 1, "Visibility": 1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 0, "Impact": 1, "Visibility": 1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 0, "Impact": 1, "Visibility": 1 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Verb. agresivita",
+        "OptionName": "Protiútok na novináře",
+        "OptionEffect": "imunní obyvatelé +5%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 2, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 2, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 2, "Visibility": 2 }
+      }
+    },
+    {
+      "EventId": 3,
+      "EventName": "Rozkol v organizaci",
+      "EventDescription": "Klíčový člen hrozí odchodem.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Veřejná dehonestace",
+        "OptionEffect": "imunní obyvatelé +2%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 1, "Visibility": 1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 1, "Visibility": 1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 1, "Visibility": 1 }
+      },
+      "OptionMoney": {
+        "OptionCost": 3,
+        "OptionPerk": null,
+        "OptionName": "Uplatit ho",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 0, "Impact": 0, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 0, "Impact": 0, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 0, "Impact": 0, "Visibility": 0 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Polovojenské skupiny",
+        "OptionName": "Zařídit nehodu",
+        "OptionEffect": "snížení počtu stoupenců o 5%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": 2, "Visibility": 4 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": 2, "Visibility": 4 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": 2, "Visibility": 4 }
+      }
+    },
+    {
+      "EventId": 4,
+      "EventName": "Kybernetický útok",
+      "EventDescription": "Únik soukromé databáze podporovatelů.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Bagatelizovat",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -1, "Impact": -2, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -1, "Impact": -2, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -1, "Impact": -2, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 4,
+        "OptionPerk": null,
+        "OptionName": "Odkoupit data zpět",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 0, "Impact": 0, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 0, "Impact": 0, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 0, "Impact": 0, "Visibility": 0 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Proti elitám",
+        "OptionName": "Obvinit tajné služby",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 1, "Visibility": 1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 1, "Visibility": 1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 1, "Visibility": 1 }
+      }
+    },
+    {
+      "EventId": 5,
+      "EventName": "Charitativní krize",
+      "EventDescription": "Zemi poničily povodně, vláda nestíhá distribuovat pomoc.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Ignorovat",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -1, "Impact": -2, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -1, "Impact": -2, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -1, "Impact": -2, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 3,
+        "OptionPerk": null,
+        "OptionName": "Vlastní pomoc",
+        "OptionEffect": "zvýšení počtu stoupenců o 5%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 3, "Impact": 3, "Visibility": 3 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 3, "Impact": 3, "Visibility": 3 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 3, "Impact": 3, "Visibility": 3 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Relativizace pravdy",
+        "OptionName": "Svalit vinu na vládu",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 1, "Visibility": 2 }
+      }
+    },
+    {
+      "EventId": 6,
+      "EventName": "Ban na soc. sítích",
+      "EventDescription": "Dostal si dočasný ban na sociálních sítích.",
+      "EventPredisposition": "Sociální sítě",
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Umírnit rétoriku",
+        "OptionEffect": "snížení počtu stoupenců o 5%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -2, "Impact": -1, "Visibility": -1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -2, "Impact": -1, "Visibility": -1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -2, "Impact": -1, "Visibility": -1 }
+      },
+      "OptionMoney": {
+        "OptionCost": 2,
+        "OptionPerk": null,
+        "OptionName": "Žaloba na cenzuru",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": 1, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": 1, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": 1, "Visibility": 2 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "vlastní sociální síť",
+        "OptionName": "Alternativní platforma",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 2, "Visibility": 1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 2, "Visibility": 1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 2, "Visibility": 1 }
+      }
+    },
+    {
+      "EventId": 7,
+      "EventName": "Zahraniční reportáž",
+      "EventDescription": "Reportáž o vás jako o hrozbě.",
+      "EventPredisposition": "Stoupenci > 20%",
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Ignorovat",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -2, "Impact": -2, "Visibility": 1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -2, "Impact": -2, "Visibility": 1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -2, "Impact": -2, "Visibility": 1 }
+      },
+      "OptionMoney": {
+        "OptionCost": 0,
+        "OptionPerk": "Zastrašování novinářů",
+        "OptionName": "Protiútok na novináře",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 3, "Impact": 2, "Visibility": 3 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 3, "Impact": 2, "Visibility": 3 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 3, "Impact": 2, "Visibility": 3 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Relativizace pravdy",
+        "OptionName": "Obvinit z vměšování",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": 2, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": 2, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": 2, "Visibility": 2 }
+      }
+    },
+    {
+      "EventId": 8,
+      "EventName": "Církevní výtka",
+      "EventDescription": "Byli jste označeni církví jako nemorální.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Ignorovat",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -1, "Impact": -1, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -1, "Impact": -1, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -1, "Impact": -1, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Hledat smíření",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": -1, "Visibility": 1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": -1, "Visibility": 1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": -1, "Visibility": 1 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Proti náboženským menšinám",
+        "OptionName": "Útok na církev",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 2, "Visibility": 3 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 2, "Visibility": 3 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 2, "Visibility": 3 }
+      }
+    },
+    {
+      "EventId": 9,
+      "EventName": "Skandál u piva",
+      "EventDescription": "Zaplacený influencer byl viděn na pivu s \"nepřítelem\".",
+      "EventPredisposition": "Influenceři",
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Ignorovat",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -2, "Impact": -2, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -2, "Impact": -2, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -2, "Impact": -2, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Rozvázat spolupráci",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -1, "Impact": -1, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -1, "Impact": -1, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -1, "Impact": -1, "Visibility": 0 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Selský rozum",
+        "OptionName": "Vysvětlit jako infiltraci druhého tábora",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 2, "Visibility": 1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 2, "Visibility": 1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 2, "Visibility": 1 }
+      }
+    },
+    {
+      "EventId": 10,
+      "EventName": "Ekonomická recese",
+      "EventDescription": "Ceny potravin enormně rostou.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Slibovat nereálné",
+        "OptionEffect": "imunní obyvatelé +2%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 1, "Visibility": 2 }
+      },
+      "OptionMoney": {
+        "OptionCost": 2,
+        "OptionPerk": null,
+        "OptionName": "Založit sbírku",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 3, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 3, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 3, "Visibility": 2 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Téma: Kritika migrantů",
+        "OptionName": "Obvinit migranty",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 3, "Impact": 3, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 3, "Impact": 3, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 3, "Impact": 3, "Visibility": 2 }
+      }
+    },
+    {
+      "EventId": 11,
+      "EventName": "Soudní proces",
+      "EventDescription": "Jeden ze stoupenců je souzen za násilí.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Distancovat se",
+        "OptionEffect": "snížení počtu stoupenců o 5%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": 2, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": 2, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": 2, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 3,
+        "OptionPerk": null,
+        "OptionName": "Zaplatit právníky",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": 1, "Visibility": 1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": 1, "Visibility": 1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": 1, "Visibility": 1 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Relativizace pravdy",
+        "OptionName": "Udělat mučedníka",
+        "OptionEffect": "imunní obyvatelé +5%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 3, "Impact": 3, "Visibility": 3 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 3, "Impact": 3, "Visibility": 3 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 3, "Impact": 3, "Visibility": 3 }
+      }
+    },
+    {
+      "EventId": 12,
+      "EventName": "Investigativní kniha",
+      "EventDescription": "V malém vydavatelství vyšla kniha varující před vaší ideologií.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Upozornit na chyby",
+        "OptionEffect": "imunní obyvatelé +2%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": 1, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": 1, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": 1, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 2,
+        "OptionPerk": null,
+        "OptionName": "Žalovat vydavatele",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 1, "Visibility": 2 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Stoupenci: > 30%",
+        "OptionName": "Pálení knih",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 3, "Visibility": 4 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 3, "Visibility": 4 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 3, "Visibility": 4 }
+      }
+    },
+    {
+      "EventId": 13,
+      "EventName": "Vpád do redakce",
+      "EventDescription": "Stoupenci vpadli do redakce internetového magazínu píšícího kriticky o naší věci.",
+      "EventPredisposition": "Polovojenské jednotky",
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Odsoudit a distancovat se",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -1, "Impact": -2, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -1, "Impact": -2, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -1, "Impact": -2, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 0,
+        "OptionPerk": "Stoupenci: > 30%",
+        "OptionName": "Zaútočit na média",
+        "OptionEffect": "imunní obyvatelé +3%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 3, "Visibility": 3 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 3, "Visibility": 3 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 3, "Visibility": 3 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Relativizace pravdy",
+        "OptionName": "Chápeme frustraci",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": 2, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": 2, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": 2, "Visibility": 2 }
+      }
+    },
+    {
+      "EventId": 14,
+      "EventName": "Sportovní úspěch",
+      "EventDescription": "Národní mužstvo uspělo na mistrovství.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Přiživit se",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": 1, "Visibility": 1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": 1, "Visibility": 1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": 1, "Visibility": 1 }
+      },
+      "OptionMoney": {
+        "OptionCost": 2,
+        "OptionPerk": null,
+        "OptionName": "Uspořádat oslavu",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 2, "Visibility": 1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 2, "Visibility": 1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 2, "Visibility": 1 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Téma: Kritika menšin",
+        "OptionName": "Kritika multikulturálního teamu",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 2, "Visibility": 3 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 2, "Visibility": 3 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 2, "Visibility": 3 }
+      }
+    },
+    {
+      "EventId": 15,
+      "EventName": "Dopis umělců",
+      "EventDescription": "Umělci vás nazývají fašisty.",
+      "EventPredisposition": "Založení politické strany",
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Ignorovat",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -1, "Impact": -1, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -1, "Impact": -1, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -1, "Impact": -1, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 3,
+        "OptionPerk": null,
+        "OptionName": "Zaplatit vlastní umělce",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 2, "Visibility": 1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 2, "Visibility": 1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 2, "Visibility": 1 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Verb. agresivita",
+        "OptionName": "Zaútočit",
+        "OptionEffect": "imunní obyvatelé +3%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 3, "Visibility": 3 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 3, "Visibility": 3 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 3, "Visibility": 3 }
+      }
+    },
+    {
+      "EventId": 16,
+      "EventName": "Pozvání do médií",
+      "EventDescription": "Jako zástupci hnutí jste byli pozváni na rozhovor do televize.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Klidný projev",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -1, "Impact": -1, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -1, "Impact": -1, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -1, "Impact": -1, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Odejít v průběhu ze studia",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 1, "Visibility": 1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 1, "Visibility": 1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 1, "Visibility": 1 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Vlastnost: Verb. agresivita",
+        "OptionName": "Agresivní styl",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 3, "Impact": 2, "Visibility": 3 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 3, "Impact": 2, "Visibility": 3 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 3, "Impact": 2, "Visibility": 3 }
+      }
+    },
+    {
+      "EventId": 17,
+      "EventName": "Eko katastrofa",
+      "EventDescription": "Chemička jednoho sponzora způsobila katastrofu.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Zříct se sponzora",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -2, "Impact": -1, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -2, "Impact": -1, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -2, "Impact": -1, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 3,
+        "OptionPerk": null,
+        "OptionName": "Podplatit svědky",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 0, "Impact": 0, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 0, "Impact": 0, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 0, "Impact": 0, "Visibility": 0 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Relativizace pravdy",
+        "OptionName": "Popírat míru škody",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": 1, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": 1, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": 1, "Visibility": 2 }
+      }
+    },
+    {
+      "EventId": 18,
+      "EventName": "Uniklé dokumenty (finanční)",
+      "EventDescription": "Na veřejnost se dostaly dokumenty mapující finanční trestnou činnost významného představitele skupiny.",
+      "EventPredisposition": "Stoupenci > 20%",
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Zříct se člena",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -1, "Impact": -3, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -1, "Impact": -3, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -1, "Impact": -3, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Prohlásit za padělek",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": 0, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": 0, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": 0, "Visibility": 2 }
+      },
+      "OptionPerk": {
+        "OptionCost": 2,
+        "OptionPerk": "Relativizace pravdy",
+        "OptionName": "Obžalovat zdroj",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 1, "Visibility": 2 }
+      }
+    },
+    {
+      "EventId": 19,
+      "EventName": "Uniklé dokumenty (sexuální)",
+      "EventDescription": "Na veřejnost se dostaly dokumenty mapující sexuální trestnou činnost významného představitele skupiny.",
+      "EventPredisposition": "Stoupenci > 20%",
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Ignorovat",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -1, "Impact": -3, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -1, "Impact": -3, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -1, "Impact": -3, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 2,
+        "OptionPerk": null,
+        "OptionName": "Podplatit znalce a prohlásit za padělek",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -1, "Impact": -2, "Visibility": 1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -1, "Impact": -2, "Visibility": 1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -1, "Impact": -2, "Visibility": 1 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Proti sexuálním menšinám",
+        "OptionName": "Označit za útok od LGBTQ aktivistů",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": 1, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": 1, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": 1, "Visibility": 2 }
+      }
+    },
+    {
+      "EventId": 20,
+      "EventName": "Foto se zahraničním oligarchou",
+      "EventDescription": "Významní členové strany byli vyfoceni na schůzce s kontroverzním oligarchou.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Omluvit se",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -1, "Impact": -1, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -1, "Impact": -1, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -1, "Impact": -1, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 2,
+        "OptionPerk": null,
+        "OptionName": "Popření, AI",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": 1, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": 1, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": 1, "Visibility": 2 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Selský rozum",
+        "OptionName": "Jednání o investicích pro lidi",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": 1, "Visibility": 1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": 1, "Visibility": 1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": 1, "Visibility": 1 }
+      }
+    },
+    {
+      "EventId": 21,
+      "EventName": "Parodie v divadle",
+      "EventDescription": "V divadle se začala hrát hra parodující vaše hnutí.",
+      "EventPredisposition": "Stoupenci > 30%",
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Ignorovat",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 0, "Impact": -2, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 0, "Impact": -2, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 0, "Impact": -2, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 0,
+        "OptionPerk": "Polovojenské skupiny",
+        "OptionName": "Zastrašit divadlo",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 3, "Impact": 2, "Visibility": 3 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 3, "Impact": 2, "Visibility": 3 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 3, "Impact": 2, "Visibility": 3 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Zvolení do poslanecké sněmovny",
+        "OptionName": "Zařídit snížení financování divadla",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 1, "Visibility": 2 }
+      }
+    },
+    {
+      "EventId": 22,
+      "EventName": "Exodus vzdělaných",
+      "EventDescription": "Zemi začali opouštět vzdělaní lidé.",
+      "EventPredisposition": "Zvolení do poslanecké sněmovny",
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Ať si jdou",
+        "OptionEffect": "imunní obyvatelé +5%; počet vysokoškolsky vzdělaných -20%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -1, "Impact": -4, "Visibility": 3 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -1, "Impact": -4, "Visibility": 3 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -1, "Impact": -4, "Visibility": 3 }
+      },
+      "OptionMoney": {
+        "OptionCost": 3,
+        "OptionPerk": null,
+        "OptionName": "Zákaz vycestování",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 3, "Impact": -1, "Visibility": 4 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 3, "Impact": -1, "Visibility": 4 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 3, "Impact": -1, "Visibility": 4 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Relativizace pravdy",
+        "OptionName": "Zpochybnit statistiky",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 1, "Visibility": 2 }
+      }
+    },
+    {
+      "EventId": 23,
+      "EventName": "Demonstrace opozice",
+      "EventDescription": "Opozice uspořádala demonstraci proti vaší vládě.",
+      "EventPredisposition": "Účast ve vládě",
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Ignorovat",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -2, "Impact": -2, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -2, "Impact": -2, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -2, "Impact": -2, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 2,
+        "OptionPerk": null,
+        "OptionName": "Protidemonstrace",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 2, "Visibility": 3 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 2, "Visibility": 3 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 2, "Visibility": 3 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Násilné rozehnání",
+        "OptionEffect": "imunní obyvatelé +5%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 3, "Impact": 2, "Visibility": 3 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 3, "Impact": 2, "Visibility": 3 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 3, "Impact": 2, "Visibility": 3 }
+      }
+    },
+    {
+      "EventId": 24,
+      "EventName": "Kontroverzní meme",
+      "EventDescription": "Na oficiálních stránkách jste zveřejnili rasistické meme, který vyvolal velkou negativní reakci společnosti.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Omluva",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -1, "Impact": -2, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -1, "Impact": -2, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -1, "Impact": -2, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Argumentovat svobodou slova",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 3, "Visibility": 3 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 3, "Visibility": 3 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 3, "Visibility": 3 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Začít prodávat oficiální merch",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 2, "Visibility": 3 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 2, "Visibility": 3 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 2, "Visibility": 3 }
+      }
+    },
+    {
+      "EventId": 25,
+      "EventName": "Neziskovka",
+      "EventDescription": "Byla založena nevládní organizace monitorující potlačování lidských práv.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Ignorovat",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 0, "Impact": -2, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 0, "Impact": -2, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 0, "Impact": -2, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 2,
+        "OptionPerk": null,
+        "OptionName": "Diskreditace",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 1, "Visibility": 2 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Zvolení do poslanecké sněmovny",
+        "OptionName": "Zákon o agentech",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 3, "Impact": 3, "Visibility": 3 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 3, "Impact": 3, "Visibility": 3 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 3, "Impact": 3, "Visibility": 3 }
+      }
+    },
+    {
+      "EventId": 26,
+      "EventName": "Investigativní podcast",
+      "EventDescription": "Na internetu se objevil investigativní podcast mapující činnost vaší organizace.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Ignorovat",
+        "OptionEffect": "imunní obyvatelé +2%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -2, "Impact": -2, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -2, "Impact": -2, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -2, "Impact": -2, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 4,
+        "OptionPerk": null,
+        "OptionName": "Koupit/Smazat",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 0, "Impact": 0, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 0, "Impact": 0, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 0, "Impact": 0, "Visibility": 0 }
+      },
+      "OptionPerk": {
+        "OptionCost": 2,
+        "OptionPerk": "Influenceři",
+        "OptionName": "Vlastní podcast",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 2, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 2, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 2, "Visibility": 2 }
+      }
+    },
+    {
+      "EventId": 27,
+      "EventName": "Útok cizí moci",
+      "EventDescription": "Nepřátelská mocnost zpochybnila národnostní identitu a územní celistvost naší země.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Ignorovat",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -3, "Impact": -3, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -3, "Impact": -3, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -3, "Impact": -3, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Souhlasit",
+        "OptionEffect": "zisk peněz (+3)",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -3, "Impact": -4, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -3, "Impact": -4, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -3, "Impact": -4, "Visibility": 2 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Demonstrace",
+        "OptionName": "Ostrá obrana a demonstrace",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": 1, "Visibility": 1 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": 1, "Visibility": 1 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": 1, "Visibility": 1 }
+      }
+    },
+    {
+      "EventId": 28,
+      "EventName": "Odchod investora",
+      "EventDescription": "Zahraniční investor opouští zemi.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Nechat ho odejít",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -1, "Impact": -2, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -1, "Impact": -2, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -1, "Impact": -2, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Zajistit lepší podmínky",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": -3, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": -3, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": -3, "Visibility": 0 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Zvolení do poslanecké sněmovny",
+        "OptionName": "Znárodnit mu firmu",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 3, "Impact": 3, "Visibility": 4 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 3, "Impact": 3, "Visibility": 4 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 3, "Impact": 3, "Visibility": 4 }
+      }
+    },
+    {
+      "EventId": 29,
+      "EventName": "Nová móda",
+      "EventDescription": "Stoupenci začali nosit specifický kus oblečení.",
+      "EventPredisposition": "Stoupenci > 30%",
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Distancovat se",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -1, "Impact": -2, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -1, "Impact": -2, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -1, "Impact": -2, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Oficiální prodej",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 1, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 1, "Visibility": 2 }
+      },
+      "OptionPerk": {
+        "OptionCost": 2,
+        "OptionPerk": "Polovojenské jednotky",
+        "OptionName": "Zavést uniformy",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 2, "Impact": 3, "Visibility": 4 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 2, "Impact": 3, "Visibility": 4 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 2, "Impact": 3, "Visibility": 4 }
+      }
+    },
+    {
+      "EventId": 30,
+      "EventName": "Rodinný rozkol",
+      "EventDescription": "Syn/dcera důležitého člena strany vystoupil proti vaší politice.",
+      "EventPredisposition": null,
+      "OptionFree": {
+        "OptionCost": 0,
+        "OptionPerk": null,
+        "OptionName": "Ignorovat",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": -3, "Impact": -2, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": -3, "Impact": -2, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": -3, "Impact": -2, "Visibility": 0 }
+      },
+      "OptionMoney": {
+        "OptionCost": 3,
+        "OptionPerk": null,
+        "OptionName": "Podplatit",
+        "OptionEffect": null,
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 0, "Impact": 0, "Visibility": 0 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 0, "Impact": 0, "Visibility": 0 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 0, "Impact": 0, "Visibility": 0 }
+      },
+      "OptionPerk": {
+        "OptionCost": 0,
+        "OptionPerk": "Verb. agresivita",
+        "OptionName": "Vydědit a odsoudit",
+        "OptionEffect": "snížení počtu stoupenců o 5%",
+        "OptionEffectYoung": { "AgeGroup": 0, "Virality": 1, "Impact": 1, "Visibility": 2 },
+        "OptionEffectAdult": { "AgeGroup": 1, "Virality": 1, "Impact": 1, "Visibility": 2 },
+        "OptionEffectSenior": { "AgeGroup": 2, "Virality": 1, "Impact": 1, "Visibility": 2 }
+      }
+    }
+  ]
+}
