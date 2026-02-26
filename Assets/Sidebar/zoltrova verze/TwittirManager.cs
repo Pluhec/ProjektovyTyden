@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.Video;
 using TMPro;
 using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using PlayerChoice.DataSets;
@@ -14,18 +15,45 @@ public class TwittirManager : MonoBehaviour
     public GameObject prefab_imagePost;
     public GameObject prefab_videoPost;
     public Transform contentParent;
+    public Transform loadingIndicator;
+    public Transform loadingCircle;
+    public ScrollRect scrollRect;
 
-    // Put your images in Assets/Resources/TwittirImages/
-    // Put your videos in Assets/Resources/TwittirVideos/
-    private static readonly string ImagesResourcePath = "TwittirImages";
+    [Tooltip("Seconds to wait at the bottom before loading more")]
+    public float loadMoreDelay = 2f;
+
+    // Images:  Assets/Resources/TwittirImages/dem/   (stance 1)
+    //           Assets/Resources/TwittirImages/prop/  (stance 2)
+    //           Assets/Resources/TwittirImages/tot/   (stance 3)
+    // Videos:   Assets/Resources/TwittirVideos/
     private static readonly string VideosResourcePath = "TwittirVideos";
+
+    [Tooltip("1 = dem, 2 = prop, 3 = tot")]
+    public int stance = 1;
 
     private static System.Random _random = new System.Random();
     private static HashSet<string> _postedMessages = new HashSet<string>();
 
+    private bool _isLoadingMore = false;
+
     void Start()
     {
         Generate10();
+    }
+
+    void Update()
+    {
+        // Keep the loading circle spinning
+        if (loadingCircle != null)
+            loadingCircle.Rotate(0f, 0f, -180f * Time.deltaTime);
+
+        // If scrolled to the bottom and loading indicator is visible, load more
+        if (!_isLoadingMore && scrollRect != null && loadingIndicator != null
+            && loadingIndicator.gameObject.activeInHierarchy
+            && scrollRect.verticalNormalizedPosition <= 0.01f)
+        {
+            StartCoroutine(LoadMoreAfterDelay());
+        }
     }
 
     // Generate 10 new posts with a random mix of types
@@ -56,6 +84,7 @@ public class TwittirManager : MonoBehaviour
         if (post_data == null) return;
 
         GameObject post = Instantiate(prefab_messagePost, contentParent);
+        if (loadingIndicator != null) loadingIndicator.SetAsLastSibling();
 
         Transform usernameChild = post.transform.Find("username");
         Transform messageChild  = post.transform.Find("message");
@@ -71,23 +100,37 @@ public class TwittirManager : MonoBehaviour
         SocialPost_JSON post_data = GetRandomPost();
         if (post_data == null) return;
 
-        // Load all textures from Resources/TwittirImages/
-        Texture2D[] images = Resources.LoadAll<Texture2D>(ImagesResourcePath);
+        // Pick subfolder based on stance: 1=dem, 2=prop, 3=tot
+        string subfolder = stance switch { 2 => "prop", 3 => "tot", _ => "dem" };
+        string imagePath = $"TwittirImages/{subfolder}";
+
+        Texture2D[] images = Resources.LoadAll<Texture2D>(imagePath);
         if (images == null || images.Length == 0)
         {
-            Debug.LogWarning($"TwittirManager: No textures found in Resources/{ImagesResourcePath}/");
+            Debug.LogWarning($"TwittirManager: No textures found in Resources/{imagePath}/");
             return;
         }
 
         Texture2D randomImage = images[_random.Next(0, images.Length)];
 
         GameObject post = Instantiate(prefab_imagePost, contentParent);
+        if (loadingIndicator != null) loadingIndicator.SetAsLastSibling();
 
         Transform usernameChild = post.transform.Find("username");
         Transform imageChild    = post.transform.Find("image");
 
         if (usernameChild != null) usernameChild.GetComponent<TMP_Text>().text = post_data.UserName;
-        if (imageChild    != null) imageChild.GetComponent<RawImage>().texture  = randomImage;
+        if (imageChild    != null)
+        {
+            RawImage rawImage = imageChild.GetComponent<RawImage>();
+            rawImage.texture = randomImage;
+
+            // Resize width to match the image aspect ratio, keeping the current height
+            RectTransform imageRect = imageChild.GetComponent<RectTransform>();
+            float height      = imageRect.sizeDelta.y;
+            float aspectRatio = (float)randomImage.width / randomImage.height;
+            imageRect.sizeDelta = new Vector2(height * aspectRatio, height);
+        }
     }
 
     void GenerateRandomVideoPost()
@@ -108,6 +151,7 @@ public class TwittirManager : MonoBehaviour
         VideoClip randomVideo = videos[_random.Next(0, videos.Length)];
 
         GameObject post = Instantiate(prefab_videoPost, contentParent);
+        if (loadingIndicator != null) loadingIndicator.SetAsLastSibling();
 
         Transform usernameChild = post.transform.Find("username");
         Transform videoChild    = post.transform.Find("video");
@@ -116,10 +160,47 @@ public class TwittirManager : MonoBehaviour
         if (videoChild    != null)
         {
             VideoPlayer player = videoChild.GetComponent<VideoPlayer>();
-            player.clip      = randomVideo;
-            player.isLooping = true;
-            player.Play();
+
+            // Create a RenderTexture sized to the clip and pipe it to a RawImage
+            // so the video is actually visible inside the UI.
+            RenderTexture rt = new RenderTexture((int)randomVideo.width, (int)randomVideo.height, 0);
+            player.renderMode   = VideoRenderMode.RenderTexture;
+            player.targetTexture = rt;
+
+            RawImage display = videoChild.GetComponentInChildren<RawImage>();
+            if (display != null) display.texture = rt;
+
+            player.clip        = randomVideo;
+            player.isLooping   = true;
+            player.playOnAwake = false; // hover controller handles play/pause
+
+            // Add hover controller so video plays only when the cursor is over it
+            VideoHoverController hover = videoChild.gameObject.AddComponent<VideoHoverController>();
+            hover.videoPlayer = player;
+
+            // Prepare the video and show the first frame so it isn't transparent at rest
+            player.prepareCompleted += _ => StartCoroutine(ShowFirstFrame(player));
+            player.Prepare();
         }
+    }
+
+    // Plays the video for one frame to bake the first frame into the RenderTexture, then pauses.
+    private IEnumerator ShowFirstFrame(VideoPlayer player)
+    {
+        player.Play();
+        yield return null; // wait one engine frame for the texture to be written
+        player.Pause();
+        player.frame = 0;
+    }
+
+    private IEnumerator LoadMoreAfterDelay()
+    {
+        _isLoadingMore = true;
+        yield return new WaitForSeconds(loadMoreDelay);
+        // Only fire if still at the bottom (user didn't scroll away)
+        if (scrollRect.verticalNormalizedPosition <= 0.01f)
+            Generate10();
+        _isLoadingMore = false;
     }
 
     // Reuses the same JSON loading logic as UserMessageScript

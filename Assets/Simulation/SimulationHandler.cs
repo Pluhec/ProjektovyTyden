@@ -97,6 +97,7 @@ public class SimulationHandler : MonoBehaviour
     void Start()
     {
         numNPCs = gridSize.x * gridSize.y;
+        PlayerChoice.DataSets.DataFunctions.SetSimulationHandler(this);
         simulationTime = 0;
         propertyBlock = new MaterialPropertyBlock();
         kernel_init = cs.FindKernel("SimulationInit");
