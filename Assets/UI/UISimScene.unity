@@ -1263,7 +1263,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.215
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2340,7 +2340,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -4.9999847, y: 0}
+  m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &940294650
@@ -2739,7 +2739,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -91.97009, y: 0}
+  m_AnchoredPosition: {x: -91.97006, y: 0}
   m_SizeDelta: {x: -1636.06, y: -980}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1120160586
@@ -4404,15 +4404,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapCameraMovement
   zoomSpeed: 5
-  minZoom: 1.5
+  minZoom: 2
   autoMaxZoom: 1
   maxZoom: 5
   zoomSmoothTime: 0.07
   panSmoothTime: 0.1
   requireMapHoverToPan: 1
   useBounds: 1
-  mapMinBounds: {x: -7.44, y: -5.02}
-  mapMaxBounds: {x: 7.37, y: 5}
+  mapMinBounds: {x: -9, y: -5}
+  mapMaxBounds: {x: 9, y: 5}
   windAudioSource: {fileID: 1723608309}
   movementDeadZone: 0.05
   minWindVolume: 0.05
@@ -4909,7 +4909,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "11. z\xE1\u0159\xED 2001"
+  m_text: 1. ledna 2026
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
   m_sharedMaterial: {fileID: 3980617868774612110, guid: f62a69d0bb4684969a1e9735772fa165, type: 2}
