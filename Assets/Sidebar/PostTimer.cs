@@ -26,6 +26,7 @@ public class PostTimer : MonoBehaviour
     {
         // only for testing -> _sidebarScript.SpawnPrefab();
 
+        // calling the tweets
         if (_sidebarScript == null) return;
 
         _timer += Time.deltaTime;
@@ -39,5 +40,8 @@ public class PostTimer : MonoBehaviour
             _timer = 0f;
             _nextWaitTime = Random.Range(MinPostTime, MaxPostTime);
         }
+
+        // calling the mediascript now and then 
+        
     }
 }
