@@ -7,7 +7,7 @@ namespace PlayerChoice.DataSets
 {
 public class PlayerStats
 {
-	public static int Money;
+	public static int Money = 10;
 }
 
 public class PerkInformation
@@ -55,7 +55,7 @@ public class PerkInformation
 
 		if(PerkName.Equals("Založení politické strany"))
 		{
-                DataFunctions.ShowWebButtonOnUI();
+			DataFunctions.ShowWebButtonOnUI();
 		}
 		PlayerStats.Money	-= PerkCost;
 		IsBought = true;
