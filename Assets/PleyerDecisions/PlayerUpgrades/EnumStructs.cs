@@ -80,10 +80,13 @@ public class EventInfo
 	public int EventId;
 	public string EventName;
 	public string EventDescription;
-	public string EventPredisposition;
+	public string VideoPath;
 	public EnumStructs.S_EventOption OptionFree;
 	public EnumStructs.S_EventOption OptionMoney;
 	public EnumStructs.S_EventOption OptionPerk;
+
+	public PerkInformation? RequiredPerk;
+	public byte? CollaboratorsRequired;
 
 	public bool EventOption(int PAR_Option)
 		{
