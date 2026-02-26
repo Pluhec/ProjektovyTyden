@@ -23,6 +23,9 @@ Shader "Custom/Clouds_Urp"
         [Header(UV)]
         _UVTiling("UV Tiling", Vector) = (1, 1, 0, 0)
         _UVOffset("UV Offset", Vector) = (0, 0, 0, 0)
+
+        [Header(Time Control)]
+        [HideInInspector] _CloudTime("Cloud Time", Float) = 0.0
     }
 
     SubShader
@@ -75,6 +78,7 @@ Shader "Custom/Clouds_Urp"
                 float4 _DistortionSpeed;
                 float4 _UVTiling;
                 float4 _UVOffset;
+                float _CloudTime;
             CBUFFER_END
 
             float hash21(float2 p)
@@ -126,9 +130,9 @@ Shader "Custom/Clouds_Urp"
             half4 frag(Varyings IN) : SV_Target
             {
                 float2 uv = IN.uv * _UVTiling.xy + _UVOffset.xy;
-                float2 timePrimary = _Time.y * _PrimarySpeed.xy;
-                float2 timeSecondary = _Time.y * _SecondarySpeed.xy;
-                float2 timeDistort = _Time.y * _DistortionSpeed.xy;
+                float2 timePrimary = _CloudTime * _PrimarySpeed.xy;
+                float2 timeSecondary = _CloudTime * _SecondarySpeed.xy;
+                float2 timeDistort = _CloudTime * _DistortionSpeed.xy;
 
                 float2 distortionUV = uv * (_PrimaryScale * 0.8) + timeDistort;
                 float2 distortion = (float2(noise2d(distortionUV), noise2d(distortionUV + 13.7)) - 0.5) * _DistortionStrength;
