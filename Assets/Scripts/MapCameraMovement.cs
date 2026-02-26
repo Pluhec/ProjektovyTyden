@@ -6,6 +6,9 @@ public class MapCameraMovement : MonoBehaviour
     [Header("Zoom Settings")]
     public float zoomSpeed = 5f;
     public float minZoom = 2f;
+    [Tooltip("When true, maxZoom is auto-calculated so the camera fits inside the movement bounds.")]
+    public bool autoMaxZoom = true;
+    [Tooltip("Used only when autoMaxZoom is false.")]
     public float maxZoom = 15f;
     public float zoomSmoothTime = 0.1f;
 
@@ -149,7 +152,7 @@ public class MapCameraMovement : MonoBehaviour
 
     private void HandlePan()
     {
-        if (Input.GetMouseButtonDown(1)) // Right click
+        if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2)) // Right click
         {
             if (!requireMapHoverToPan || IsHoveringMap())
             {
@@ -159,7 +162,7 @@ public class MapCameraMovement : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(1) && isDragging)
+        if ((Input.GetMouseButton(1) || Input.GetMouseButton(2)) && isDragging)
         {
             Vector3 currentMousePos = Input.mousePosition;
             
@@ -173,7 +176,7 @@ public class MapCameraMovement : MonoBehaviour
             targetPosition = dragStartCamPos - new Vector3(dx, dy, 0f);
         }
 
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(2))
         {
             isDragging = false;
         }
@@ -209,6 +212,26 @@ public class MapCameraMovement : MonoBehaviour
         {
             targetPosition.y = Mathf.Clamp(targetPosition.y, minY, maxY);
         }
+    }
+
+    /// <summary>
+    /// Computes maxZoom so the fully zoomed-out camera fits exactly inside the map bounds.
+    /// Call this if you change mapMinBounds/mapMaxBounds at runtime.
+    /// </summary>
+    public void ComputeAutoMaxZoom()
+    {
+        if (!autoMaxZoom || !useBounds) return;
+
+        float boundsWidth  = Mathf.Abs(mapMaxBounds.x - mapMinBounds.x);
+        float boundsHeight = Mathf.Abs(mapMaxBounds.y - mapMinBounds.y);
+
+        float aspect = cam != null ? cam.aspect : (Screen.width / (float)Screen.height);
+
+        // orthographicSize = half-height, so camera covers (ortho * 2) tall and (ortho * 2 * aspect) wide
+        float maxByHeight = boundsHeight / 2f;
+        float maxByWidth  = boundsWidth / (2f * aspect);
+
+        maxZoom = Mathf.Max(minZoom, Mathf.Min(maxByHeight, maxByWidth));
     }
 
     private bool IsHoveringMap()

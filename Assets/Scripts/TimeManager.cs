@@ -44,28 +44,20 @@ public class TimeManager : MonoBehaviour
             }
         }
 
-        float timeOfTheDay = Mathf.Pow(Mathf.Cos((simulationHandler.simulationTime % 60 + timer) / 60f * Mathf.PI * 2)*0.5f+0.5f, 0.28f);
+        float timeOfTheDay = Mathf.Cos((simulationHandler.simulationTime % 60 + timer) / 60f * Mathf.PI * 2)*0.5f+0.5f;
         foreach (var img in allMapResources)
-            img.color = dayNightGradient.Evaluate(timeOfTheDay);
+            img.color = dayNightGradient.Evaluate(Mathf.Clamp01(1f-timeOfTheDay));
 
-        // Day progress slider (0-1 within current day)
         if (daySlider != null)
         {
-            float dayProgress = (simulationHandler.simulationTime % 60 + timer) / 60f;
+            float dayProgress = ((simulationHandler.simulationTime + 30) % 60 + timer) / 60f;
             daySlider.value = dayProgress;
         }
 
-        // Switch material based on pause state
         if (daySliderFill != null)
             daySliderFill.material = isPaused ? pausedMaterial : playingMaterial;
 
-        // Increment day only when timeOfTheDay crosses from high to low (night)
-        float nightThreshold = 0.1f;
-        if (prevTimeOfTheDay > nightThreshold && timeOfTheDay <= nightThreshold)
-        {
-            day++;
-        }
-        prevTimeOfTheDay = timeOfTheDay;
+        day = (uint)((simulationHandler.simulationTime + 30) / 60) + 1;
 
         if (dayText != null)
         {
