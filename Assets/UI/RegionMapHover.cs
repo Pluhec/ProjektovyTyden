@@ -56,7 +56,7 @@ public class RegionMapHover : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButton(2))
+        if (Input.GetMouseButton(1))
         {
             int region = RaycastRegion();
 
