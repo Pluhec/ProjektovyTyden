@@ -52,7 +52,7 @@ public class DataFunctions
 			V_Event.EventId				= V_RawEvent.EventId;
 			V_Event.EventName			= V_RawEvent.EventName;
 			V_Event.EventDescription	= V_RawEvent.EventDescription;
-			V_Event.EventPredisposition	= V_RawEvent.EventPredisposition;
+			//V_Event.EventPredisposition	= V_RawEvent.EventPredisposition;
 			V_Event.OptionFree			= ConvertOption(V_RawEvent.OptionFree);
 			V_Event.OptionMoney			= ConvertOption(V_RawEvent.OptionMoney);
 			V_Event.OptionPerk			= ConvertOption(V_RawEvent.OptionPerk);
