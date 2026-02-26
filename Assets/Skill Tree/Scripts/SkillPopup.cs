@@ -83,9 +83,7 @@ public class SkillPopup : MonoBehaviour
     {
         if (_perkInfo == null) return;
 
-        // bool success = _perkInfo.PerkPurchase();
-
-        bool success = true;
+        bool success = _perkInfo.PerkPurchase();
         
         if (!success)
         {
