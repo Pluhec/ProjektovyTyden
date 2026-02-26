@@ -72,7 +72,10 @@ public class SkillTreeConnector : MonoBehaviour
 
         GenerateConnections();
 
-        // Debug - vypis všechny nody a jejich počet parentů
+        // Po vygenerování čar obnov červené barvy pro již odemčené spoje
+        if (Application.isPlaying)
+            RefreshLineColors();
+
         if (Application.isPlaying)
             DebugPrintParents();
     }
