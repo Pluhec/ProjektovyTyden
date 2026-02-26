@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using UnityEngine.InputSystem;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using PlayerChoice.DataSets;
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct NPC // 12b (9b data + 3b padding)
@@ -449,5 +450,36 @@ public class SimulationHandler : MonoBehaviour
     {
         if (npcBuffer != null)
             npcBuffer.Release();
+    }
+
+    // Applies S_StatData array (Young, Adult, Senior) as additive offsets to propaganda levels.
+    // sbyte values (-128..127) are normalized to (-1..1) before being added.
+    public void ApplyStatData(EnumStructs.S_StatData[] statData)
+    {
+        foreach (EnumStructs.S_StatData stat in statData)
+        {
+            float virality = stat.Virality / 127f;
+            float impact = stat.Impact / 127f;
+            float visibility = stat.Visibility / 127f;
+
+            switch (stat.AgeGroup)
+            {
+                case EnumStructs.E_Age.Young:
+                    propaganda.young.virality = Mathf.Max(0f, propaganda.young.virality   + virality);
+                    propaganda.young.impact = Mathf.Max(0f, propaganda.young.impact     + impact);
+                    propaganda.young.visibility = Mathf.Max(0f, propaganda.young.visibility + visibility);
+                    break;
+                case EnumStructs.E_Age.Adult:
+                    propaganda.adults.virality = Mathf.Max(0f, propaganda.adults.virality   + virality);
+                    propaganda.adults.impact = Mathf.Max(0f, propaganda.adults.impact     + impact);
+                    propaganda.adults.visibility = Mathf.Max(0f, propaganda.adults.visibility + visibility);
+                    break;
+                case EnumStructs.E_Age.Senior:
+                    propaganda.seniors.virality = Mathf.Max(0f, propaganda.seniors.virality   + virality);
+                    propaganda.seniors.impact = Mathf.Max(0f, propaganda.seniors.impact     + impact);
+                    propaganda.seniors.visibility = Mathf.Max(0f, propaganda.seniors.visibility + visibility);
+                    break;
+            }
+        }
     }
 }

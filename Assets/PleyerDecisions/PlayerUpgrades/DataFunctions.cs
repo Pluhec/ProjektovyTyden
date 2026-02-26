@@ -18,6 +18,7 @@ public interface ISocialSitePost
 public class DataFunctions
 {
 	private static EventDataReceiver V_EventDataReceiver;
+	private static SimulationHandler V_SimulationHandler;
 
 	public static List<EventInfo> EventsList = new List<EventInfo>();
 	public static List<PerkInformation> PurchasedPerk	= new List<PerkInformation>();
@@ -30,6 +31,11 @@ public class DataFunctions
 	public static void SetEventDataReceiver(EventDataReceiver PAR_EDR)
 	{
 		V_EventDataReceiver	= PAR_EDR;
+	}
+
+	public static void SetSimulationHandler(SimulationHandler PAR_Handler)
+	{
+		V_SimulationHandler	= PAR_Handler;
 	}
 
 	public static void LoadEventsFromJSON(string PAR_FilePath)
@@ -85,7 +91,7 @@ public class DataFunctions
 	// Data changing the stats for young, adult, senior
 	public static void SendDataToSimulation(EnumStructs.S_StatData[] PAR_StatData)
 	{
-		
+		V_SimulationHandler?.ApplyStatData(PAR_StatData);
 	}
 
 	// Data changing democracy meter
