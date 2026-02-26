@@ -152,7 +152,7 @@ public class MapCameraMovement : MonoBehaviour
 
     private void HandlePan()
     {
-        if (Input.GetMouseButtonDown(1)) // Right click
+        if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2)) // Right click
         {
             if (!requireMapHoverToPan || IsHoveringMap())
             {
@@ -162,7 +162,7 @@ public class MapCameraMovement : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(1) && isDragging)
+        if ((Input.GetMouseButton(1) || Input.GetMouseButton(2)) && isDragging)
         {
             Vector3 currentMousePos = Input.mousePosition;
             
@@ -176,7 +176,7 @@ public class MapCameraMovement : MonoBehaviour
             targetPosition = dragStartCamPos - new Vector3(dx, dy, 0f);
         }
 
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(2))
         {
             isDragging = false;
         }
