@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -72,6 +73,7 @@ public class TimeSoundManager : MonoBehaviour
     private float resolvedWindStartZoom;
     private float resolvedWindFullZoom;
     private MapCameraMovement mapCameraMovement;
+    private Coroutine fadeCoroutine;
 
     void Reset()
     {
@@ -173,26 +175,19 @@ public class TimeSoundManager : MonoBehaviour
     [ContextMenu("Stop All Sound")]
     public void StopAllSound()
     {
-        isSoundStopped = true;
-        FadeAllPeriodSources(0f, force: true);
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
 
-        if (highAltitudeWindAudioSource != null)
-        {
-            highAltitudeWindAudioSource.volume = 0f;
-            highAltitudeWindAudioSource.Pause();
-        }
-
-        activeSlotIndex = -1;
+        fadeCoroutine = StartCoroutine(FadeOutAndStopCoroutine());
     }
 
     [ContextMenu("Resume Sound")]
     public void ResumeSound()
     {
-        isSoundStopped = false;
-        ForceRefreshSound();
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
 
-        if (highAltitudeWindAudioSource != null && highAltitudeWindAudioSource.clip != null && !highAltitudeWindAudioSource.isPlaying)
-            highAltitudeWindAudioSource.Play();
+        fadeCoroutine = StartCoroutine(FadeInAndResumeCoroutine());
     }
 
     [ContextMenu("Force Refresh Time Sound")]
@@ -224,6 +219,163 @@ public class TimeSoundManager : MonoBehaviour
 
         ActivateSlot(slotIndex);
         ApplySlotVolumes(slotIndex, closeBlend01, force: true);
+    }
+
+    private IEnumerator FadeOutAndStopCoroutine()
+    {
+        isSoundStopped = true;
+
+        // Fade out period sources and wind until volumes reach ~0
+        while (true)
+        {
+            bool anyLoud = false;
+
+            foreach (var kv in periodSources)
+            {
+                AudioSource src = kv.Value;
+                if (src == null) continue;
+                if (src.volume > 0.001f)
+                    anyLoud = true;
+                FadeAudio(src, 0f, timeCrossfadeSpeed);
+            }
+
+            FadeAudio(highAltitudeWindAudioSource, 0f, windFadeSpeed);
+
+            if (!anyLoud && (highAltitudeWindAudioSource == null || highAltitudeWindAudioSource.volume <= 0.001f))
+                break;
+
+            yield return null;
+        }
+
+        // Ensure paused/stopped state
+        foreach (var kv in periodSources)
+        {
+            if (kv.Value == null) continue;
+            kv.Value.volume = 0f;
+            if (kv.Value.isPlaying)
+                kv.Value.Pause();
+        }
+
+        if (highAltitudeWindAudioSource != null)
+        {
+            highAltitudeWindAudioSource.volume = 0f;
+            highAltitudeWindAudioSource.Pause();
+        }
+
+        activeSlotIndex = -1;
+        fadeCoroutine = null;
+    }
+
+    private IEnumerator FadeInAndResumeCoroutine()
+    {
+        // Prevent Update from fighting our fade while we set things up
+        isSoundStopped = true;
+
+        // Prepare wind and period sources
+        ResolveWindZoomLimits();
+        if (highAltitudeWindAudioSource != null && highAltitudeWindAudioSource.clip != null && !highAltitudeWindAudioSource.isPlaying)
+            highAltitudeWindAudioSource.Play();
+
+        // Try to resolve simulation handler and current slot
+        TryResolveSimulationHandlerFromTimeManager();
+        bool closeNow = EvaluateZoomState();
+        bool willBeInClose = closeNow;
+        float startBlend = willBeInClose ? 1f : 0f;
+        closeBlend01 = startBlend;
+
+        if (!willBeInClose)
+        {
+            // Only fade wind in
+            float targetWind = highAltitudeWindVolume * EvaluateWindBlend();
+            while (highAltitudeWindAudioSource != null && highAltitudeWindAudioSource.volume < targetWind - 0.001f)
+            {
+                FadeAudio(highAltitudeWindAudioSource, targetWind, windFadeSpeed);
+                yield return null;
+            }
+
+            fadeCoroutine = null;
+            isSoundStopped = false;
+            yield break;
+        }
+
+        if (simulationHandler == null && !TryResolveSimulationHandlerFromTimeManager())
+        {
+            // No simulation -> nothing to play, but ensure wind is at desired level
+            float targetW = highAltitudeWindVolume * EvaluateWindBlend();
+            while (highAltitudeWindAudioSource != null && highAltitudeWindAudioSource.volume < targetW - 0.001f)
+            {
+                FadeAudio(highAltitudeWindAudioSource, targetW, windFadeSpeed);
+                yield return null;
+            }
+
+            fadeCoroutine = null;
+            isSoundStopped = false;
+            yield break;
+        }
+
+        int minuteInCycle = (int)(simulationHandler.simulationTime % 60);
+        int slotIndex = GetSlotIndexForMinute(minuteInCycle);
+        if (slotIndex < 0)
+        {
+            activeSlotIndex = -1;
+            fadeCoroutine = null;
+            isSoundStopped = false;
+            yield break;
+        }
+
+        // Ensure the slot is activated and audio clips are assigned/playing
+        ActivateSlot(slotIndex);
+
+        // Initialize volumes to zero so fade-in works predictably
+        foreach (var kv in periodSources)
+        {
+            if (kv.Value == null) continue;
+            kv.Value.volume = 0f;
+            if (kv.Value.clip != null && !kv.Value.isPlaying)
+                kv.Value.Play();
+        }
+
+        float targetWindVolume = highAltitudeWindVolume * EvaluateWindBlend();
+
+        // Fade until active period reaches its target
+        TimeSoundSlot activeSlot = soundSlots[slotIndex];
+        float targetVolume = activeSlot != null ? activeSlot.volume * closeBlend01 : 0f;
+
+        while (true)
+        {
+            bool done = true;
+
+            // Fade period sources toward target
+            foreach (var kv in periodSources)
+            {
+                float tgt = 0f;
+                if (activeSlot != null && kv.Key == activeSlot.period)
+                    tgt = targetVolume;
+
+                float cur = kv.Value != null ? kv.Value.volume : 0f;
+                if (cur < tgt - 0.001f)
+                    done = false;
+
+                if (kv.Value != null)
+                    FadeAudio(kv.Value, tgt, timeCrossfadeSpeed);
+            }
+
+            // Fade wind
+            if (highAltitudeWindAudioSource != null)
+            {
+                if (highAltitudeWindAudioSource.volume < targetWindVolume - 0.001f)
+                    done = false;
+
+                FadeAudio(highAltitudeWindAudioSource, targetWindVolume, windFadeSpeed);
+            }
+
+            if (done) break;
+            yield return null;
+        }
+
+        // Finalize state
+        isSoundStopped = false;
+        fadeCoroutine = null;
     }
 
     private bool TryResolveSimulationHandlerFromTimeManager()
