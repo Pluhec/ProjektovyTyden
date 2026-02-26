@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Camera))]
 public class MapCameraMovement : MonoBehaviour
@@ -22,6 +21,29 @@ public class MapCameraMovement : MonoBehaviour
     [Tooltip("The top-right corner of your map")]
     public Vector2 mapMaxBounds = new Vector2(20, 20);
 
+    [Header("Wind Audio Settings")]
+    public AudioSource windAudioSource;
+    [Tooltip("Small movement threshold to avoid tiny camera jitter creating sound.")]
+    public float movementDeadZone = 0.05f;
+    [Range(0f, 1f)] public float minWindVolume = 0.05f;
+    [Range(0f, 1f)] public float maxWindVolume = 0.8f;
+    [Range(0.1f, 3f)] public float minWindPitch = 0.95f;
+    [Range(0.1f, 3f)] public float maxWindPitch = 1.08f;
+    [Tooltip("How fast wind reacts when speed increases (seconds). Lower = snappier.")]
+    public float windAttackTime = 0.08f;
+    [Tooltip("How fast wind decays when speed drops (seconds).")]
+    public float windReleaseTime = 0.2f;
+    public float pitchAttackTime = 0.1f;
+    public float pitchReleaseTime = 0.25f;
+    [Tooltip("Pan speed (units/second) where pan reaches full influence.")]
+    public float panSpeedForMaxWind = 25f;
+    [Tooltip("Zoom speed (ortho units/second) where zoom reaches full influence.")]
+    public float zoomSpeedForMaxWind = 8f;
+    [Tooltip("Panning contribution to wind intensity. Keep this above zoom for louder side movement.")]
+    public float panLoudness = 1.0f;
+    [Tooltip("Zoom contribution to wind intensity.")]
+    public float zoomLoudness = 0.55f;
+
     private Camera cam;
     private float targetOrthoSize;
     private float zoomVelocity;
@@ -32,6 +54,10 @@ public class MapCameraMovement : MonoBehaviour
     private bool isDragging = false;
     private Vector3 dragStartMousePos;
     private Vector3 dragStartCamPos;
+    private Vector3 lastCameraPosition;
+    private float lastOrthoSize;
+    private float windVolumeVelocity;
+    private float windPitchVelocity;
 
     void Start()
     {
@@ -39,6 +65,18 @@ public class MapCameraMovement : MonoBehaviour
         cam.orthographic = true; // Force orthographic mode
         targetOrthoSize = cam.orthographicSize;
         targetPosition = transform.position;
+        lastCameraPosition = transform.position;
+        lastOrthoSize = cam.orthographicSize;
+
+        if (windAudioSource != null)
+        {
+            windAudioSource.volume = 0f;
+            windAudioSource.pitch = minWindPitch;
+            if (!windAudioSource.isPlaying && windAudioSource.clip != null)
+            {
+                windAudioSource.Play();
+            }
+        }
     }
 
     void Update()
@@ -53,6 +91,7 @@ public class MapCameraMovement : MonoBehaviour
         // Smoothly interpolate the camera's orthographic size and position
         cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, targetOrthoSize, ref zoomVelocity, zoomSmoothTime);
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref positionVelocity, panSmoothTime);
+        UpdateWindAudio();
     }
 
     private void HandleZoom()
@@ -180,5 +219,45 @@ public class MapCameraMovement : MonoBehaviour
         Gizmos.DrawLine(topLeft, topRight);
         Gizmos.DrawLine(topRight, bottomRight);
         Gizmos.DrawLine(bottomRight, bottomLeft);
+    }
+
+    private void UpdateWindAudio()
+    {
+        if (windAudioSource == null) return;
+
+        float deltaTime = Mathf.Max(Time.deltaTime, 0.0001f);
+        Vector3 frameDelta = transform.position - lastCameraPosition;
+        float panSpeed = new Vector2(frameDelta.x, frameDelta.y).magnitude / deltaTime;
+        float zoomSpeed = Mathf.Abs(cam.orthographicSize - lastOrthoSize) / deltaTime;
+        lastCameraPosition = transform.position;
+        lastOrthoSize = cam.orthographicSize;
+
+        float panNormalized = Mathf.InverseLerp(movementDeadZone, panSpeedForMaxWind, panSpeed) * panLoudness;
+        float zoomNormalized = Mathf.InverseLerp(0f, zoomSpeedForMaxWind, zoomSpeed) * zoomLoudness;
+        float combinedNormalized = Mathf.Clamp01(Mathf.Max(panNormalized, zoomNormalized));
+
+        float targetVolume = 0f;
+        float targetPitch = minWindPitch;
+        if (combinedNormalized > 0f)
+        {
+            targetVolume = Mathf.Lerp(minWindVolume, maxWindVolume, combinedNormalized);
+            targetPitch = Mathf.Lerp(minWindPitch, maxWindPitch, combinedNormalized);
+        }
+
+        float smoothTime = targetVolume > windAudioSource.volume ? windAttackTime : windReleaseTime;
+        windAudioSource.volume = Mathf.SmoothDamp(
+            windAudioSource.volume,
+            targetVolume,
+            ref windVolumeVelocity,
+            Mathf.Max(0.01f, smoothTime)
+        );
+
+        float pitchSmoothTime = targetPitch > windAudioSource.pitch ? pitchAttackTime : pitchReleaseTime;
+        windAudioSource.pitch = Mathf.SmoothDamp(
+            windAudioSource.pitch,
+            targetPitch,
+            ref windPitchVelocity,
+            Mathf.Max(0.01f, pitchSmoothTime)
+        );
     }
 }
