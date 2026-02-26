@@ -77,7 +77,8 @@ public class SimulationHandler : MonoBehaviour
     public int paintingBrushRadius = 8;
     private PropagandaLevels runtimePropaganda;
 
-    private uint simulationDay;
+    [HideInInspector] public uint simulationTime;
+    private float simulationTimer;
 
     private const int NUM_REGIONS = 10;
     private int[] regionMap;
@@ -89,7 +90,7 @@ public class SimulationHandler : MonoBehaviour
     void Start()
     {
         numNPCs = gridSize.x * gridSize.y;
-        simulationDay = 0;
+        simulationTime = 0;
         propertyBlock = new MaterialPropertyBlock();
         kernel_init = cs.FindKernel("SimulationInit");
         kernel_step = cs.FindKernel("SimulationStep");
@@ -117,22 +118,23 @@ public class SimulationHandler : MonoBehaviour
 
     void Update()
     {
-        if (Mouse.current != null && Mouse.current.leftButton.isPressed)
-        {
-            Vector2 mousePos = Mouse.current.position.ReadValue();
-            if (TryGetGridPositionFromMouse(mousePos, out int gridX, out int gridY))
-                PaintStance(gridX, gridY, -0.1f);
-        }
+        // if (Mouse.current != null && Mouse.current.leftButton.isPressed)
+        // {
+        //     Vector2 mousePos = Mouse.current.position.ReadValue();
+        //     if (TryGetGridPositionFromMouse(mousePos, out int gridX, out int gridY))
+        //         PaintStance(gridX, gridY, -0.1f);
+        // }
+        // if (Keyboard.current != null && (Keyboard.current.spaceKey.isPressed || Keyboard.current.rightArrowKey.wasPressedThisFrame))
+        //     Tick();
+        // if (Keyboard.current != null && Keyboard.current.hKey.wasPressedThisFrame)
+        //     RegionAverage();
 
-        if (Keyboard.current != null &&
-            (Keyboard.current.spaceKey.isPressed || Keyboard.current.rightArrowKey.wasPressedThisFrame))
+        simulationTimer += Time.deltaTime;
+        if (simulationTimer >= 1f)
         {
-            NextDay();
-        }
-
-        if (Keyboard.current != null && Keyboard.current.hKey.wasPressedThisFrame)
-        {
-            RegionAverage();
+            simulationTimer = 0f;
+            Tick();
+            simulationTime++;
         }
 
         RenderSimulation();
@@ -176,17 +178,17 @@ public class SimulationHandler : MonoBehaviour
         return true;
     }
 
-    void NextDay(){
+    void Tick(){
         SimulationStep();
         RegionAverage();
     }
 
     void SimulationStep(){
-        simulationDay++;
+        simulationTime++;
         UpdateRuntimePropagandaLevels();
         cs.SetBuffer(kernel_step, "npcs", npcBuffer);
         cs.SetInt("_NumNPCs", numNPCs);
-        cs.SetInt("_SimulationDay", (int)simulationDay);
+        cs.SetInt("_simulationTime", (int)simulationTime);
         ApplyPropagandaToShader();
         cs.Dispatch(kernel_step, (numNPCs + 63) / 64, 1, 1);
         npcBuffer.GetData(npcs);
