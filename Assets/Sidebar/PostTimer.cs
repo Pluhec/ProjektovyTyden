@@ -24,6 +24,8 @@ public class PostTimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // only for testing -> _sidebarScript.SpawnPrefab();
+
         if (_sidebarScript == null) return;
 
         _timer += Time.deltaTime;
