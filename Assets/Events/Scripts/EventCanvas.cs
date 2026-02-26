@@ -26,6 +26,11 @@ public class EventCanvas : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textMoney;
     [SerializeField] private TextMeshProUGUI textPerk;
 
+    [Header("Tooltip")]
+    [Tooltip("Panel GameObject used as tooltip (set inactive by default)")]
+    [SerializeField] private GameObject tooltipPanel;
+    [SerializeField] private TextMeshProUGUI tooltipLabel;
+
     [Header("References")]
     [SerializeField] private EventDataReceiver eventDataReceiver;
 
@@ -71,6 +76,13 @@ public class EventCanvas : MonoBehaviour
         ShowVideoCanvas();
     }
 
+    void Awake()
+    {
+        // Ensure tooltip is hidden at start
+        if (tooltipPanel != null)
+            tooltipPanel.SetActive(false);
+    }
+
     /// <summary>
     /// Aktualizuje texty decision buttonů podle dat z JSON
     /// </summary>
@@ -100,6 +112,90 @@ public class EventCanvas : MonoBehaviour
         }
 
         Debug.Log($"[EventCanvas] Buttons updated: Free='{optionFree?.OptionName}', Money='{optionMoney?.OptionName}', Perk='{optionPerk?.OptionName}'");
+
+        // Wire hover handlers with option data so tooltip can show effect descriptions
+        AttachHover(buttonFree, optionFree);
+        AttachHover(buttonMoney, optionMoney);
+        AttachHover(buttonPerk, optionPerk);
+    }
+
+    private void AttachHover(Button btn, EventDataReceiver.OptionData option)
+    {
+        if (btn == null) return;
+
+        var hover = btn.gameObject.GetComponent<EventDecisionHover>();
+        if (hover == null)
+            hover = btn.gameObject.AddComponent<EventDecisionHover>();
+
+        hover.parentCanvas = this;
+        hover.option = option;
+    }
+
+    /// <summary>
+    /// Show tooltip with given text at screen position.
+    /// </summary>
+    public void ShowTooltip(string text, Vector2 screenPosition)
+    {
+        if (tooltipPanel == null || tooltipLabel == null) return;
+        // Activate first so RectTransform sizes are valid
+        tooltipPanel.SetActive(true);
+        tooltipLabel.text = text;
+
+        Canvas parent = GetComponentInParent<Canvas>();
+        RectTransform tooltipRect = tooltipPanel.GetComponent<RectTransform>();
+
+        if (parent == null || tooltipRect == null) return;
+
+        // Position and clamp tooltip inside parent canvas
+        UpdateTooltipPosition(screenPosition, parent, tooltipRect);
+    }
+
+    // Helper that calculates and applies tooltip anchored position inside parent canvas
+    private void UpdateTooltipPosition(Vector2 screenPosition, Canvas parent, RectTransform tooltipRect)
+    {
+        if (parent == null || tooltipRect == null) return;
+
+        RectTransform canvasRect = parent.transform as RectTransform;
+        Vector2 localPoint;
+        Camera cam = parent.renderMode == RenderMode.ScreenSpaceOverlay ? null : parent.worldCamera;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPosition, cam, out localPoint);
+
+        // Small offset from cursor
+        Vector2 offset = new Vector2(12f, -12f);
+        Vector2 desired = localPoint + offset;
+
+        // Clamp tooltip inside canvas bounds
+        Vector2 canvasSize = canvasRect.rect.size;
+        Vector2 tooltipSize = tooltipRect.rect.size;
+
+        float minX = -canvasSize.x * 0.5f + tooltipSize.x * tooltipRect.pivot.x;
+        float maxX = canvasSize.x * 0.5f - tooltipSize.x * (1f - tooltipRect.pivot.x);
+        float minY = -canvasSize.y * 0.5f + tooltipSize.y * tooltipRect.pivot.y;
+        float maxY = canvasSize.y * 0.5f - tooltipSize.y * (1f - tooltipRect.pivot.y);
+
+        desired.x = Mathf.Clamp(desired.x, minX, maxX);
+        desired.y = Mathf.Clamp(desired.y, minY, maxY);
+
+        tooltipRect.anchoredPosition = desired;
+    }
+
+    // Make active tooltip follow the mouse while visible
+    void Update()
+    {
+        if (tooltipPanel == null || !tooltipPanel.activeSelf) return;
+        Canvas parent = GetComponentInParent<Canvas>();
+        RectTransform tooltipRect = tooltipPanel.GetComponent<RectTransform>();
+        if (parent == null || tooltipRect == null) return;
+        UpdateTooltipPosition(Input.mousePosition, parent, tooltipRect);
+    }
+
+    /// <summary>
+    /// Hide tooltip.
+    /// </summary>
+    public void HideTooltip()
+    {
+        if (tooltipPanel == null) return;
+        tooltipPanel.SetActive(false);
     }
 
     void OnDestroy()
