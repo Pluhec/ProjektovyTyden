@@ -1,4 +1,5 @@
 using UnityEngine;
+using PlayerChoice.Timing;
 
 public class PostTimer : MonoBehaviour
 {
@@ -28,7 +29,11 @@ public class PostTimer : MonoBehaviour
         _timer += Time.deltaTime;
         if (_timer >= _nextWaitTime)
         {
-            _sidebarScript.SpawnPrefab();
+            // Use probabilities from TimerBase to determine if a post should spawn
+            if (Random.Range(0, 101) <= TimerBase.V_SocialPostSpawnProb)
+            {
+                _sidebarScript.SpawnPrefab();
+            }
             _timer = 0f;
             _nextWaitTime = Random.Range(MinPostTime, MaxPostTime);
         }
