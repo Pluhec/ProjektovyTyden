@@ -1,9 +1,7 @@
 Shader "Hidden/SimulationRenderer"
 {
     Properties {
-        _PosterizeLevels ("Posterize Levels", Range(2, 64)) = 16
-        _DitherStrength ("Dither Strength", Range(0, 10)) = 0.3
-        _BlurRadius ("Blur Radius", Range(0, 5)) = 1
+
     }
     SubShader {
         Tags { "RenderType"="Transparent" "Queue"="Transparent" "RenderPipeline"="UniversalPipeline" }
@@ -46,6 +44,7 @@ Shader "Hidden/SimulationRenderer"
             float _PosterizeLevels;
             float _DitherStrength;
             int _BlurRadius;
+            float _AlphaGamma;
             
             // Load NPC from byte buffer
             Npc LoadNpc(uint index) {
@@ -98,8 +97,10 @@ Shader "Hidden/SimulationRenderer"
             // Average color from cells within a configurable radius around a corner vertex
             float4 SmoothCornerColor(int gridX, int gridY, int cx, int cy)
             {
+                Npc currentNpc = LoadNpc((uint)gridY * (uint)_GridWidth + (uint)gridX);
+
                 // alpha check
-                if (LoadNpc((uint)gridY * (uint)_GridWidth + (uint)gridX).population == 0u)
+                if (currentNpc.population == 0u)
                     return float4(0., 0., 0., 0.0);
 
                 // averaging the colors of the cells in the neighborhood
@@ -122,7 +123,7 @@ Shader "Hidden/SimulationRenderer"
                     float3 grayCol = float3(0.5, 0.5, 0.5);
                     float3 blueCol = float3(0.0, 0.0, 1.0);
                     float3 col = lerp(redCol, lerp(grayCol, blueCol, saturate(lerpValue*2-1)), saturate(lerpValue*2));
-                    return float4(col, 1.0);
+                    return float4(col, pow(currentNpc.population / 255., _AlphaGamma));
                 }
                 return float4(0., 0., 0., 0.0);
             }
