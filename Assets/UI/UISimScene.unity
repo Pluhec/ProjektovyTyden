@@ -1348,35 +1348,26 @@ MonoBehaviour:
   simulationHandler: {fileID: 886417932}
   spawnInterval: 1
   spawnAttemptsPerInterval: 10
-  randomOffsetInCell: 0
+  randomOffsetInCell: 0.1
   iconTypes:
   - iconType: 0
     prefabToSpawn: {fileID: 5313995338523933483, guid: 225a5556be659614090ae9ce4902b88c, type: 3}
-    minIdeologyValue: 0
+    minIdeologyValue: 0.9
     maxIdeologyValue: 1
-    constantSpawnProbability: 0.5
+    constantSpawnProbability: 0.3
     minSpawnProbability: 0
-    maxSpawnProbability: 0.4
-    spawnProbabilityMode: 0
+    maxSpawnProbability: 0.04
+    spawnProbabilityMode: 2
     minSameColorNeighbors: 0
   - iconType: 1
     prefabToSpawn: {fileID: 5313995338523933483, guid: 225a5556be659614090ae9ce4902b88c, type: 3}
-    minIdeologyValue: 0
-    maxIdeologyValue: 1
+    minIdeologyValue: 0.35
+    maxIdeologyValue: 0.7
     constantSpawnProbability: 0.5
     minSpawnProbability: 0
-    maxSpawnProbability: 0.1
-    spawnProbabilityMode: 0
-    minSameColorNeighbors: 2
-  - iconType: 1
-    prefabToSpawn: {fileID: 5313995338523933483, guid: 225a5556be659614090ae9ce4902b88c, type: 3}
-    minIdeologyValue: 0
-    maxIdeologyValue: 1
-    constantSpawnProbability: 0.5
-    minSpawnProbability: 0
-    maxSpawnProbability: 0.1
-    spawnProbabilityMode: 0
-    minSameColorNeighbors: 2
+    maxSpawnProbability: 0.03
+    spawnProbabilityMode: 1
+    minSameColorNeighbors: 0
 --- !u!4 &419068036
 Transform:
   m_ObjectHideFlags: 0
