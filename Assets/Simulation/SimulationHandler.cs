@@ -81,6 +81,9 @@ public class SimulationHandler : MonoBehaviour
     private const int NUM_REGIONS = 10;
     private int[] regionMap;
     public float[] regionAverages;
+    public int[] regionPopulations;
+    public float[] regionAgeAverages;
+    public float[] regionEducationAverages;
 
     void Start()
     {
@@ -269,10 +272,7 @@ public class SimulationHandler : MonoBehaviour
         int texH = readableTex.height;
 
         // Discover unique colors -> region indices
-        // Quantize to avoid anti-aliasing artifacts (round to nearest 8)
-        Dictionary<int, int> colorToRegion = new Dictionary<int, int>();
-        int nextRegion = 0;
-
+        // Use same formula as RaycastRegion in RegionMapHover: floor(r / 256 * 10)
         for (int i = 0; i < numNPCs; i++)
         {
             int gridX = i % gridSize.x;
@@ -286,19 +286,11 @@ public class SimulationHandler : MonoBehaviour
             int texY = Mathf.Clamp((int)(v * texH), 0, texH - 1);
 
             Color32 c = pixels[texY * texW + texX];
-            // Quantize red channel to reduce noise from compression/anti-aliasing
-            int key = (c.r + 4) / 8;
-
-            if (!colorToRegion.TryGetValue(key, out int region))
-            {
-                region = nextRegion;
-                colorToRegion[key] = region;
-                nextRegion++;
-            }
+            int region = Mathf.FloorToInt(c.r / 256f * 10f);
             regionMap[i] = Mathf.Clamp(region, 0, NUM_REGIONS - 1);
         }
 
-        Debug.Log($"[RegionMap] Found {colorToRegion.Count} unique regions (quantized)");
+        Debug.Log($"[RegionMap] Region map computed (10 regions from red channel)");
     }
 
     // Pass 2 & 3: Parallel accumulation + merge
@@ -315,11 +307,17 @@ public class SimulationHandler : MonoBehaviour
         int chunkSize = (numNPCs + threadCount - 1) / threadCount;
 
         // Thread-local accumulators to avoid synchronization
-        float[][] localSums = new float[threadCount][];
+        float[][] localStanceSums = new float[threadCount][];
+        float[][] localAgeSums = new float[threadCount][];
+        float[][] localEduSums = new float[threadCount][];
+        int[][] localPopSums = new int[threadCount][];
         int[][] localCounts = new int[threadCount][];
         for (int t = 0; t < threadCount; t++)
         {
-            localSums[t] = new float[NUM_REGIONS];
+            localStanceSums[t] = new float[NUM_REGIONS];
+            localAgeSums[t] = new float[NUM_REGIONS];
+            localEduSums[t] = new float[NUM_REGIONS];
+            localPopSums[t] = new int[NUM_REGIONS];
             localCounts[t] = new int[NUM_REGIONS];
         }
 
@@ -333,32 +331,50 @@ public class SimulationHandler : MonoBehaviour
         {
             int start = t * chunkSize;
             int end = System.Math.Min(start + chunkSize, npcCount);
-            float[] sums = localSums[t];
+            float[] stSums = localStanceSums[t];
+            float[] agSums = localAgeSums[t];
+            float[] edSums = localEduSums[t];
+            int[] popSums = localPopSums[t];
             int[] counts = localCounts[t];
 
             for (int i = start; i < end; i++)
             {
-                if (npcArray[i].population == 0) continue; // skip empty cells
+                int pop = npcArray[i].population;
+                if (pop == 0) continue;
                 int region = regionMapLocal[i];
-                sums[region] += npcArray[i].stance - 127;
-                counts[region]++;
+                stSums[region] += npcArray[i].stance * pop;     // population-weighted
+                agSums[region] += npcArray[i].age * pop;        // population-weighted
+                edSums[region] += npcArray[i].education * pop;  // population-weighted
+                popSums[region] += pop;                         // total population weight
+                counts[region]++;                               // number of cells in region
             }
         });
 
         // Pass 3: Merge thread-local results into final averages
         if (regionAverages == null || regionAverages.Length != NUM_REGIONS)
+        {
             regionAverages = new float[NUM_REGIONS];
+            regionPopulations = new int[NUM_REGIONS];
+            regionAgeAverages = new float[NUM_REGIONS];
+            regionEducationAverages = new float[NUM_REGIONS];
+        }
 
         for (int r = 0; r < NUM_REGIONS; r++)
         {
-            float totalSum = 0f;
-            int totalCount = 0;
+            float stanceSum = 0f, ageSum = 0f, eduSum = 0f;
+            int popSum = 0, count = 0;
             for (int t = 0; t < threadCount; t++)
             {
-                totalSum += localSums[t][r];
-                totalCount += localCounts[t][r];
+                stanceSum += localStanceSums[t][r];
+                ageSum += localAgeSums[t][r];
+                eduSum += localEduSums[t][r];
+                popSum += localPopSums[t][r];
+                count += localCounts[t][r];
             }
-            regionAverages[r] = totalCount > 0 ? totalSum / totalCount : 0f;
+            regionAverages[r] = popSum > 0 ? stanceSum / popSum : 0f;
+            regionPopulations[r] = count > 0 ? popSum / count : 0;    // average population density per cell
+            regionAgeAverages[r] = popSum > 0 ? (ageSum / popSum) / 255f * 75f + 15f : 0f;      // remap 0-255 -> 15-90
+            regionEducationAverages[r] = popSum > 0 ? (eduSum / popSum) / 255f * 100f : 0f;      // remap 0-255 -> 0-100
         }
     }
 
@@ -369,6 +385,26 @@ public class SimulationHandler : MonoBehaviour
         return regionAverages[regionIndex];
     }
 
+    public int GetRegionPopulation(int regionIndex)
+    {
+        if (regionPopulations == null || regionIndex < 0 || regionIndex >= regionPopulations.Length)
+            return 0;
+        return regionPopulations[regionIndex];
+    }
+
+    public float GetRegionAgeAverage(int regionIndex)
+    {
+        if (regionAgeAverages == null || regionIndex < 0 || regionIndex >= regionAgeAverages.Length)
+            return 0f;
+        return regionAgeAverages[regionIndex];
+    }
+
+    public float GetRegionEducationAverage(int regionIndex)
+    {
+        if (regionEducationAverages == null || regionIndex < 0 || regionIndex >= regionEducationAverages.Length)
+            return 0f;
+        return regionEducationAverages[regionIndex];
+    }
     public void PaintStance(int gridX, int gridY, float stanceOffset)
     {
         int radius = Mathf.Max(1, paintingBrushRadius);

@@ -25,10 +25,20 @@ public class popup_click : MonoBehaviour
     [Range(0f, 1f)]
     public float pulseRedBlend = 0.55f;
     public Color pulseColor = Color.red;
+    public bool pulseScale = true;
+    public float pulseScaleAmount = 1.1f;
 
     [Header("Particle Colors")]
     public Color particleClickedColor = Color.white;
     public Color particleTimeoutColor = Color.black;
+
+    [Header("Camera Zoom Scaling")]
+    public bool scaleWithZoom = true;
+    [Tooltip("The orthographic size where the popup is at its normal (1x) scale.")]
+    public float baseOrthographicSize = 5f;
+    [Tooltip("How much the popup scales up as you zoom out. 0 = no scaling, 1 = scales exactly with zoom.")]
+    [Range(0f, 1f)]
+    public float zoomScaleFactor = 0.5f;
 
     private Vector2 mousePos;
     private bool isInteractable = false;
@@ -43,6 +53,7 @@ public class popup_click : MonoBehaviour
     private Vector3 currentScale;
     private Vector3 currentHoverOffset;
     private float mouseHoverScaleMultiplier = 1f;
+    private float pulseScaleMultiplier = 1f;
 
     private SpriteRenderer ukazatelRenderer;
     private SpriteRenderer bodyRenderer;
@@ -116,8 +127,20 @@ public class popup_click : MonoBehaviour
 
     void LateUpdate()
     {
-        // 1. Apply scale with hover multiplier
-        Vector3 finalScale = Vector3.Scale(currentScale, new Vector3(mouseHoverScaleMultiplier, mouseHoverScaleMultiplier, 1f));
+        // Calculate camera zoom scale multiplier
+        float cameraZoomMultiplier = 1f;
+        if (scaleWithZoom && Camera.main != null && Camera.main.orthographic)
+        {
+            float currentOrthoSize = Camera.main.orthographicSize;
+            // If current size is larger than base, we are zoomed out.
+            // We lerp between 1 (no scale change) and the actual ratio based on zoomScaleFactor.
+            float ratio = currentOrthoSize / baseOrthographicSize;
+            cameraZoomMultiplier = Mathf.Lerp(1f, ratio, zoomScaleFactor);
+        }
+
+        // 1. Apply scale with hover, pulse, and camera zoom multipliers
+        float totalScaleMultiplier = mouseHoverScaleMultiplier * pulseScaleMultiplier * cameraZoomMultiplier;
+        Vector3 finalScale = Vector3.Scale(currentScale, new Vector3(totalScaleMultiplier, totalScaleMultiplier, 1f));
         transform.localScale = finalScale;
 
         // 2. Apply pivot offset math (keeps the bottom point stationary)
@@ -206,12 +229,24 @@ public class popup_click : MonoBehaviour
         if (timeLeft > pulseStartSeconds)
         {
             ResetPulseColors();
+            pulseScaleMultiplier = 1f;
             return;
         }
 
         float pulse = (Mathf.Sin(Time.time * pulseSpeed) + 1f) * 0.5f;
         float nearEndFactor = 1f - Mathf.Clamp01(timeLeft / Mathf.Max(0.01f, pulseStartSeconds));
         float blend = pulse * pulseRedBlend * Mathf.Lerp(0.6f, 1f, nearEndFactor);
+
+        if (pulseScale)
+        {
+            // Scale pulses between 1.0 and pulseScaleAmount based on the pulse wave and how close to the end it is
+            float currentPulseScale = Mathf.Lerp(1f, pulseScaleAmount, pulse * nearEndFactor);
+            pulseScaleMultiplier = currentPulseScale;
+        }
+        else
+        {
+            pulseScaleMultiplier = 1f;
+        }
 
         if (iconRenderer != null)
         {
