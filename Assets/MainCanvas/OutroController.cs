@@ -26,13 +26,17 @@ public class OutroController : MonoBehaviour
     [Header("Text Settings")]
     public float fadeDuration = 1.0f;    // Jak dlouho trvá fade in/out textu
     public float displayDuration = 2.0f; // Jak dlouho daný text svítí
+
     [TextArea(2, 5)]
-    public string[] messages;            // Seznam zpráv / titulků
+    public string[] winMessages;   // Zprávy pro výhru
+    [TextArea(2, 5)]
+    public string[] loseMessages;  // Zprávy pro prohru
 
     [Header("Events")]
     public UnityEvent onOutroFinished;   // Co se stane po skončení (třeba návrat do main menu)
 
     private bool outroIsPlaying = false;
+    private string[] _currentMessages;   // Interně zvolená sada zpráv podle výsledku
 
     private void Awake()
     {
@@ -65,6 +69,7 @@ public class OutroController : MonoBehaviour
             Debug.LogWarning("OutroController: Win video nebo VideoPlayer není nastaven!");
             return;
         }
+        _currentMessages = winMessages;
         StartOutro(winVideo);
     }
 
@@ -78,6 +83,7 @@ public class OutroController : MonoBehaviour
             Debug.LogWarning("OutroController: Lose video nebo VideoPlayer není nastaven!");
             return;
         }
+        _currentMessages = loseMessages;
         StartOutro(loseVideo);
     }
 
@@ -100,10 +106,17 @@ public class OutroController : MonoBehaviour
             overlayCanvasGroup.blocksRaycasts = true;
         }
 
-        if (textComponent != null)
+        if (textComponent != null && _currentMessages != null && _currentMessages.Length > 0)
+        {
             StartCoroutine(PlayOutroSequence());
+        }
         else
-            Debug.LogWarning("OutroController: textComponent není nastaven, titulky se nebudou zobrazovat.");
+        {
+            Debug.LogWarning("OutroController: Žádné zprávy pro aktuální outro, přeskakuji textovou sekvenci.");
+            // Když nejsou zprávy, jen necháme běžet video a případně rovnou ukončíme overlay
+            onOutroFinished?.Invoke();
+            outroIsPlaying = false;
+        }
     }
 
     private IEnumerator PlayOutroSequence()
@@ -112,7 +125,7 @@ public class OutroController : MonoBehaviour
         textComponent.alpha = 0f;
 
         // Projdeme všechny zprávy v poli
-        foreach (string msg in messages)
+        foreach (string msg in _currentMessages)
         {
             textComponent.text = msg;
 
@@ -122,16 +135,13 @@ public class OutroController : MonoBehaviour
             // Zobrazení po určitou dobu
             yield return new WaitForSeconds(displayDuration);
 
-            // Fade Out textu
-            yield return StartCoroutine(FadeText(1f, 0f));
-
             // Lehké prodlení mezi texty
             yield return new WaitForSeconds(0.5f);
         }
 
         // Po poslední zprávě můžeme provést fade-out celého overlaye
-        if (overlayCanvasGroup != null)
-            yield return StartCoroutine(FadeOverlayOut());
+        // if (overlayCanvasGroup != null)
+            // yield return StartCoroutine(FadeOverlayOut());
 
         onOutroFinished?.Invoke();
 
@@ -171,4 +181,3 @@ public class OutroController : MonoBehaviour
         overlayCanvasGroup.blocksRaycasts = false;
     }
 }
-
