@@ -3,8 +3,7 @@ Shader "Custom/RegionMapHover"
     Properties
     {
         _HoverColor("Hover Color", Color) = (1,0,0,1)
-        [MainTexture] _RegionBorders("Borders Texture", 2D) = "white" {}
-        _RegionsTexture("Regions Texture", 2D) = "white" {}
+        [MainTexture] _RegionsTexture("Regions Texture", 2D) = "white" {}
     }
 
     SubShader
@@ -37,14 +36,10 @@ Shader "Custom/RegionMapHover"
                 float2 uv : TEXCOORD0;
             };
 
-            TEXTURE2D(_RegionBorders);
-            SAMPLER(sampler_RegionBorders);
-
             TEXTURE2D(_RegionsTexture);
             SAMPLER(sampler_RegionsTexture);
 
             CBUFFER_START(UnityPerMaterial)
-                float4 _RegionBorders_ST;
                 float4 _RegionsTexture_ST;
             CBUFFER_END
 

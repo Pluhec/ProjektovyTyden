@@ -40,6 +40,7 @@ public class RegionMapHover : MonoBehaviour
     private int texW, texH;
 
     private int hoveredRegion = -1;
+    private int shaderHoveredRegion = -1;
 
     private TextMeshProUGUI tooltipLabel;
     private RectTransform tooltipRect;
@@ -59,13 +60,15 @@ public class RegionMapHover : MonoBehaviour
 
     void Update()
     {
+        // Shader highlight always follows hover
+        shaderHoveredRegion = RaycastRegion();
+
+        // Tooltip only on right-click hold
         if (Input.GetMouseButton(1))
         {
-            int region = RaycastRegion();
-
-            if (region != hoveredRegion)
+            if (shaderHoveredRegion != hoveredRegion)
             {
-                hoveredRegion = region;
+                hoveredRegion = shaderHoveredRegion;
                 tooltipObject.SetActive(hoveredRegion >= 0);
             }
 
@@ -194,7 +197,7 @@ public class RegionMapHover : MonoBehaviour
         if (regionHoverMaterial == null) return;
 
         for (int i = 0; i < shaderRegionHovers.Length; i++)
-            shaderRegionHovers[i] = (i == hoveredRegion) ? 1f : 0f;
+            shaderRegionHovers[i] = (i == shaderHoveredRegion) ? 1f : 0f;
         regionHoverMaterial.SetFloatArray("_RegionHovers", shaderRegionHovers);
     }
 }
