@@ -11,8 +11,8 @@ namespace PlayerChoice.Timing
 public class TimerBase
 {
 	public static byte V_TimerCallColldown	= 2;
-	private static byte V_SocialSpawnProb;
-	public static byte V_SocialPostSpawnProb
+	private static byte V_SocialSpawnProb = 60;
+	public static byte V_SocialPostSpawnProb = 20;
 	{
 		get { return V_SocialSpawnProb; }
 		set { V_SocialSpawnProb		= (byte)(value	> 100 ? 100 : value); }

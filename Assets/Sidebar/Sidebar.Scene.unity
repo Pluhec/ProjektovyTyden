@@ -317,6 +317,14 @@ PrefabInstance:
       propertyPath: m_fontSize
       value: 16.9
       objectReference: {fileID: 0}
+    - target: {fileID: 6344099270882602264, guid: 07ee4a2d6140965a1908c7a9a869fdf8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -9.449982
+      objectReference: {fileID: 0}
+    - target: {fileID: 7023465912038003826, guid: 07ee4a2d6140965a1908c7a9a869fdf8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 13.049988
+      objectReference: {fileID: 0}
     - target: {fileID: 8881453302254329093, guid: 07ee4a2d6140965a1908c7a9a869fdf8, type: 3}
       propertyPath: m_Name
       value: Feed.Message
@@ -339,6 +347,7 @@ GameObject:
   - component: {fileID: 486276708}
   - component: {fileID: 486276711}
   - component: {fileID: 486276712}
+  - component: {fileID: 486276713}
   m_Layer: 5
   m_Name: SideBar.Panel
   m_TagString: Untagged
@@ -435,6 +444,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 702257cf303f4ea429f612b2a980bb14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MediaScript
+--- !u!114 &486276713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486276706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 125bcbae072c70123892415d126faef8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PostTimer
+  SideBar: {fileID: 486276706}
+  MinPostTime: 5
+  MaxPostTime: 10
 --- !u!1 &712859013
 GameObject:
   m_ObjectHideFlags: 0
