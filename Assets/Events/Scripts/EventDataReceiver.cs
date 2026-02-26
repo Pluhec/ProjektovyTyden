@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.Video;
 using TMPro;
-using PlayerChoice.DataSets;
 
 /// <summary>
 /// Přijímá data od logiky týmu - cestu k videu a text k zobrazení.
@@ -45,8 +44,6 @@ public class EventDataReceiver : MonoBehaviour
             
             SimulateLogicTeamData();
         }
-
-		DataFunctions.SetEventDataReceiver(this);
     }
 
     /// <summary>
@@ -68,8 +65,7 @@ public class EventDataReceiver : MonoBehaviour
         Log("--------------------------------");
 
         // Nastav data
-		//MARK: No longer valid vay of display
-        //SetEventData(videoPath, randomText);
+        SetEventData(videoPath, randomText);
     }
 
     /// <summary>
@@ -77,23 +73,17 @@ public class EventDataReceiver : MonoBehaviour
     /// </summary>
     /// <param name="videoPath">Cesta k videu (např. "Assets/Video/23.mp4")</param>
     /// <param name="displayText">Text který se má zobrazit</param>
-    public void SetEventData(EventInfo eventInfo)
+    public void SetEventData(string videoPath, string displayText)
     {
         Log("========================================");
         Log("PŘIJATA DATA OD LOGIKY");
         Log("========================================");
 
         // Nastav video
-		if(eventInfo.VideoPath.Length > 1)
-		{
-			SetVideo(eventInfo.VideoPath);
-		}
+        SetVideo(videoPath);
 
         // Nastav text
-		if(eventInfo.EventDescription.Length > 1)
-		{
-			SetText(eventInfo.EventDescription);
-		}
+        SetText(displayText);
 
         Log("========================================");
     }

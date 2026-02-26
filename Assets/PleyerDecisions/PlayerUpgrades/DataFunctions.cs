@@ -80,7 +80,7 @@ public class DataFunctions
 
 	public static void SendEvent(EventInfo PAR_Event)
 	{
-		V_EventDataReceiver.SetEventData(PAR_Event);
+		V_EventDataReceiver.SetEventData(PAR_Event.VideoPath, PAR_Event.EventDescription);
 	}
 
 	public static void ShowWebButtonOnUI()
