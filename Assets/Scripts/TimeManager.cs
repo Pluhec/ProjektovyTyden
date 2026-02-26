@@ -6,6 +6,7 @@ using TMPro;
 public class TimeManager : MonoBehaviour
 {
     SimulationHandler simulationHandler;
+    CloudTimeController cloudTimeController;
     public uint day = 1;
     public TextMeshProUGUI dayText;
     public Image[] allMapResources;
@@ -23,6 +24,7 @@ public class TimeManager : MonoBehaviour
     void Start()
     {
         simulationHandler = FindFirstObjectByType<SimulationHandler>();
+        cloudTimeController = FindFirstObjectByType<CloudTimeController>();
         if (daySlider != null)
             daySlider.maxValue = 1f;
     }
@@ -31,7 +33,11 @@ public class TimeManager : MonoBehaviour
         if (simulationHandler == null) return;
 
         if (Input.GetKeyDown(KeyCode.Space))
+        {
             isPaused = !isPaused;
+            if (cloudTimeController != null)
+                cloudTimeController.stopped = isPaused;
+        }
 
         if (!isPaused)
         {
