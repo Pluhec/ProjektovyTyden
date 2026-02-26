@@ -24,7 +24,7 @@ public class PerkInformation
 	
 	public bool PerkPurchase()
 	{
-		if(PAR_CurrentMoney < PerkCost)
+		if(PlayerStats.Money < PerkCost)
 		{
 			return false;
 		}
