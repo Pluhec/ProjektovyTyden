@@ -43,6 +43,9 @@ public class RegionMapHover : MonoBehaviour
 
     private TextMeshProUGUI tooltipLabel;
     private RectTransform tooltipRect;
+    
+    public Material regionHoverMaterial;
+    private float[] shaderRegionHovers = new float[10];
 
     // ──────────────────────────── Lifecycle ───────────────────────────────
 
@@ -77,6 +80,7 @@ public class RegionMapHover : MonoBehaviour
             hoveredRegion = -1;
             tooltipObject.SetActive(false);
         }
+        UpdateShaderRegion();
     }
     // ──────────────────────── Texture cache ───────────────────────────────
 
@@ -185,5 +189,12 @@ public class RegionMapHover : MonoBehaviour
         tooltipRect.anchoredPosition = adjustedPosition;
     }
 
+    void UpdateShaderRegion()
+    {
+        if (regionHoverMaterial == null) return;
 
+        for (int i = 0; i < shaderRegionHovers.Length; i++)
+            shaderRegionHovers[i] = (i == hoveredRegion) ? 1f : 0f;
+        regionHoverMaterial.SetFloatArray("_RegionHovers", shaderRegionHovers);
+    }
 }
