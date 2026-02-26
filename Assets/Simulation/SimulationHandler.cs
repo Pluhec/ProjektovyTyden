@@ -137,7 +137,7 @@ public class SimulationHandler : MonoBehaviour
         RenderSimulation();
     }
 
-    bool TryGetGridPositionFromMouse(Vector2 mousePosition, out int gridX, out int gridY)
+    public bool TryGetGridPositionFromMouse(Vector2 mousePosition, out int gridX, out int gridY)
     {
         gridX = -1;
         gridY = -1;
@@ -152,7 +152,18 @@ public class SimulationHandler : MonoBehaviour
             return false;
 
         Vector3 hitWorld = ray.GetPoint(enterDistance);
-        Vector3 localPos = simulationQuadTransform.InverseTransformPoint(hitWorld);
+        return TryGetGridPositionFromWorld(hitWorld, out gridX, out gridY);
+    }
+
+    public bool TryGetGridPositionFromWorld(Vector3 worldPosition, out int gridX, out int gridY)
+    {
+        gridX = -1;
+        gridY = -1;
+
+        if (simulationQuadTransform == null)
+            return false;
+
+        Vector3 localPos = simulationQuadTransform.InverseTransformPoint(worldPosition);
 
         float u = localPos.x + 0.5f;
         float v = localPos.y + 0.5f;
@@ -405,9 +416,9 @@ public class SimulationHandler : MonoBehaviour
             return 0f;
         return regionEducationAverages[regionIndex];
     }
-    public void PaintStance(int gridX, int gridY, float stanceOffset)
+    public void PaintStance(int gridX, int gridY, float stanceOffset, int customRadius = -1)
     {
-        int radius = Mathf.Max(1, paintingBrushRadius);
+        int radius = customRadius >= 0 ? customRadius : Mathf.Max(1, paintingBrushRadius);
         float radiusSq = radius * radius;
         float stanceDeltaByte = stanceOffset * 127f;
 
