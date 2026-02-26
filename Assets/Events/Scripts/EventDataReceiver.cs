@@ -90,9 +90,9 @@ public class EventDataReceiver : MonoBehaviour
 		}
 
         // Nastav text
-		if(eventInfo)
+		if(eventInfo.EventDescription.Length > 1)
 		{
-			SetText(displayText);
+			SetText(eventInfo.EventDescription);
 		}
 
         Log("========================================");
