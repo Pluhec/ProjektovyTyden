@@ -608,7 +608,7 @@ MonoBehaviour:
   particlesScaleWithZoom: 1
   particleZoomScaleFactor: 0.7
   powerInfluenceRadius: 80
-  powerInfluenceStrength: 10
+  powerInfluenceStrength: 15
   powerInfluenceFalloffCurve:
     serializedVersion: 2
     m_Curve:

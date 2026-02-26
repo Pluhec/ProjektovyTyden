@@ -1,0 +1,6 @@
+Skill tree canvas
+- Zase udelat stejnou kopii toho co udelali grafici
+- nejakym rozumnym zpusobem Matejovi posilat hodnoty na co uzivatel klikne (na jaky perk)
+- cary jsou podle toho co uz ma hrac dosazene, takze to udelat stejne jako slide prezentace prace za 23. pondeli 24 slide
+- pokud se s tim nekomu bude chtit srat, tak aji animacky, jakoze kdyz to odemkne tak ta cara tak ztece nebo neco takoveho
+- panel s vysvetlenim tech perku bude vlevo, pokud by nebyl cas na hover

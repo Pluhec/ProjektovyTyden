@@ -66,7 +66,13 @@ public class MapCameraMovement : MonoBehaviour
     {
         cam = GetComponent<Camera>();
         cam.orthographic = true; // Force orthographic mode
-        ComputeAutoMaxZoom();
+        
+        UpdateMaxZoom();
+        if (cam.orthographicSize > maxZoom)
+        {
+            cam.orthographicSize = maxZoom;
+        }
+
         targetOrthoSize = cam.orthographicSize;
         targetPosition = transform.position;
         lastCameraPosition = transform.position;
@@ -83,8 +89,28 @@ public class MapCameraMovement : MonoBehaviour
         }
     }
 
+    private void UpdateMaxZoom()
+    {
+        if (!useBounds) return;
+
+        float mapWidth = mapMaxBounds.x - mapMinBounds.x;
+        float mapHeight = mapMaxBounds.y - mapMinBounds.y;
+
+        float maxZoomHeight = mapHeight / 2f;
+        float maxZoomWidth = mapWidth / (2f * cam.aspect);
+
+        maxZoom = Mathf.Min(maxZoomHeight, maxZoomWidth);
+        minZoom = Mathf.Min(minZoom, maxZoom);
+    }
+
     void Update()
     {
+        UpdateMaxZoom();
+        if (targetOrthoSize > maxZoom)
+        {
+            targetOrthoSize = maxZoom;
+        }
+
         HandleZoom();
         HandlePan();
         ClampTargetPosition();
