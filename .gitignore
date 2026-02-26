@@ -66,3 +66,17 @@ crashlytics-build.properties
 .Trashes
 ehthumbs.db
 Thumbs.db
+Packages/com.merry-yellow.code-assist/Editor/ExternalReferences/Meryel.UnityCodeAssist.AnalyzersLite.pdb.meta
+Packages/com.merry-yellow.code-assist/Editor/ExternalReferences/Meryel.UnityCodeAssist.Common.pdb.meta
+Packages/com.merry-yellow.code-assist/Editor/ExternalReferences/Meryel.UnityCodeAssist.Completion.pdb.meta
+Packages/com.merry-yellow.code-assist/Editor/ExternalReferences/Meryel.UnityCodeAssist.CompletionInternals.pdb.meta
+Packages/com.merry-yellow.code-assist/Editor/ExternalReferences/Meryel.UnityCodeAssist.Logger.pdb.meta
+Packages/com.merry-yellow.code-assist/Editor/ExternalReferences/Meryel.UnityCodeAssist.MQTTnet.Extensions.ManagedClient.pdb.meta
+Packages/com.merry-yellow.code-assist/Editor/ExternalReferences/Meryel.UnityCodeAssist.MQTTnet.pdb.meta
+Packages/com.merry-yellow.code-assist/Editor/ExternalReferences/Meryel.UnityCodeAssist.Newtonsoft.Json.pdb.meta
+Packages/com.merry-yellow.code-assist/Editor/ExternalReferences/Meryel.UnityCodeAssist.ProjectData.pdb.meta
+Packages/com.merry-yellow.code-assist/Editor/ExternalReferences/Meryel.UnityCodeAssist.RoslynAnalyzerManager.pdb.meta
+Packages/com.merry-yellow.code-assist/Editor/ExternalReferences/Meryel.UnityCodeAssist.Synchronizer.pdb.meta
+Packages/com.merry-yellow.code-assist/Editor/ExternalReferences/Meryel.UnityCodeAssist.SynchronizerModel.pdb.meta
+Packages/com.merry-yellow.code-assist/Editor/ExternalReferences/Meryel.UnityCodeAssist.VSIXLibrary.pdb.meta
+Packages/com.merry-yellow.code-assist/Editor/ExternalReferences/Meryel.UnityCodeAssist.YamlDotNet.pdb.meta
