@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: aff6f02ef3ff1cf45813b621f54aed1f
+guid: a2715ef1b0b5bdf4d887fa4fa80b4bf9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2907608346056623657
-    second: "Proti migrantu\u030Am_0"
+      213: -9087577980474456996
+    second: "F\xC1ZE_UPGRADE_1_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "Proti migrantu\u030Am_0"
+      name: "F\xC1ZE_UPGRADE_1_0"
       rect:
         serializedVersion: 2
-        x: 33
+        x: 0
         y: 0
-        width: 175
-        height: 241
+        width: 4052
+        height: 3068
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9268aa4b266e95820800000000000000
-      internalID: 2907608346056623657
+      spriteID: c54882d89ff62e180800000000000000
+      internalID: -9087577980474456996
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "Proti migrantu\u030Am_0": 2907608346056623657
+      "F\xC1ZE_UPGRADE_1_0": -9087577980474456996
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
