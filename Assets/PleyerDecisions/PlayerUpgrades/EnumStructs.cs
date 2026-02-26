@@ -81,6 +81,48 @@ public class EventInfo
 	public EnumStructs.S_EventOption OptionMoney;
 	public EnumStructs.S_EventOption OptionPerk;
 
+	public bool EventOption(int PAR_Option)
+		{
+			switch(PAR_Option)
+			{
+				case 0:
+				    DataFunctions.SendDataToSimulation(new EnumStructs.S_StatData[] {OptionFree.OptionEffectYoung, OptionFree.OptionEffectAdult, OptionFree.OptionEffectSenior});
+					return true;
+				case 1:
+
+					if(PlayerStats.Money < OptionMoney.OptionCost)
+					{
+						return false;
+					}
+					DataFunctions.SendDataToSimulation(new EnumStructs.S_StatData[] {OptionFree.OptionEffectYoung, OptionFree.OptionEffectAdult, OptionFree.OptionEffectSenior});
+					return true;
+				case 2:
+					if(!OptionPerk.OptionPerk.IsBought)
+					{
+						return false;
+					}
+
+					DataFunctions.SendDataToSimulation(new EnumStructs.S_StatData[] {OptionFree.OptionEffectYoung, OptionFree.OptionEffectAdult, OptionFree.OptionEffectSenior});
+					return false;
+				default:
+					return false;
+			}
+		}
+
+		public EnumStructs.S_EventOption? GetEventOptionInfo(int PAR_Option)
+		{
+			switch(PAR_Option)
+			{
+				case 0:
+					return OptionFree;
+				case 1:
+					return OptionMoney;
+				case 2:
+					return OptionPerk;
+				default:
+					return null;
+			}
+		}
 }
 
 public class EnumStructs
