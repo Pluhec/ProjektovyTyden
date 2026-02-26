@@ -4,6 +4,8 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
+using Newtonsoft.Json;
+
 namespace PlayerChoice.DataSets
 {
 
@@ -34,7 +36,7 @@ public class DataFunctions
 
 		EventsList.Clear();
 
-		foreach (EventInfo V_RawEvent in JsonUtility.FromJson<EventInfo[]>(V_JsonContent))
+		foreach (EventInfo V_RawEvent in JsonConvert.DeserializeObject<EventInfo[]>(V_JsonContent))
 		{
 			EventsList.Add(V_RawEvent);
 		}
@@ -47,7 +49,7 @@ public class DataFunctions
 	{
 		StreamReader V_StrRead_SocialJSON	= new StreamReader(File.OpenRead(PAR_FileName));
 
-		SocialPost_JSON V_SocialJSON		= JsonUtility.FromJson<SocialPost_JSON>(V_StrRead_SocialJSON.ReadToEnd());
+		SocialPost_JSON V_SocialJSON		= JsonConvert.DeserializeObject<SocialPost_JSON>(V_StrRead_SocialJSON.ReadToEnd());
 
 		return V_SocialJSON;
 	}
