@@ -78,7 +78,6 @@ public class SimulationHandler : MonoBehaviour
     private PropagandaLevels runtimePropaganda;
 
     [HideInInspector] public uint simulationTime;
-    private float simulationTimer;
 
     private const int NUM_REGIONS = 10;
     private int[] regionMap;
@@ -129,14 +128,6 @@ public class SimulationHandler : MonoBehaviour
         // if (Keyboard.current != null && Keyboard.current.hKey.wasPressedThisFrame)
         //     RegionAverage();
 
-        simulationTimer += Time.deltaTime;
-        if (simulationTimer >= 1f)
-        {
-            simulationTimer = 0f;
-            Tick();
-            simulationTime++;
-        }
-
         RenderSimulation();
     }
 
@@ -178,13 +169,12 @@ public class SimulationHandler : MonoBehaviour
         return true;
     }
 
-    void Tick(){
+    public void Tick(){
         SimulationStep();
         RegionAverage();
     }
 
     void SimulationStep(){
-        simulationTime++;
         UpdateRuntimePropagandaLevels();
         cs.SetBuffer(kernel_step, "npcs", npcBuffer);
         cs.SetInt("_NumNPCs", numNPCs);
