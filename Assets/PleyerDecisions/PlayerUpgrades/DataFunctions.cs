@@ -21,7 +21,7 @@ public class DataFunctions
 
 	//-----------------------------------------
 
-	public static SetEventDataReceiver(EventDataReceiver PAR_EDR)
+	public static void SetEventDataReceiver(EventDataReceiver PAR_EDR)
 	{
 		V_EventDataReceiver	= PAR_EDR;
 	}
