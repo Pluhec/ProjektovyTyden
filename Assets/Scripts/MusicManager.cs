@@ -305,6 +305,8 @@ public class MusicManager : MonoBehaviour
         ConfigureSource(sourceA);
         ConfigureSource(sourceB);
 
+        sourceB.outputAudioMixerGroup = sourceA.outputAudioMixerGroup;
+
         sourceA.volume = volume;
         sourceB.volume = 0f;
         activeSource = sourceA;

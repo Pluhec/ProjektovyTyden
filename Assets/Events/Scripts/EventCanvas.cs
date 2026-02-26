@@ -73,9 +73,6 @@ public class EventCanvas : MonoBehaviour
             var opts = eventDataReceiver.GetCurrentOptions();
             UpdateDecisionButtons(opts.free, opts.money, opts.perk);
         }
-
-        // Na začátku zobraz Video Canvas
-        ShowVideoCanvas();
     }
 
     void Awake()
@@ -84,6 +81,18 @@ public class EventCanvas : MonoBehaviour
         if (TooltipPanel1 != null) TooltipPanel1.SetActive(false);
         if (TooltipPanel2 != null) TooltipPanel2.SetActive(false);
         if (TooltipPanel3 != null) TooltipPanel3.SetActive(false);
+
+        // Skryj oba sub-canvasy; gameObject zůstává aktivní, aby script běžel
+        if (videoCanvas != null) videoCanvas.SetActive(false);
+        if (decisionCanvas != null) decisionCanvas.SetActive(false);
+    }
+
+    /// <summary>
+    /// Voláno schedulerm (EventDataReceiver) pro zobrazení eventu.
+    /// </summary>
+    public void Show()
+    {
+        ShowVideoCanvas();
     }
 
     /// <summary>
@@ -325,12 +334,10 @@ public class EventCanvas : MonoBehaviour
         if (videoCanvas != null) videoCanvas.SetActive(false);
         if (decisionCanvas != null) decisionCanvas.SetActive(false);
         
-        // Zde doporučuji skrýt i tooltipy, kdyby náhodou zůstaly viset při zavření canvasu
+        // Skryj i tooltipy, kdyby náhodou zůstaly viset při zavření canvasu
         if (TooltipPanel1 != null) TooltipPanel1.SetActive(false);
         if (TooltipPanel2 != null) TooltipPanel2.SetActive(false);
         if (TooltipPanel3 != null) TooltipPanel3.SetActive(false);
-        
-        gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -400,6 +407,7 @@ public class EventCanvas : MonoBehaviour
 
         if (videoCanvas != null)
         {
+            print("showing canvas");
             videoCanvas.SetActive(true);
         }
 
