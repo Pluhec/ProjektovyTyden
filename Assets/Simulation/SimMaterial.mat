@@ -27,7 +27,7 @@ Material:
     m_Floats:
     - _BlurRadius: 1
     - _CellSize: 0.1
-    - _DitherStrength: 0.3
+    - _DitherStrength: 1.02
     - _GridHeight: 400
     - _GridWidth: 600
     - _PosterizeLevels: 16

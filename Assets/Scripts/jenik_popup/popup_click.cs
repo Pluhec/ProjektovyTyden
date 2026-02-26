@@ -322,7 +322,14 @@ public class popup_click : MonoBehaviour
             case IconType.Power:
 
             Debug.Log("Power popup clicked!");
-            // TODO: Implement power-up effect, show popup text, etc.
+            SimulationHandler simHandler = FindObjectOfType<SimulationHandler>();
+            if (simHandler != null)
+            {
+                if (simHandler.TryGetGridPositionFromWorld(transform.position, out int gridX, out int gridY))
+                {
+                    simHandler.PaintStance(gridX, gridY, 2.0f, 12); // Draw fascist (positive stance) around itself
+                }
+            }
 
                 break;
         }

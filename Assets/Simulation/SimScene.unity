@@ -572,6 +572,7 @@ MonoBehaviour:
   posterizeLevels: 16
   ditherStrength: 0.3
   blurRadius: 1
+  alphaGamma: 1.2
   propaganda:
     young:
       virality: 1
@@ -591,6 +592,9 @@ MonoBehaviour:
   propagandaLevelAdaptationPerDay: 0.2
   paintingBrushRadius: 16
   regionAverages: []
+  regionPopulations: 
+  regionAgeAverages: []
+  regionEducationAverages: []
 --- !u!4 &1624458624
 Transform:
   m_ObjectHideFlags: 0

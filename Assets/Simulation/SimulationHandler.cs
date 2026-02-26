@@ -60,6 +60,7 @@ public class SimulationHandler : MonoBehaviour
     [Range(2, 64)] public float posterizeLevels = 16f;
     [Range(0f, 10f)] public float ditherStrength = 0.3f;
     [Range(0, 5)] public int blurRadius = 1;
+    [Range(0.01f, 4f)] public float alphaGamma = 1f;
 
     [Header("Propaganda")]
     public PropagandaLevels propaganda = new PropagandaLevels
@@ -137,7 +138,7 @@ public class SimulationHandler : MonoBehaviour
         RenderSimulation();
     }
 
-    bool TryGetGridPositionFromMouse(Vector2 mousePosition, out int gridX, out int gridY)
+    public bool TryGetGridPositionFromMouse(Vector2 mousePosition, out int gridX, out int gridY)
     {
         gridX = -1;
         gridY = -1;
@@ -152,7 +153,18 @@ public class SimulationHandler : MonoBehaviour
             return false;
 
         Vector3 hitWorld = ray.GetPoint(enterDistance);
-        Vector3 localPos = simulationQuadTransform.InverseTransformPoint(hitWorld);
+        return TryGetGridPositionFromWorld(hitWorld, out gridX, out gridY);
+    }
+
+    public bool TryGetGridPositionFromWorld(Vector3 worldPosition, out int gridX, out int gridY)
+    {
+        gridX = -1;
+        gridY = -1;
+
+        if (simulationQuadTransform == null)
+            return false;
+
+        Vector3 localPos = simulationQuadTransform.InverseTransformPoint(worldPosition);
 
         float u = localPos.x + 0.5f;
         float v = localPos.y + 0.5f;
@@ -231,12 +243,9 @@ public class SimulationHandler : MonoBehaviour
         propertyBlock.SetFloat("_CellSizeY", 1f / gridSize.y * simulationQuadTransform.localScale.y);
         propertyBlock.SetFloat("_PosOffsetX", simulationQuadTransform.position.x);
         propertyBlock.SetFloat("_PosOffsetY", simulationQuadTransform.position.y);
-        propertyBlock.SetFloat("_PosterizeLevels", Mathf.Max(posterizeLevels, 2f));
-        propertyBlock.SetFloat("_DitherStrength", Mathf.Clamp01(ditherStrength));
-        propertyBlock.SetInt("_BlurRadius", blurRadius);
         gridMaterial.SetFloat("_PosterizeLevels", Mathf.Max(posterizeLevels, 2f));
-        gridMaterial.SetFloat("_DitherStrength", Mathf.Clamp01(ditherStrength));
         gridMaterial.SetInt("_BlurRadius", blurRadius);
+        gridMaterial.SetFloat("_AlphaGamma", alphaGamma);
         Graphics.DrawProcedural(
             gridMaterial,
             new Bounds(Vector3.zero, Vector3.one * 1000),
@@ -405,9 +414,9 @@ public class SimulationHandler : MonoBehaviour
             return 0f;
         return regionEducationAverages[regionIndex];
     }
-    public void PaintStance(int gridX, int gridY, float stanceOffset)
+    public void PaintStance(int gridX, int gridY, float stanceOffset, int customRadius = -1)
     {
-        int radius = Mathf.Max(1, paintingBrushRadius);
+        int radius = customRadius >= 0 ? customRadius : Mathf.Max(1, paintingBrushRadius);
         float radiusSq = radius * radius;
         float stanceDeltaByte = stanceOffset * 127f;
 
