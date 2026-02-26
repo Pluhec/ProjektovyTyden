@@ -1796,9 +1796,9 @@ MonoBehaviour:
   mainMixer: {fileID: 24100000, guid: 5711f266dabfe44adac3ab0db81cc53b, type: 2}
   musicSource: {fileID: 271398351}
   sfxSource: {fileID: 1852188912}
-  musicSlider: {fileID: 0}
-  sfxSlider: {fileID: 0}
-  backgroundMusic: {fileID: 8300000, guid: 5c609c4c8122848b5ac83b394193142f, type: 3}
+  musicSlider: {fileID: 764457097}
+  sfxSlider: {fileID: 1721677532}
+  backgroundMusic: {fileID: 8300000, guid: d4a935f5b82f4f648b8fceef730094d8, type: 3}
   clickSound: {fileID: 8300000, guid: 2ba57f04c2ed345ba93d9b8b4252e86e, type: 3}
 --- !u!4 &595835580
 Transform:
