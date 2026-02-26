@@ -10,9 +10,25 @@ public class PlayerStats
 {
 	public static int Money = 10;
 
+	/// <summary>Fired whenever Money changes. Passes the new amount.</summary>
+	public static event System.Action<int> OnMoneyChanged;
+
+	/// <summary>Call this to fire OnMoneyChanged from outside PlayerStats.</summary>
+	public static void NotifyMoneyChanged()
+	{
+		OnMoneyChanged?.Invoke(Money);
+	}
+
 	public static void AddMoney(byte PAR_Ammount)
 	{
-		Money	+= PAR_Ammount;
+		Money += PAR_Ammount;
+		OnMoneyChanged?.Invoke(Money);
+	}
+
+	public static void RemoveMoney(byte PAR_Ammount)
+	{
+		Money -= PAR_Ammount;
+		OnMoneyChanged?.Invoke(Money);
 	}
 }
 
@@ -63,7 +79,8 @@ public class PerkInformation
 		{
 			DataFunctions.ShowWebButtonOnUI();
 		}
-		PlayerStats.Money	-= PerkCost;
+		PlayerStats.Money -= PerkCost;
+		PlayerStats.NotifyMoneyChanged();
 		IsBought = true;
 
 		DataFunctions.SendDataToSimulation(new EnumStructs.S_StatData[] {YouthStat, AdultStat, SeniorStat});
@@ -108,12 +125,13 @@ public class EventInfo
 				    DataFunctions.SendDataToSimulation(new EnumStructs.S_StatData[] {OptionFree.OptionEffectYoung, OptionFree.OptionEffectAdult, OptionFree.OptionEffectSenior});
 					return true;
 				case 1:
-
 					if(PlayerStats.Money < OptionMoney.OptionCost)
 					{
 						return false;
 					}
-					DataFunctions.SendDataToSimulation(new EnumStructs.S_StatData[] {OptionFree.OptionEffectYoung, OptionFree.OptionEffectAdult, OptionFree.OptionEffectSenior});
+					PlayerStats.Money -= OptionMoney.OptionCost;
+					PlayerStats.NotifyMoneyChanged();
+					DataFunctions.SendDataToSimulation(new EnumStructs.S_StatData[] {OptionMoney.OptionEffectYoung, OptionMoney.OptionEffectAdult, OptionMoney.OptionEffectSenior});
 					return true;
 				case 2:
 					if(!OptionPerk.OptionPerk.IsBought)

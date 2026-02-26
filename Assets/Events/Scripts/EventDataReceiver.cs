@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using PlayerChoice.DataSets;
+using System.Net;
 
 /// <summary>
 /// Přijímá data od logiky týmu - cestu k videu a text k zobrazení.
@@ -27,6 +28,10 @@ public class EventDataReceiver : MonoBehaviour
     
     [Tooltip("ID eventu pro testování (1-30)")]
     [SerializeField] private int testEventId = 1;
+
+    public TimeManager timeManager;
+    public TimeSoundManager timeSoundManager;
+    public bool autoStart = false;
     
     // Dostupné eventy pro testování (1-30)
     private int[] availableEventIds = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 };
@@ -84,8 +89,10 @@ public class EventDataReceiver : MonoBehaviour
 
     void Start()
     {
-        // Načti eventy z JSON
-        LoadEventsFromJSON();
+        if(autoStart)
+        {
+            LoadEventsFromJSON();
+        }
 
         if (simulateOnStart)
         {
@@ -104,6 +111,9 @@ public class EventDataReceiver : MonoBehaviour
     public void LoadEventsFromJSON()
     {
         string fullPath = Path.Combine(Application.dataPath, eventsJsonPath.Replace("Assets/", ""));
+
+        timeManager.TogglePause();
+        timeSoundManager.StopAllSound();
         
         if (!File.Exists(fullPath))
         {
@@ -292,6 +302,96 @@ public class EventDataReceiver : MonoBehaviour
 
         eventText.text = text;
         Log($"TEXT: {text}");
+    }
+
+    /// <summary>
+    /// Zavolej tuto metodu když hráč klikne na tlačítko volby (0 = zdarma, 1 = peníze, 2 = perk).
+    /// Zkontroluje požadavky, odečte peníze/perk a resumuje hru.
+    /// </summary>
+    public bool OnOptionChosen(int optionIndex)
+    {
+        if (currentEvent == null)
+        {
+            LogError("OnOptionChosen: žádný aktuální event!");
+            return false;
+        }
+
+        switch (optionIndex)
+        {
+            case 0: // Zdarma - vždy možné
+                Log("Hráč zvolil FREE možnost.");
+                ResumeGame();
+                return true;
+
+            case 1: // Za peníze
+                OptionData money = currentEvent.OptionMoney;
+                if (money == null) { LogError("OptionMoney je null!"); return false; }
+
+                if (PlayerChoice.DataSets.PlayerStats.Money < money.OptionCost)
+                {
+                    Log($"Hráč nemá dost peněz! Má {PlayerChoice.DataSets.PlayerStats.Money}, potřebuje {money.OptionCost}.");
+                    return false;
+                }
+
+                PlayerChoice.DataSets.PlayerStats.Money -= money.OptionCost;
+                PlayerChoice.DataSets.PlayerStats.NotifyMoneyChanged();
+                Log($"Odečteno {money.OptionCost}$. Zbývá: {PlayerChoice.DataSets.PlayerStats.Money}$.");
+                ResumeGame();
+                return true;
+
+            case 2: // Za perk
+                OptionData perk = currentEvent.OptionPerk;
+                if (perk == null) { LogError("OptionPerk je null!"); return false; }
+
+                if (!IsPerkOwned(perk.OptionPerk))
+                {
+                    Log($"Hráč nemá perk '{perk.OptionPerk}'.");
+                    return false;
+                }
+
+                Log($"Hráč použil perk '{perk.OptionPerk}'.");
+                ResumeGame();
+                return true;
+
+            default:
+                LogError($"Neznámý optionIndex: {optionIndex}");
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// Resumuje hru po dokončení eventu (unpause čas + zvuk).
+    /// </summary>
+    public void ResumeGame()
+    {
+        if (timeManager != null)
+            timeManager.TogglePause();
+
+        if (timeSoundManager != null)
+            timeSoundManager.ResumeSound();
+
+        Log("Hra resumována po eventu.");
+    }
+
+    /// <summary>
+    /// Zkontroluje jestli hráč vlastní perk podle jeho fieldName v PerkSet.
+    /// </summary>
+    private bool IsPerkOwned(string perkFieldName)
+    {
+        if (string.IsNullOrEmpty(perkFieldName)) return false;
+
+        System.Reflection.FieldInfo field = typeof(PerkSet).GetField(
+            perkFieldName,
+            System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+
+        if (field == null)
+        {
+            LogWarning($"IsPerkOwned: Perk field '{perkFieldName}' nenalezen v PerkSet.");
+            return false;
+        }
+
+        PlayerChoice.DataSets.PerkInformation perkInfo = field.GetValue(null) as PlayerChoice.DataSets.PerkInformation;
+        return perkInfo != null && perkInfo.IsBought;
     }
 
     /// <summary>

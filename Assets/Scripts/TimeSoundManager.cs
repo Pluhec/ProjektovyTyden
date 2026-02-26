@@ -65,6 +65,7 @@ public class TimeSoundManager : MonoBehaviour
     private SimulationHandler simulationHandler;
     private FieldInfo simulationHandlerField;
     private bool isInCloseZoom;
+    private bool isSoundStopped;
     private float closeBlend01;
     private readonly Dictionary<DayTimePeriod, AudioSource> periodSources = new Dictionary<DayTimePeriod, AudioSource>();
     private readonly Dictionary<DayTimePeriod, int> lastClipByPeriod = new Dictionary<DayTimePeriod, int>();
@@ -121,6 +122,9 @@ public class TimeSoundManager : MonoBehaviour
 
     void Update()
     {
+        if (isSoundStopped)
+            return;
+
         if (mapCamera == null)
             mapCamera = Camera.main;
         CacheCameraMovement();
@@ -164,6 +168,31 @@ public class TimeSoundManager : MonoBehaviour
             ActivateSlot(slotIndex);
 
         ApplySlotVolumes(slotIndex, closeBlend01);
+    }
+
+    [ContextMenu("Stop All Sound")]
+    public void StopAllSound()
+    {
+        isSoundStopped = true;
+        FadeAllPeriodSources(0f, force: true);
+
+        if (highAltitudeWindAudioSource != null)
+        {
+            highAltitudeWindAudioSource.volume = 0f;
+            highAltitudeWindAudioSource.Pause();
+        }
+
+        activeSlotIndex = -1;
+    }
+
+    [ContextMenu("Resume Sound")]
+    public void ResumeSound()
+    {
+        isSoundStopped = false;
+        ForceRefreshSound();
+
+        if (highAltitudeWindAudioSource != null && highAltitudeWindAudioSource.clip != null && !highAltitudeWindAudioSource.isPlaying)
+            highAltitudeWindAudioSource.Play();
     }
 
     [ContextMenu("Force Refresh Time Sound")]
