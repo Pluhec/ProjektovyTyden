@@ -31,7 +31,7 @@ public class PerkInformation
 
 		if(DependsOnPerks == null || DependsOnPerks.Length == 0)
 		{
-			return SimulationChangeNotify();
+			return PurchaseChangeNotify();
 		}
 
 		foreach (var dep in DependsOnPerks)
@@ -54,7 +54,7 @@ public class PerkInformation
 
 		if(PerkName.Equals("Založení politické strany"))
 		{
-			ShowWebButtonOnUI();
+                DataFunctions.ShowWebButtonOnUI();
 		}
 		PlayerStats.Money	-= PerkCost;
 		IsBought = true;
@@ -65,7 +65,7 @@ public class PerkInformation
 		{
 			if(SEffect.EffectsType	== EnumStructs.E_PerkSpecialType.Democracy)
 			{
-				InformChangeDemocracyMeter(SEffect.EffectAmmount);
+                 DataFunctions.InformChangeDemocracyMeter((int)SEffect.EffectAmmount);
 			}
 		}
 
