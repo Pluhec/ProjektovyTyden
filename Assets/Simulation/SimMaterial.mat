@@ -30,7 +30,7 @@ Material:
     - _DitherStrength: 1.02
     - _GridHeight: 400
     - _GridWidth: 600
-    - _PosterizeLevels: 64
+    - _PosterizeLevels: 16
     - _Zoom: 10.62
     m_Colors: []
   m_BuildTextureStacks: []
