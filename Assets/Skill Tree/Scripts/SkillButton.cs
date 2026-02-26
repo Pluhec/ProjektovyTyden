@@ -31,6 +31,7 @@ public class SkillButton : MonoBehaviour
 
     [Header("Skill Icon")]
     public Sprite skillIcon;
+    public bool tweakIcon = false; // když true, velikost ikony se nebere ze skriptu ale z Unity
 
     [Header("References")]
     public Image iconImage;
@@ -110,8 +111,13 @@ public class SkillButton : MonoBehaviour
                 iconImage.sprite = skillIcon;
 
             iconImage.color = skillState == SkillState.Locked ? LockedColor : AvailableColor;
-            iconImage.GetComponent<RectTransform>().sizeDelta =
-                isPrimarySkill ? PrimaryIconSize : SecondaryIconSize;
+
+            // Pouze pokud tweakIcon je false nastavíme velikost ze skriptu
+            if (!tweakIcon)
+            {
+                iconImage.GetComponent<RectTransform>().sizeDelta =
+                    isPrimarySkill ? PrimaryIconSize : SecondaryIconSize;
+            }
         }
 
         if (_button != null)
@@ -152,6 +158,5 @@ public class SkillButton : MonoBehaviour
 
         skillState = newState;
         Apply();
-        // Záměrně NEVOLÁ SetState aby nedošlo k rekurzi
     }
 }
