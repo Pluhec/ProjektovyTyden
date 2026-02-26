@@ -26,6 +26,7 @@ public class RegionMapHover : MonoBehaviour
     public TextMeshProUGUI vekText;
     public TextMeshProUGUI educationText;
     public TextMeshProUGUI regionText;
+    public TextMeshProUGUI stanceText;
 
     [Header("Detection Tuning")]
 
@@ -152,6 +153,9 @@ public class RegionMapHover : MonoBehaviour
 
         if (vekText != null)
             vekText.text = $"{simulationHandler.GetRegionAgeAverage(hoveredRegion):F1}";
+
+        if(stanceText != null)
+            stanceText.text = $"{simulationHandler.GetRegionAverage(hoveredRegion):F1}";
 
         if (regionText != null)
             regionText.text = $"Region: {hoveredRegion + 1}";
