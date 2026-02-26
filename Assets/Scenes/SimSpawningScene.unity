@@ -555,24 +555,26 @@ MonoBehaviour:
   simulationHandler: {fileID: 1624458623}
   spawnInterval: 1
   spawnAttemptsPerInterval: 10
-  randomOffsetInCell: 0
+  randomOffsetInCell: 0.1
   iconTypes:
   - iconType: 0
     prefabToSpawn: {fileID: 5313995338523933483, guid: 225a5556be659614090ae9ce4902b88c, type: 3}
-    isBlue: 0
-    minColorThreshold: 0.99
-    maxColorThreshold: 1
+    minIdeologyValue: 0.9
+    maxIdeologyValue: 1
+    constantSpawnProbability: 0.3
     minSpawnProbability: 0
-    maxSpawnProbability: 0.4
+    maxSpawnProbability: 0.04
+    spawnProbabilityMode: 2
     minSameColorNeighbors: 0
   - iconType: 1
     prefabToSpawn: {fileID: 5313995338523933483, guid: 225a5556be659614090ae9ce4902b88c, type: 3}
-    isBlue: 0
-    minColorThreshold: 0.5
-    maxColorThreshold: 0.7
+    minIdeologyValue: 0.35
+    maxIdeologyValue: 0.7
+    constantSpawnProbability: 0.5
     minSpawnProbability: 0
-    maxSpawnProbability: 0.1
-    minSameColorNeighbors: 2
+    maxSpawnProbability: 0.03
+    spawnProbabilityMode: 1
+    minSameColorNeighbors: 0
 --- !u!4 &569946035
 Transform:
   m_ObjectHideFlags: 0
@@ -672,9 +674,10 @@ MonoBehaviour:
   cs: {fileID: 7200000, guid: 562b3f8db7d58d944a2a1aeccae5e028, type: 3}
   initialTexture: {fileID: 2800000, guid: f19d2d546f2a1a749a1e3efbff1a5f41, type: 3}
   regionTexture: {fileID: 2800000, guid: 02f3b69204fe7b3488885218cacb622a, type: 3}
-  posterizeLevels: 16
-  ditherStrength: 0.3
+  posterizeLevels: 64
+  ditherStrength: 0
   blurRadius: 1
+  alphaGamma: 1
   propaganda:
     young:
       virality: 1
@@ -692,7 +695,12 @@ MonoBehaviour:
     youngMaxAge: 85
     adultMaxAge: 170
   propagandaLevelAdaptationPerDay: 0.2
+  paintingBrushRadius: 8
+  simulationTime: 0
   regionAverages: []
+  regionPopulations: 
+  regionAgeAverages: []
+  regionEducationAverages: []
 --- !u!4 &1624458624
 Transform:
   m_ObjectHideFlags: 0

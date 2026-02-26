@@ -593,18 +593,68 @@ MonoBehaviour:
   pivotOffset: {x: 0, y: -0.5, z: 0}
   hoverHeight: 0.05
   hoverSpeed: 1.5
-  pulsePopupBody: 0
+  pulsePopupBody: 1
   pulseStartSeconds: 3
   pulseSpeed: 8
   pulseRedBlend: 0.55
-  pulseColor: {r: 1, g: 0, b: 0, a: 1}
+  pulseColor: {r: 1, g: 0.435849, b: 0.435849, a: 1}
   pulseScale: 1
   pulseScaleAmount: 1.1
   particleClickedColor: {r: 0.89949375, g: 1, b: 0.8283019, a: 0.6666667}
   particleTimeoutColor: {r: 0.335849, g: 0.18440008, b: 0.18440008, a: 0.6666667}
   scaleWithZoom: 1
-  baseOrthographicSize: 2
-  zoomScaleFactor: 0.5
+  baseOrthographicSize: 5
+  zoomScaleFactor: 0.7
+  particlesScaleWithZoom: 1
+  particleZoomScaleFactor: 0.7
+  powerInfluenceRadius: 80
+  powerInfluenceStrength: 10
+  powerInfluenceFalloffCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.99619293
+      inSlope: -12.981402
+      outSlope: -12.981402
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.03607355
+      value: 0.52790767
+      inSlope: -9.08984
+      outSlope: -9.08984
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.113254875
+      value: 0.12669773
+      inSlope: -0.48716813
+      outSlope: -0.48716813
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.008395451
+      outSlope: -0.008395451
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33999997
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  powerInfluenceCurveSamples: 30
+  powerInfluenceMode: 0
+  powerInfluenceMin: 0
+  powerInfluenceMax: 1
 --- !u!114 &799764018914423979
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -416,17 +416,23 @@ public class SimulationHandler : MonoBehaviour
             return 0f;
         return regionEducationAverages[regionIndex];
     }
-    public void PaintStance(int gridX, int gridY, float stanceOffset, int customRadius = -1)
+    public void PaintStance(int gridX, int gridY, float stanceOffset, int customRadius = -1, float cellAspectXY = 1f)
     {
         int radius = customRadius >= 0 ? customRadius : Mathf.Max(1, paintingBrushRadius);
         float radiusSq = radius * radius;
         float stanceDeltaByte = stanceOffset * 127f;
+        // Account for non-square grid cells so the influence region is a world-space circle.
+        // cellAspectXY = cellWidth / cellHeight. x coords are scaled into y-cell units before
+        // distance is measured, and the x iteration range is adjusted accordingly.
+        float safeAspect = Mathf.Max(0.0001f, cellAspectXY);
+        int xExtent = Mathf.CeilToInt(radius / safeAspect);
 
         for (int y = -radius; y <= radius; y++)
         {
-            for (int x = -radius; x <= radius; x++)
+            for (int x = -xExtent; x <= xExtent; x++)
             {
-                float distSq = x * x + y * y;
+                float nx = x * safeAspect; // convert x to y-cell units
+                float distSq = nx * nx + y * y;
                 if (distSq > radiusSq) continue;
 
                 float t = 1f - (distSq / radiusSq);
