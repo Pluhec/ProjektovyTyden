@@ -19,6 +19,12 @@ public class DataFunctions
 
 	public static List<EventInfo> EventsList = new List<EventInfo>();
 
+	[Serializable]
+	private class EventsWrapper
+	{
+		public EventInfo[] Events;
+	}
+
 	//-----------------------------------------
 
 	public static void SetEventDataReceiver(EventDataReceiver PAR_EDR)
@@ -34,7 +40,8 @@ public class DataFunctions
 
 		EventsList.Clear();
 
-		foreach (EventInfo V_RawEvent in JsonUtility.FromJson<EventInfo[]>(V_JsonContent))
+		EventsWrapper wrapper = JsonUtility.FromJson<EventsWrapper>(V_JsonContent);
+		foreach (EventInfo V_RawEvent in wrapper.Events)
 		{
 			EventsList.Add(V_RawEvent);
 		}
