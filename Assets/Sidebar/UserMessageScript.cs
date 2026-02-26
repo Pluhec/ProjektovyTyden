@@ -135,6 +135,10 @@ public class UserMessageScript : MonoBehaviour
                                 postedMessages.Add(selectedMessage.Content);
                                 return selectedMessage;
                             }
+                            else 
+                            {
+                                Debug.Log("All messages depleated !!!!!!!");
+                            }
                         }
                     }
                     catch (System.Exception ex)
