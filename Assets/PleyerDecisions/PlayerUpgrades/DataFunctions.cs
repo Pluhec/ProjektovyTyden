@@ -22,12 +22,6 @@ public class DataFunctions
 	public static List<string> OwnedPerks = new List<string>();
 	public static int CurrentCollaborators = 0;
 
-	[Serializable]
-	private class EventsWrapper
-	{
-		public EventInfo[] Events;
-	}
-
 	//-----------------------------------------
 
 	public static void SetEventDataReceiver(EventDataReceiver PAR_EDR)
