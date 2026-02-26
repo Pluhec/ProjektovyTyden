@@ -377,6 +377,7 @@ public class EventDataReceiver : MonoBehaviour
         {
             case 0: // Zdarma - vždy možné
                 Log("Hráč zvolil FREE možnost.");
+                TrySendOptionStatData(currentEvent.OptionFree);
                 ResumeGame();
                 return true;
 
