@@ -231,7 +231,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 789854504817951572, guid: 07ee4a2d6140965a1908c7a9a869fdf8, type: 3}
       propertyPath: m_fontSize
-      value: 11.3
+      value: 9.75
       objectReference: {fileID: 0}
     - target: {fileID: 1980320303604462646, guid: 07ee4a2d6140965a1908c7a9a869fdf8, type: 3}
       propertyPath: m_Pivot.x
@@ -263,7 +263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1980320303604462646, guid: 07ee4a2d6140965a1908c7a9a869fdf8, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 45
+      value: 43.7507
       objectReference: {fileID: 0}
     - target: {fileID: 1980320303604462646, guid: 07ee4a2d6140965a1908c7a9a869fdf8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -313,13 +313,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2756761575979410301, guid: 07ee4a2d6140965a1908c7a9a869fdf8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1.906311
+      objectReference: {fileID: 0}
     - target: {fileID: 5785681768788673210, guid: 07ee4a2d6140965a1908c7a9a869fdf8, type: 3}
       propertyPath: m_fontSize
-      value: 16.9
+      value: 14.78
       objectReference: {fileID: 0}
     - target: {fileID: 6344099270882602264, guid: 07ee4a2d6140965a1908c7a9a869fdf8, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -9.449982
+      objectReference: {fileID: 0}
+    - target: {fileID: 7023465912038003826, guid: 07ee4a2d6140965a1908c7a9a869fdf8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1.625885
       objectReference: {fileID: 0}
     - target: {fileID: 7023465912038003826, guid: 07ee4a2d6140965a1908c7a9a869fdf8, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -374,7 +382,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -105.83609, y: 0}
-  m_SizeDelta: {x: 211.6721, y: 0}
+  m_SizeDelta: {x: 211.67, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &486276708
 MonoBehaviour:
@@ -444,6 +452,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 702257cf303f4ea429f612b2a980bb14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MediaScript
+  _isMediaTrue: 0
+  openMediaY: 0
+  closeMediaY: 300
+  smoothTime: 0.1
+  mediaPanel: {fileID: 0}
+  displayImage: {fileID: 0}
+  videoPlayer: {fileID: 0}
 --- !u!114 &486276713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1038,7 +1053,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 5.291939, y: 285.00006}
+  m_AnchoredPosition: {x: 5.291931, y: 285.00006}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1664860772
@@ -1194,8 +1209,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.0009765625}
+  m_SizeDelta: {x: 0, y: -0.0010376}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1967243746
 MonoBehaviour:
@@ -1234,6 +1249,7 @@ GameObject:
   - component: {fileID: 2028765905}
   - component: {fileID: 2028765907}
   - component: {fileID: 2028765906}
+  - component: {fileID: 2028765908}
   m_Layer: 5
   m_Name: Feed.View
   m_TagString: Untagged
@@ -1299,6 +1315,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2028765904}
   m_CullTransparentMesh: 1
+--- !u!114 &2028765908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2028765904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ScrollRect
+  m_Content: {fileID: 1967243745}
+  m_Horizontal: 0
+  m_Vertical: 1
+  m_MovementType: 1
+  m_Elasticity: 0.1
+  m_Inertia: 1
+  m_DecelerationRate: 0.135
+  m_ScrollSensitivity: 1
+  m_Viewport: {fileID: 1331153435}
+  m_HorizontalScrollbar: {fileID: 0}
+  m_VerticalScrollbar: {fileID: 0}
+  m_HorizontalScrollbarVisibility: 0
+  m_VerticalScrollbarVisibility: 0
+  m_HorizontalScrollbarSpacing: 0
+  m_VerticalScrollbarSpacing: 0
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

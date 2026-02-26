@@ -24,9 +24,9 @@ public class MediaScript : MonoBehaviour
         if (mediaPanel == null) mediaPanel = GetComponent<RectTransform>();
         
         // Default state: Snap to closed position immediately
-        Vector2 startPos = mediaPanel.anchoredPosition;
-        startPos.y = closeMediaY;
-        mediaPanel.anchoredPosition = startPos;
+        // Vector2 startPos = mediaPanel.anchoredPosition;
+        // startPos.y = closeMediaY;
+        // mediaPanel.anchoredPosition = startPos;
         _isMediaTrue = false;
 
         // Hide visuals until something is loaded
@@ -38,12 +38,12 @@ public class MediaScript : MonoBehaviour
         float targetY = _isMediaTrue ? openMediaY : closeMediaY;
         Vector2 targetPosition = new Vector2(mediaPanel.anchoredPosition.x, targetY);
 
-        mediaPanel.anchoredPosition = Vector2.SmoothDamp(
-            mediaPanel.anchoredPosition, 
-            targetPosition, 
-            ref currentVelocity, 
-            smoothTime
-        );
+        // mediaPanel.anchoredPosition = Vector2.SmoothDamp(
+        //     mediaPanel.anchoredPosition, 
+        //     targetPosition, 
+        //     ref currentVelocity, 
+        //     smoothTime
+        // );
     }
 
     public void SetMediaByPath(string fullPath)
