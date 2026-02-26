@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using PlayerChoice.DataSets;
+using TMPro;
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct NPC // 12b (9b data + 3b padding)
@@ -79,6 +80,12 @@ public class SimulationHandler : MonoBehaviour
     private PropagandaLevels runtimePropaganda;
 
     [HideInInspector] public uint simulationTime;
+
+    [Header("Global Stats UI")]
+    public TextMeshProUGUI globalStanceText;
+    public TextMeshProUGUI globalPopulationText;
+    public TextMeshProUGUI globalAgeText;
+    public TextMeshProUGUI globalEducationText;
 
     private const int NUM_REGIONS = 10;
     private int[] regionMap;
@@ -173,6 +180,19 @@ public class SimulationHandler : MonoBehaviour
     public void Tick(){
         SimulationStep();
         RegionAverage();
+        UpdateGlobalStatsUI();
+    }
+
+    void UpdateGlobalStatsUI()
+    {
+        if (globalStanceText != null)
+            globalStanceText.text = $"{GetGlobalStanceAverage() / 255f * 200f - 100f:+0.0;-0.0;0.0}";
+        if (globalPopulationText != null)
+            globalPopulationText.text = $"{GetGlobalPopulationAverage():0.0}";
+        if (globalAgeText != null)
+            globalAgeText.text = $"{GetGlobalAgeAverage():0.0}";
+        if (globalEducationText != null)
+            globalEducationText.text = $"{GetGlobalEducationAverage():0.0}";
     }
 
     void SimulationStep(){
@@ -407,6 +427,66 @@ public class SimulationHandler : MonoBehaviour
             return 0f;
         return regionEducationAverages[regionIndex];
     }
+
+    public float GetGlobalStanceAverage()
+    {
+        if (npcs == null) return 0f;
+        float stanceSum = 0f;
+        int popSum = 0;
+        for (int i = 0; i < numNPCs; i++)
+        {
+            int pop = npcs[i].population;
+            if (pop == 0) continue;
+            stanceSum += npcs[i].stance * pop;
+            popSum += pop;
+        }
+        return popSum > 0 ? stanceSum / popSum : 0f;
+    }
+
+    public float GetGlobalPopulationAverage()
+    {
+        if (npcs == null) return 0f;
+        int count = 0;
+        int popSum = 0;
+        for (int i = 0; i < numNPCs; i++)
+        {
+            if (npcs[i].population == 0) continue;
+            popSum += npcs[i].population;
+            count++;
+        }
+        return count > 0 ? (float)popSum / count : 0f;
+    }
+
+    public float GetGlobalAgeAverage()
+    {
+        if (npcs == null) return 0f;
+        float ageSum = 0f;
+        int popSum = 0;
+        for (int i = 0; i < numNPCs; i++)
+        {
+            int pop = npcs[i].population;
+            if (pop == 0) continue;
+            ageSum += npcs[i].age * pop;
+            popSum += pop;
+        }
+        return popSum > 0 ? (ageSum / popSum) / 255f * 75f + 15f : 0f; // remap 0-255 -> 15-90
+    }
+
+    public float GetGlobalEducationAverage()
+    {
+        if (npcs == null) return 0f;
+        float eduSum = 0f;
+        int popSum = 0;
+        for (int i = 0; i < numNPCs; i++)
+        {
+            int pop = npcs[i].population;
+            if (pop == 0) continue;
+            eduSum += npcs[i].education * pop;
+            popSum += pop;
+        }
+        return popSum > 0 ? (eduSum / popSum) / 255f * 100f : 0f; // remap 0-255 -> 0-100
+    }
+
     public void PaintStance(int gridX, int gridY, float stanceOffset, int customRadius = -1, float cellAspectXY = 1f)
     {
         int radius = customRadius >= 0 ? customRadius : Mathf.Max(1, paintingBrushRadius);

@@ -91,7 +91,19 @@ public class SkillPopup : MonoBehaviour
             return;
         }
 
+
+        // Grant the perk to the player
+        // Add to OwnedPerks if not already present
+        if (!PlayerChoice.DataSets.DataFunctions.OwnedPerks.Contains(_perkInfo.PerkName))
+            PlayerChoice.DataSets.DataFunctions.OwnedPerks.Add(_perkInfo.PerkName);
+
         _skillButton.SetState(SkillButton.SkillState.Unlocked);
+
+        // DEBUG: confirm purchase and ownership
+        Debug.Log($"[SkillPopup] Purchased perk '{_perkInfo.PerkName}' for {_perkInfo.PerkCost}$.");
+        Debug.Log($"[SkillPopup] Player money after purchase: {PlayerChoice.DataSets.PlayerStats.Money}");
+        Debug.Log($"[SkillPopup] OwnedPerks contains '{_perkInfo.PerkName}': {PlayerChoice.DataSets.DataFunctions.OwnedPerks.Contains(_perkInfo.PerkName)}; Total owned: {PlayerChoice.DataSets.DataFunctions.OwnedPerks.Count}");
+        Debug.Log($"[SkillPopup] Perk IsBought flag: {_perkInfo.IsBought}");
 
         SkillTreeConnector connector = FindObjectOfType<SkillTreeConnector>();
         if (connector != null)

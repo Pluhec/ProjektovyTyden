@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Runtime.CompilerServices;
 
 public class TimeManager : MonoBehaviour
 {
@@ -20,6 +21,13 @@ public class TimeManager : MonoBehaviour
     public Image daySliderFill;
     public Material playingMaterial;
     public Material pausedMaterial;
+
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+        if (cloudTimeController != null)
+            cloudTimeController.stopped = isPaused;
+    }
 
     void Start()
     {
@@ -74,4 +82,5 @@ public class TimeManager : MonoBehaviour
             dayText.text = dateString;
         }
     }
+
 }

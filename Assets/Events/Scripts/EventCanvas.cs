@@ -48,6 +48,16 @@ public class EventCanvas : MonoBehaviour
             replayButton.onClick.AddListener(ReplayVideo);
         }
 
+        // Nastav listenery pro decision tlačítka
+        if (buttonFree != null)
+            buttonFree.onClick.AddListener(() => OnDecisionChosen(0));
+
+        if (buttonMoney != null)
+            buttonMoney.onClick.AddListener(() => OnDecisionChosen(1));
+
+        if (buttonPerk != null)
+            buttonPerk.onClick.AddListener(() => OnDecisionChosen(2));
+
         // Registruj se na event pro načtení options
         if (eventDataReceiver != null)
         {
@@ -98,14 +108,19 @@ public class EventCanvas : MonoBehaviour
         }
 
         if (skipButton != null)
-        {
             skipButton.onClick.RemoveListener(SkipVideo);
-        }
 
         if (replayButton != null)
-        {
             replayButton.onClick.RemoveListener(ReplayVideo);
-        }
+
+        if (buttonFree != null)
+            buttonFree.onClick.RemoveAllListeners();
+
+        if (buttonMoney != null)
+            buttonMoney.onClick.RemoveAllListeners();
+
+        if (buttonPerk != null)
+            buttonPerk.onClick.RemoveAllListeners();
 
         // Odregistruj se z eventu
         if (eventDataReceiver != null)
@@ -113,6 +128,64 @@ public class EventCanvas : MonoBehaviour
             eventDataReceiver.OnOptionsLoaded -= UpdateDecisionButtons;
         }
     }
+
+    /// <summary>
+    /// Zavolá se po kliknutí na Free / Money / Perk tlačítko.
+    /// </summary>
+    private void OnDecisionChosen(int optionIndex)
+    {
+        if (eventDataReceiver == null) return;
+
+        bool success = eventDataReceiver.OnOptionChosen(optionIndex);
+
+        if (!success)
+        {
+            // Hráč nemá dost peněz nebo perk — tlačítko vizuálně "zakmitá", ale event zůstane otevřený
+            StartCoroutine(ShakeButton(optionIndex));
+            return;
+        }
+
+        // Volba byla přijata — skryj event canvas
+        CloseEventCanvas();
+    }
+
+    /// <summary>
+    /// Skryje celý event canvas po dokončení rozhodnutí.
+    /// </summary>
+    private void CloseEventCanvas()
+    {
+        if (videoCanvas != null) videoCanvas.SetActive(false);
+        if (decisionCanvas != null) decisionCanvas.SetActive(false);
+        gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Krátká vizuální animace tlačítka při neúspěšné volbě.
+    /// </summary>
+    private System.Collections.IEnumerator ShakeButton(int optionIndex)
+    {
+        Button btn = optionIndex == 0 ? buttonFree : optionIndex == 1 ? buttonMoney : buttonPerk;
+        if (btn == null) yield break;
+
+        RectTransform rt = btn.GetComponent<RectTransform>();
+        if (rt == null) yield break;
+
+        Vector2 originalPos = rt.anchoredPosition;
+        float duration = 0.3f;
+        float elapsed = 0f;
+        float magnitude = 8f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float x = Mathf.Sin(elapsed * 60f) * magnitude * (1f - elapsed / duration);
+            rt.anchoredPosition = originalPos + new Vector2(x, 0f);
+            yield return null;
+        }
+
+        rt.anchoredPosition = originalPos;
+    }
+
 
     /// <summary>
     /// Zavolá se když video dohraje
