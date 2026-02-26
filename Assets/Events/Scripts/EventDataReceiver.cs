@@ -58,6 +58,28 @@ public class EventDataReceiver : MonoBehaviour
         public string OptionPerk;
         public string OptionName;
         public string OptionEffect;
+        public StatData OptionEffectYoung;
+        public StatData OptionEffectAdult;
+        public StatData OptionEffectSenior;
+        public SpecialEffect OptionSpecialEffect;
+    }
+
+    [System.Serializable]
+    public class StatData
+    {
+        public int AgeGroup;
+        public int Virality;
+        public int Impact;
+        public int Visibility;
+    }
+
+    [System.Serializable]
+    public class SpecialEffect
+    {
+        public int EffectsType;
+        public int? EffectsGroup;
+        public int? EffectsEducation;
+        public int? EffectAmmount;
     }
 
     // Třída pro data eventu z JSON
@@ -238,6 +260,41 @@ public class EventDataReceiver : MonoBehaviour
         Log("========================================");
     }
 
+    private void TrySendOptionStatData(OptionData option)
+    {
+        if (option == null) return;
+
+        var statsList = new System.Collections.Generic.List<PlayerChoice.DataSets.EnumStructs.S_StatData>();
+
+        if (option.OptionEffectYoung != null)
+            statsList.Add(ConvertStat(option.OptionEffectYoung));
+        if (option.OptionEffectAdult != null)
+            statsList.Add(ConvertStat(option.OptionEffectAdult));
+        if (option.OptionEffectSenior != null)
+            statsList.Add(ConvertStat(option.OptionEffectSenior));
+
+        if (statsList.Count > 0)
+            PlayerChoice.DataSets.DataFunctions.SendDataToSimulation(statsList.ToArray());
+
+        // Handle simple special effect for democracy if present
+        if (option.OptionSpecialEffect != null && option.OptionSpecialEffect.EffectsType == (int)PlayerChoice.DataSets.EnumStructs.E_PerkSpecialType.Democracy)
+        {
+            int amt = option.OptionSpecialEffect.EffectAmmount ?? 0;
+            PlayerChoice.DataSets.DataFunctions.InformChangeDemocracyMeter(amt);
+        }
+    }
+
+    private PlayerChoice.DataSets.EnumStructs.S_StatData ConvertStat(StatData sd)
+    {
+        PlayerChoice.DataSets.EnumStructs.S_StatData outStat = new PlayerChoice.DataSets.EnumStructs.S_StatData();
+        int age = Mathf.Clamp(sd.AgeGroup, 0, 2);
+        outStat.AgeGroup = (PlayerChoice.DataSets.EnumStructs.E_Age)age;
+        outStat.Virality = (sbyte)sd.Virality;
+        outStat.Impact = (sbyte)sd.Impact;
+        outStat.Visibility = (sbyte)sd.Visibility;
+        return outStat;
+    }
+
     /// <summary>
     /// Nastaví video podle cesty
     /// </summary>
@@ -333,9 +390,13 @@ public class EventDataReceiver : MonoBehaviour
                     return false;
                 }
 
-                PlayerChoice.DataSets.PlayerStats.Money -= money.OptionCost;
+                PlayerChoice.DataSets.PlayerStats.Money -= (byte)money.OptionCost;
                 PlayerChoice.DataSets.PlayerStats.NotifyMoneyChanged();
                 Log($"Odečteno {money.OptionCost}$. Zbývá: {PlayerChoice.DataSets.PlayerStats.Money}$.");
+
+                // Apply stat effects if present
+                TrySendOptionStatData(money);
+
                 ResumeGame();
                 return true;
 
@@ -350,6 +411,10 @@ public class EventDataReceiver : MonoBehaviour
                 }
 
                 Log($"Hráč použil perk '{perk.OptionPerk}'.");
+
+                // Apply stat effects if present
+                TrySendOptionStatData(perk);
+
                 ResumeGame();
                 return true;
 
@@ -386,6 +451,10 @@ public class EventDataReceiver : MonoBehaviour
 
         if (field == null)
         {
+            // If not a field name, maybe the JSON stores human-readable PerkName; check owned list.
+            if (PlayerChoice.DataSets.DataFunctions.OwnedPerks.Contains(perkFieldName))
+                return true;
+
             LogWarning($"IsPerkOwned: Perk field '{perkFieldName}' nenalezen v PerkSet.");
             return false;
         }
