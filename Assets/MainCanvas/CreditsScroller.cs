@@ -21,7 +21,14 @@ public class CreditsScroller : MonoBehaviour
     [SerializeField] private bool loadSceneWhenFinished = true;
     [SerializeField] private string gameSceneName = "MainMenu";
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource creditsAudioSource;
+    [SerializeField, Range(0f, 1f)] private float targetMusicVolume = 0.8f;
+    [SerializeField, Min(0f)] private float fadeInDuration = 1.5f;
+    [SerializeField, Min(0f)] private float fadeOutDuration = 1.5f;
+
     private Coroutine runRoutine;
+    private Coroutine audioFadeRoutine;
 
     public void PlayCredits()
     {
@@ -39,6 +46,13 @@ public class CreditsScroller : MonoBehaviour
         {
             StopCoroutine(runRoutine);
             runRoutine = null;
+        }
+
+        StopAudioFadeRoutine();
+        if (creditsAudioSource != null)
+        {
+            creditsAudioSource.Stop();
+            creditsAudioSource.volume = 0f;
         }
 
         if (disableObject)
@@ -62,6 +76,8 @@ public class CreditsScroller : MonoBehaviour
         var pos = content.anchoredPosition;
         pos.y = startY;
         content.anchoredPosition = pos;
+
+        StartCreditsAudio();
 
         // --- Scroll dokud endMarker nevyjede nahoru ---
         // Pokud endMarker není nastavený, fallback na původní výpočet endY
@@ -104,9 +120,62 @@ public class CreditsScroller : MonoBehaviour
 
         runRoutine = null;
 
+        if (creditsAudioSource != null && creditsAudioSource.isPlaying)
+        {
+            StopAudioFadeRoutine();
+            yield return FadeAudio(creditsAudioSource, 0f, fadeOutDuration);
+            creditsAudioSource.Stop();
+        }
+
         if (loadSceneWhenFinished)
             SceneManager.LoadScene(gameSceneName);
         else
             gameObject.SetActive(false);
+    }
+
+    private void StartCreditsAudio()
+    {
+        if (creditsAudioSource == null)
+            return;
+
+        StopAudioFadeRoutine();
+        creditsAudioSource.volume = 0f;
+        if (!creditsAudioSource.isPlaying)
+            creditsAudioSource.Play();
+
+        audioFadeRoutine = StartCoroutine(FadeAudio(creditsAudioSource, targetMusicVolume, fadeInDuration));
+    }
+
+    private IEnumerator FadeAudio(AudioSource source, float targetVolume, float duration)
+    {
+        if (source == null)
+            yield break;
+
+        float from = source.volume;
+        if (duration <= 0f)
+        {
+            source.volume = targetVolume;
+            yield break;
+        }
+
+        float t = 0f;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            source.volume = Mathf.Lerp(from, targetVolume, Mathf.Clamp01(t / duration));
+            yield return null;
+        }
+
+        source.volume = targetVolume;
+        audioFadeRoutine = null;
+    }
+
+    private void StopAudioFadeRoutine()
+    {
+        if (audioFadeRoutine == null)
+            return;
+
+        StopCoroutine(audioFadeRoutine);
+        audioFadeRoutine = null;
     }
 }
