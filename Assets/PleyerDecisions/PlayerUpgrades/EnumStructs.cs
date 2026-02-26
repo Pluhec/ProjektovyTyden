@@ -62,11 +62,15 @@ public class PerkInformation
 
 		DataFunctions.SendDataToSimulation(new EnumStructs.S_StatData[] {YouthStat, AdultStat, SeniorStat});
 
-		foreach(var SEffect in SpecialEffect)
+
+		if(SpecialEffect	!= null)
 		{
-			if(SEffect.EffectsType	== EnumStructs.E_PerkSpecialType.Democracy)
+			foreach(var SEffect in SpecialEffect)
 			{
-                 DataFunctions.InformChangeDemocracyMeter((int)SEffect.EffectAmmount);
+				if(SEffect.EffectsType	== EnumStructs.E_PerkSpecialType.Democracy)
+				{
+        	         DataFunctions.InformChangeDemocracyMeter((int)SEffect.EffectAmmount);
+				}
 			}
 		}
 
