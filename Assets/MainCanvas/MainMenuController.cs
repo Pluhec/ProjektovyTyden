@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class MainMenuController : MonoBehaviour
 
     [Header("Animation Settings")]
     public float animationDuration = 0.5f;
+    
+    
+    public string gameSceneName = "MainMenu";
 
     [System.Serializable]
     public class AnimatedUIElement
@@ -122,5 +126,12 @@ public class MainMenuController : MonoBehaviour
             yield return null;
         }
         rect.anchoredPosition = to;
+    }
+    
+    public void BackToMenu()
+    {
+        // Načte herní scénu
+        // Ujisti se, že scéna je přidaná v File -> Build Settings!
+        SceneManager.LoadScene(gameSceneName);
     }
 }
