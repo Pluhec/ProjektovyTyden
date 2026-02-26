@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.UI;
+using TMPro;
 
 public class EventCanvas : MonoBehaviour
 {
@@ -11,9 +12,22 @@ public class EventCanvas : MonoBehaviour
     [Header("Video")]
     [SerializeField] private VideoPlayer videoPlayer;
 
-    [Header("Buttons")]
+    [Header("Video Buttons")]
     [SerializeField] private Button skipButton;
     [SerializeField] private Button replayButton;
+
+    [Header("Decision Buttons")]
+    [SerializeField] private Button buttonFree;
+    [SerializeField] private Button buttonMoney;
+    [SerializeField] private Button buttonPerk;
+
+    [Header("Decision Button Texts")]
+    [SerializeField] private TextMeshProUGUI textFree;
+    [SerializeField] private TextMeshProUGUI textMoney;
+    [SerializeField] private TextMeshProUGUI textPerk;
+
+    [Header("References")]
+    [SerializeField] private EventDataReceiver eventDataReceiver;
 
     void Start()
     {
@@ -34,8 +48,45 @@ public class EventCanvas : MonoBehaviour
             replayButton.onClick.AddListener(ReplayVideo);
         }
 
+        // Registruj se na event pro načtení options
+        if (eventDataReceiver != null)
+        {
+            eventDataReceiver.OnOptionsLoaded += UpdateDecisionButtons;
+        }
+
         // Na začátku zobraz Video Canvas
         ShowVideoCanvas();
+    }
+
+    /// <summary>
+    /// Aktualizuje texty decision buttonů podle dat z JSON
+    /// </summary>
+    private void UpdateDecisionButtons(EventDataReceiver.OptionData optionFree, EventDataReceiver.OptionData optionMoney, EventDataReceiver.OptionData optionPerk)
+    {
+        // Button Free (nejhorší, zdarma)
+        if (textFree != null && optionFree != null)
+        {
+            textFree.text = optionFree.OptionName ?? "Free";
+        }
+
+        // Button Money (za peníze)
+        if (textMoney != null && optionMoney != null)
+        {
+            string moneyText = optionMoney.OptionName ?? "Money";
+            if (optionMoney.OptionCost > 0)
+            {
+                moneyText += $" ({optionMoney.OptionCost}$)";
+            }
+            textMoney.text = moneyText;
+        }
+
+        // Button Perk (za perk)
+        if (textPerk != null && optionPerk != null)
+        {
+            textPerk.text = optionPerk.OptionName ?? "Perk";
+        }
+
+        Debug.Log($"[EventCanvas] Buttons updated: Free='{optionFree?.OptionName}', Money='{optionMoney?.OptionName}', Perk='{optionPerk?.OptionName}'");
     }
 
     void OnDestroy()
@@ -54,6 +105,12 @@ public class EventCanvas : MonoBehaviour
         if (replayButton != null)
         {
             replayButton.onClick.RemoveListener(ReplayVideo);
+        }
+
+        // Odregistruj se z eventu
+        if (eventDataReceiver != null)
+        {
+            eventDataReceiver.OnOptionsLoaded -= UpdateDecisionButtons;
         }
     }
 
