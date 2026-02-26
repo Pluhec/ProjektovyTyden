@@ -1,8 +1,14 @@
 using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace PlayerChoice.DataSets
 {
+public class PlayerStats
+{
+	public static int Money;
+}
+
 public class PerkInformation
 {
 	public string PerkName;
@@ -15,29 +21,55 @@ public class PerkInformation
 	public bool IsBought;
 	public EnumStructs.S_PerkSpecialEffect[] SpecialEffect; // NULL if there is no special effect
 
-	public int PerkPurchase(int PAR_CurrentMoney)
+	
+	public bool PerkPurchase()
 	{
-		if(PAR_CurrentMoney < PerkCost)
+		if(PlayerStats.Money < PerkCost)
 		{
-			return 0;
+			return false;
 		}
 
 		if(DependsOnPerks == null || DependsOnPerks.Length == 0)
 		{
-			IsBought = true;
-			return PerkCost;
+			return PurchaseChangeNotify();
 		}
 
 		foreach (var dep in DependsOnPerks)
 		{
 			if(!dep.IsBought)
 			{
-				return 0; // A required dependency has not been purchased
+				return false; // A required dependency has not been purchased
 			}
 		}
 
+		return PurchaseChangeNotify();
+	}
+
+	private bool PurchaseChangeNotify()
+	{
+		if(PerkName.Equals("Změna ústavy"))
+		{
+			DataFunctions.NotifyVictory();
+		}
+
+		if(PerkName.Equals("Založení politické strany"))
+		{
+                DataFunctions.ShowWebButtonOnUI();
+		}
+		PlayerStats.Money	-= PerkCost;
 		IsBought = true;
-		return PerkCost;
+
+		DataFunctions.SendDataToSimulation(new EnumStructs.S_StatData[] {YouthStat, AdultStat, SeniorStat});
+
+		foreach(var SEffect in SpecialEffect)
+		{
+			if(SEffect.EffectsType	== EnumStructs.E_PerkSpecialType.Democracy)
+			{
+                 DataFunctions.InformChangeDemocracyMeter((int)SEffect.EffectAmmount);
+			}
+		}
+
+		return true;
 	}
 }
 

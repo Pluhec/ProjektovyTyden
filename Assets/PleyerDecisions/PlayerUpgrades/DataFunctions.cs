@@ -19,6 +19,11 @@ public class DataFunctions
 	public static event D_SendSimulationInfo E_SendSimulationInfo;
 
 
+	public delegate void D_DemocracyAlter(int DemocracyAlter);
+
+	public static event D_DemocracyAlter E_DemocracyAlter;
+
+
 	public delegate void D_SendSocialSitePost(EnumStructs.E_PostType SocialPost_Type, string SocialPost_Content, string SocialPost_Description, string SocialPost_UserName, string SocialPost_PfP);
 
 	public static event D_SendSocialSitePost E_SendSocialSitePost;
@@ -52,6 +57,25 @@ public class DataFunctions
 		E_SendSocialSitePost.Invoke(V_PostType, PAR_SocialPost.Content, PAR_SocialPost.Description, PAR_SocialPost.UserName, PAR_SocialPost.UserImage);
 	}
 
+	public static void ShowWebButtonOnUI()
+	{
+
+	}
+
+	public static void SendDataToSimulation(EnumStructs.S_StatData[] PAR_StatData)
+	{
+		DataFunctions.E_SendSimulationInfo.Invoke(PAR_StatData);
+	}
+
+	public static void InformChangeDemocracyMeter(int PAR_DemocracyStatAlter)
+	{
+		DataFunctions.E_DemocracyAlter.Invoke(PAR_DemocracyStatAlter);
+	}
+
+	public static void NotifyVictory()
+	{
+		
+	}
 
 	public static void StatAlteration(EnumStructs.S_StatData[] PAR_StatAlterations)
 	{
