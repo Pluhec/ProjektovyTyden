@@ -19,6 +19,9 @@ public class DataFunctions
 
 	public static List<EventInfo> EventsList = new List<EventInfo>();
 
+	public static List<string> OwnedPerks = new List<string>();
+	public static int CurrentCollaborators = 0;
+
 	[Serializable]
 	private class EventsWrapper
 	{
@@ -57,6 +60,21 @@ public class DataFunctions
 		SocialPost_JSON V_SocialJSON		= JsonUtility.FromJson<SocialPost_JSON>(V_StrRead_SocialJSON.ReadToEnd());
 
 		return V_SocialJSON;
+	}
+
+	public static bool CheckRequirements(EventInfo PAR_Event)
+	{
+		if (!string.IsNullOrEmpty(PAR_Event.RequiredPerk))
+		{
+			if (!OwnedPerks.Contains(PAR_Event.RequiredPerk)) return false;
+		}
+
+		if (PAR_Event.CollaboratorsRequired > 0)
+		{
+			if (CurrentCollaborators < PAR_Event.CollaboratorsRequired) return false;
+		}
+
+		return true;
 	}
 
 	public static void SendEvent(EventInfo PAR_Event)

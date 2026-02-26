@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 using PlayerChoice.Timing;
 using PlayerChoice.DataSets;
 
@@ -65,9 +66,18 @@ public class PostTimer : MonoBehaviour
         
         if (DataFunctions.EventsList != null && DataFunctions.EventsList.Count > 0)
         {
-            int randomIndex = Random.Range(0, DataFunctions.EventsList.Count);
-            EventInfo randomEvent = DataFunctions.EventsList[randomIndex];
-            DataFunctions.SendEvent(randomEvent);
+            List<EventInfo> availableEvents = new List<EventInfo>(DataFunctions.EventsList);
+            while (availableEvents.Count > 0)
+            {
+                int randomIndex = Random.Range(0, availableEvents.Count);
+                EventInfo randomEvent = availableEvents[randomIndex];
+                if (DataFunctions.CheckRequirements(randomEvent))
+                {
+                    DataFunctions.SendEvent(randomEvent);
+                    return;
+                }
+                availableEvents.RemoveAt(randomIndex);
+            }
         }
     }
 }
