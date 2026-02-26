@@ -655,6 +655,7 @@ MonoBehaviour:
   powerInfluenceMode: 0
   powerInfluenceMin: 0
   powerInfluenceMax: 1
+  powerExpandDuration: 0.8
 --- !u!114 &799764018914423979
 MonoBehaviour:
   m_ObjectHideFlags: 0

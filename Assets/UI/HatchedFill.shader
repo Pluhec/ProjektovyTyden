@@ -13,6 +13,9 @@ Shader "UI/HatchedFill"
         _LineAngle ("Line Angle (degrees)", Range(0, 180)) = 45
         _TileScale ("Tile Scale (world units)", Range(0.001, 0.1)) = 0.01
 
+        [Header(Scroll)]
+        _ScrollSpeed ("Scroll Speed", Range(0, 10)) = 1
+
         [Header(Wave Animation)]
         _WaveAmount ("Wave Intensity", Range(0, 1)) = 0.2
         _WaveFreq  ("Wave Frequency", Range(1, 50)) = 10
@@ -103,6 +106,7 @@ Shader "UI/HatchedFill"
             float _LineAngle;
             float _Smoothness;
             float _TileScale;
+            float _ScrollSpeed;
             float _WaveAmount;
             float _WaveFreq;
             float _WaveSpeed;
@@ -140,8 +144,8 @@ Shader "UI/HatchedFill"
                 float waveFreqRound = round(_WaveFreq);
                 float wave = sin(alongLine * waveFreqRound * 6.2831853 + _Time.y * _WaveSpeed) * _WaveAmount;
 
-                // Project world pos onto the line direction + wave
-                float proj = dot(wpos * _LineSpacing, dir) + wave;
+                // Project world pos onto the line direction + wave + scroll
+                float proj = dot(wpos * _LineSpacing, dir) + wave - _Time.y * _ScrollSpeed;
 
                 // Create repeating stripe pattern
                 float stripe = frac(proj);

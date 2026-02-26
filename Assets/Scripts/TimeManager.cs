@@ -6,7 +6,7 @@ using TMPro;
 public class TimeManager : MonoBehaviour
 {
     SimulationHandler simulationHandler;
-    public uint day;
+    public uint day = 1;
     public TextMeshProUGUI dayText;
     public Image[] allMapResources;
     public Gradient dayNightGradient;
@@ -17,8 +17,8 @@ public class TimeManager : MonoBehaviour
     [Header("Day Slider")]
     public Slider daySlider;
     public Image daySliderFill;
-    public Color playingColor = Color.white;
-    public Color pausedColor = Color.red;
+    public Material playingMaterial;
+    public Material pausedMaterial;
 
     void Start()
     {
@@ -55,9 +55,9 @@ public class TimeManager : MonoBehaviour
             daySlider.value = dayProgress;
         }
 
-        // Fill color: playing vs paused
+        // Switch material based on pause state
         if (daySliderFill != null)
-            daySliderFill.color = isPaused ? pausedColor : playingColor;
+            daySliderFill.material = isPaused ? pausedMaterial : playingMaterial;
 
         // Increment day only when timeOfTheDay crosses from high to low (night)
         float nightThreshold = 0.1f;

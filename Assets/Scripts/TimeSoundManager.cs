@@ -38,9 +38,22 @@ public class TimeSoundManager : MonoBehaviour
     [Header("References")]
     public TimeManager timeManager;
     public AudioSource audioSource;
+    public Camera mapCamera;
 
     [Header("Time Sound Slots")]
     public List<TimeSoundSlot> soundSlots = new List<TimeSoundSlot>();
+
+    [Header("Zoom Audio Rules")]
+    [Tooltip("Time sounds are audible only at or below this orthographic size (close zoom).")]
+    public float closeZoomThreshold = 6f;
+    [Tooltip("Small buffer to avoid fast toggling around threshold.")]
+    public float zoomSwitchHysteresis = 0.2f;
+
+    [Header("High Altitude Wind")]
+    [Tooltip("Played continuously while zoomed out (above close threshold).")]
+    public AudioSource highAltitudeWindAudioSource;
+    [Range(0f, 1f)] public float highAltitudeWindVolume = 0.35f;
+    [Range(0.01f, 2f)] public float audioFadeSpeed = 4f;
 
     [Header("Playback")]
     public bool playOnStart = true;
@@ -50,6 +63,8 @@ public class TimeSoundManager : MonoBehaviour
     private int lastClipIndex = -1;
     private SimulationHandler simulationHandler;
     private FieldInfo simulationHandlerField;
+    private bool isInCloseZoom = true;
+    private float currentTimeAudioTargetVolume;
 
     void Reset()
     {
@@ -61,6 +76,9 @@ public class TimeSoundManager : MonoBehaviour
     {
         if (audioSource == null)
             audioSource = GetComponent<AudioSource>();
+
+        if (mapCamera == null)
+            mapCamera = Camera.main;
 
         if (timeManager == null)
             timeManager = FindFirstObjectByType<TimeManager>();
@@ -74,13 +92,31 @@ public class TimeSoundManager : MonoBehaviour
     void Start()
     {
         TryResolveSimulationHandlerFromTimeManager();
+        EvaluateZoomState(forceImmediate: true);
 
         if (playOnStart)
             ForceRefreshSound();
+
+        if (highAltitudeWindAudioSource != null && highAltitudeWindAudioSource.clip != null && !highAltitudeWindAudioSource.isPlaying)
+            highAltitudeWindAudioSource.Play();
     }
 
     void Update()
     {
+        if (mapCamera == null)
+            mapCamera = Camera.main;
+
+        EvaluateZoomState(forceImmediate: false);
+
+        if (!isInCloseZoom)
+        {
+            FadeAudio(audioSource, 0f);
+            FadeAudio(highAltitudeWindAudioSource, highAltitudeWindVolume);
+            return;
+        }
+
+        FadeAudio(highAltitudeWindAudioSource, 0f);
+
         if (audioSource == null || soundSlots.Count == 0)
             return;
 
@@ -90,28 +126,40 @@ public class TimeSoundManager : MonoBehaviour
         int minuteInCycle = (int)(simulationHandler.simulationTime % 60);
         int slotIndex = GetSlotIndexForMinute(minuteInCycle);
         if (slotIndex < 0)
+        {
+            FadeAudio(audioSource, 0f);
             return;
+        }
 
         if (slotIndex != activeSlotIndex)
         {
             activeSlotIndex = slotIndex;
             PlayRandomClipForActiveSlot();
-            return;
         }
-
-        if (!audioSource.isPlaying)
+        else if (!audioSource.isPlaying)
             PlayRandomClipForActiveSlot();
+
+        FadeAudio(audioSource, currentTimeAudioTargetVolume);
     }
 
     [ContextMenu("Force Refresh Time Sound")]
     public void ForceRefreshSound()
     {
+        EvaluateZoomState(forceImmediate: true);
+        if (!isInCloseZoom)
+        {
+            FadeAudio(audioSource, 0f, force: true);
+            FadeAudio(highAltitudeWindAudioSource, highAltitudeWindVolume, force: true);
+            return;
+        }
+
         if (simulationHandler == null && !TryResolveSimulationHandlerFromTimeManager())
             return;
 
         int minuteInCycle = (int)(simulationHandler.simulationTime % 60);
         activeSlotIndex = GetSlotIndexForMinute(minuteInCycle);
         PlayRandomClipForActiveSlot();
+        FadeAudio(highAltitudeWindAudioSource, 0f, force: true);
     }
 
     private bool TryResolveSimulationHandlerFromTimeManager()
@@ -173,7 +221,8 @@ public class TimeSoundManager : MonoBehaviour
             return;
 
         audioSource.clip = selectedClip;
-        audioSource.volume = slot.volume;
+        currentTimeAudioTargetVolume = slot.volume;
+        audioSource.volume = 0f;
         audioSource.loop = loopClips;
         audioSource.Play();
     }
@@ -188,6 +237,55 @@ public class TimeSoundManager : MonoBehaviour
             index = (index + 1) % length;
 
         return index;
+    }
+
+    private void EvaluateZoomState(bool forceImmediate)
+    {
+        bool nextCloseState = isInCloseZoom;
+
+        if (mapCamera == null || !mapCamera.orthographic)
+        {
+            nextCloseState = true;
+        }
+        else if (isInCloseZoom)
+        {
+            nextCloseState = mapCamera.orthographicSize <= closeZoomThreshold + zoomSwitchHysteresis;
+        }
+        else
+        {
+            nextCloseState = mapCamera.orthographicSize <= closeZoomThreshold - zoomSwitchHysteresis;
+        }
+
+        if (forceImmediate || nextCloseState != isInCloseZoom)
+        {
+            isInCloseZoom = nextCloseState;
+            if (!isInCloseZoom && audioSource != null)
+            {
+                audioSource.Stop();
+            }
+
+            if (highAltitudeWindAudioSource != null && highAltitudeWindAudioSource.clip != null && !highAltitudeWindAudioSource.isPlaying)
+            {
+                highAltitudeWindAudioSource.Play();
+            }
+        }
+    }
+
+    private void FadeAudio(AudioSource source, float targetVolume, bool force = false)
+    {
+        if (source == null)
+            return;
+
+        if (!source.isPlaying && source.clip != null && targetVolume > 0f)
+            source.Play();
+
+        if (force)
+        {
+            source.volume = targetVolume;
+            return;
+        }
+
+        source.volume = Mathf.MoveTowards(source.volume, targetVolume, audioFadeSpeed * Time.deltaTime);
     }
 
     private void SetDefaultTimeSlots()
