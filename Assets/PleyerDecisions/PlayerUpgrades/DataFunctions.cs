@@ -15,10 +15,16 @@ public interface ISocialSitePost
 
 public class DataFunctions
 {
+	private static EventDataReceiver V_EventDataReceiver;
+
 	public static List<EventInfo> EventsList = new List<EventInfo>();
 
 	//-----------------------------------------
 
+	public static SetEventDataReceiver(EventDataReceiver PAR_EDR)
+	{
+		V_EventDataReceiver	= PAR_EDR;
+	}
 
 	public static List<EventInfo> LoadEventsFromJSON(string PAR_FilePath)
 	{
@@ -37,30 +43,6 @@ public class DataFunctions
 		return EventsList;
 	}
 
-    /*private static EnumStructs.S_EventOption ConvertOption(EventOptionJSON PAR_Raw)
-	{
-		EnumStructs.S_EventOption V_Option	= new EnumStructs.S_EventOption();
-		V_Option.OptionCost					= PAR_Raw.OptionCost;
-		V_Option.OptionPerk					= null;
-		V_Option.OptionName					= PAR_Raw.OptionName;
-		V_Option.OptionEffect				= PAR_Raw.OptionEffect;
-		V_Option.OptionEffectYoung			= ConvertStatData(PAR_Raw.OptionEffectYoung);
-		V_Option.OptionEffectAdult			= ConvertStatData(PAR_Raw.OptionEffectAdult);
-		V_Option.OptionEffectSenior			= ConvertStatData(PAR_Raw.OptionEffectSenior);
-		return V_Option;
-	}
-
-	private static EnumStructs.S_StatData ConvertStatData(StatDataJSON PAR_Raw)
-	{
-		EnumStructs.S_StatData V_Stat	= new EnumStructs.S_StatData();
-		V_Stat.AgeGroup					= (EnumStructs.E_Age)PAR_Raw.AgeGroup;
-		V_Stat.Virality					= (sbyte)PAR_Raw.Virality;
-		V_Stat.Impact					= (sbyte)PAR_Raw.Impact;
-		V_Stat.Visibility				= (sbyte)PAR_Raw.Visibility;
-		return V_Stat;
-	}*/
-
-
 	public static SocialPost_JSON LoadJSONFile(string PAR_FileName)
 	{
 		StreamReader V_StrRead_SocialJSON	= new StreamReader(File.OpenRead(PAR_FileName));
@@ -68,6 +50,11 @@ public class DataFunctions
 		SocialPost_JSON V_SocialJSON		= JsonUtility.FromJson<SocialPost_JSON>(V_StrRead_SocialJSON.ReadToEnd());
 
 		return V_SocialJSON;
+	}
+
+	public static void SendEvent(EventInfo PAR_Event)
+	{
+		V_EventDataReceiver.SetEventData(PAR_Event);
 	}
 
 	public static void ShowWebButtonOnUI()
