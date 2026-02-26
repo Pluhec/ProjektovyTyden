@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: e81ab9106109fa94689de2f0c511b112
+guid: 1678dd5cfd3ed4df9b2f53d98dbbb1de
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4444050549898229189
-    second: "Polovojenske\u0301 skupiny_0"
-  - first:
-      213: -8205914820340716131
-    second: "Polovojenske\u0301 skupiny_1"
+      213: 652960062026930384
+    second: ChatGPT Image 26. 2. 2026 08_52_32_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -103,35 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "Polovojenske\u0301 skupiny_0"
+      name: ChatGPT Image 26. 2. 2026 08_52_32_0
       rect:
         serializedVersion: 2
-        x: 25
-        y: 159
-        width: 213
-        height: 104
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b3acf69029f8352c0800000000000000
-      internalID: -4444050549898229189
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "Polovojenske\u0301 skupiny_1"
-      rect:
-        serializedVersion: 2
-        x: 14
+        x: 0
         y: 0
-        width: 235
-        height: 149
+        width: 1536
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d9d6a7c92fbbe1e80800000000000000
-      internalID: -8205914820340716131
+      spriteID: 0d8d1a587b7cf0900800000000000000
+      internalID: 652960062026930384
       vertices: []
       indices: 
       edges: []
@@ -150,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -160,8 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "Polovojenske\u0301 skupiny_0": -4444050549898229189
-      "Polovojenske\u0301 skupiny_1": -8205914820340716131
+      ChatGPT Image 26. 2. 2026 08_52_32_0: 652960062026930384
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
