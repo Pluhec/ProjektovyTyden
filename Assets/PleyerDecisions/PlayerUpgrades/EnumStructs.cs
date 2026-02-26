@@ -77,9 +77,13 @@ public class EventInfo
 {
 	public string EventName;
 	public string EventDescription;
+	public string VideoPath;
 	public EnumStructs.S_EventOption OptionFree;
 	public EnumStructs.S_EventOption OptionMoney;
 	public EnumStructs.S_EventOption OptionPerk;
+
+	public PerkInformation? RequiredPerk;
+	public byte? CollaboratorsRequired;
 
 	public bool EventOption(int PAR_Option)
 		{
