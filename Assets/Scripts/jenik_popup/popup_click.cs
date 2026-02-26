@@ -419,11 +419,16 @@ public class popup_click : MonoBehaviour
         // (it survives this object's destruction)
         if (clicked && hasPendingPowerInfluence && pendingSimHandler != null)
         {
+            Debug.Log($"[DeathAnim] Starting AnimatedPowerExpand on '{pendingSimHandler.name}', grid({pendingGridX},{pendingGridY}), strength={pendingSignedStrength:F3}, totalWeight={pendingTotalWeight:F4}");
             pendingSimHandler.StartCoroutine(AnimatedPowerExpand(
                 pendingSimHandler, pendingGridX, pendingGridY,
                 pendingSignedStrength, pendingCellAspectXY,
                 pendingRingWeights, pendingRingRadii, pendingTotalWeight,
                 powerExpandDuration));
+        }
+        else if (clicked)
+        {
+            Debug.LogWarning($"[DeathAnim] Power expand NOT started: hasPending={hasPendingPowerInfluence}, simHandler={(pendingSimHandler != null ? pendingSimHandler.name : "NULL")}");
         }
 
         Destroy(gameObject);
@@ -476,12 +481,24 @@ public class popup_click : MonoBehaviour
         float[] ringWeights, int[] ringRadii, float totalWeight,
         float expandDuration)
     {
-        if (totalWeight <= 0.0001f)
+        Debug.Log($"[PowerExpand] START - grid({gridX},{gridY}), strength={signedStrength:F3}, rings={ringWeights.Length}, totalWeight={totalWeight:F4}, duration={expandDuration}s, simHandler={simHandler.name}");
+
+        if (simHandler == null)
+        {
+            Debug.LogError("[PowerExpand] SimulationHandler is null! Aborting.");
             yield break;
+        }
+
+        if (totalWeight <= 0.0001f)
+        {
+            Debug.LogWarning("[PowerExpand] totalWeight near zero, aborting.");
+            yield break;
+        }
 
         int sampleCount = ringWeights.Length;
         float elapsed = 0f;
         int lastAppliedIndex = -1;
+        int totalRingsApplied = 0;
 
         while (elapsed < expandDuration)
         {
@@ -503,6 +520,7 @@ public class popup_click : MonoBehaviour
                 if (Mathf.Abs(passStrength) > 0.0001f)
                 {
                     simHandler.PaintStance(gridX, gridY, passStrength, ringRadii[lastAppliedIndex], cellAspectXY);
+                    totalRingsApplied++;
                 }
             }
 
@@ -518,13 +536,26 @@ public class popup_click : MonoBehaviour
             if (Mathf.Abs(passStrength) > 0.0001f)
             {
                 simHandler.PaintStance(gridX, gridY, passStrength, ringRadii[lastAppliedIndex], cellAspectXY);
+                totalRingsApplied++;
             }
         }
+
+        Debug.Log($"[PowerExpand] DONE - applied {totalRingsApplied}/{sampleCount} rings at grid({gridX},{gridY})");
     }
 
     public void EvaluateOutcome()
     {
-        switch (GetComponent<IconShower>().GetCurrentIconType()) {
+        IconShower shower = GetComponent<IconShower>();
+        if (shower == null)
+        {
+            Debug.LogWarning("EvaluateOutcome: No IconShower component found on popup!");
+            return;
+        }
+
+        IconType currentType = shower.GetCurrentIconType();
+        Debug.Log($"EvaluateOutcome: detected icon type = {currentType}");
+
+        switch (currentType) {
             case IconType.Money:
 
             Debug.Log("Money popup clicked!");
