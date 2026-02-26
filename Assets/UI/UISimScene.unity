@@ -267,6 +267,7 @@ GameObject:
   - component: {fileID: 58309715}
   - component: {fileID: 58309714}
   - component: {fileID: 58309713}
+  - component: {fileID: 58309716}
   m_Layer: 0
   m_Name: Clouds
   m_TagString: Untagged
@@ -286,7 +287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6a7e804f1a848b4da8e6cf34a654bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParalaxClouds
-  mainCamera: {fileID: 0}
+  mainCamera: {fileID: 1723608306}
   cloudRenderer: {fileID: 58309714}
   minInverseMoveFactor: 0
   maxInverseMoveFactor: 7
@@ -374,6 +375,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &58309716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58309712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf8585ceb97a17b40b5fe8f00a787d4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CloudTimeController
+  cloudMaterial: {fileID: 2100000, guid: cc8e59cec0edbc644a823205ce2ee2f3, type: 2}
+  stopped: 0
 --- !u!1 &67348990
 GameObject:
   m_ObjectHideFlags: 0
@@ -4390,6 +4405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MapCameraMovement
   zoomSpeed: 5
   minZoom: 1
+  autoMaxZoom: 1
   maxZoom: 5
   zoomSmoothTime: 0.07
   panSmoothTime: 0.1
