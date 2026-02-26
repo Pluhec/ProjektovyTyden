@@ -3,8 +3,8 @@
     {
       "EventId": 1,
       "EventName": "Protest odborníků",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/1.mp4",
+      "EventDescription": "Skupina předních vědců a akademiků veřejně protestuje proti vašim dezinformačním kampaním a žádá jejich okamžité ukončení.",
+      "VideoPath": "Assets/Video/1.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -41,8 +41,8 @@
     {
       "EventId": 2,
       "EventName": "Uniklá nahrávka",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/2.mp4",
+      "EventDescription": "Na internet unikla kompromitující nahrávka jednoho z vašich členů, kde otevřeně hovoří o manipulaci veřejného mínění.",
+      "VideoPath": "Assets/Video/2.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -79,8 +79,8 @@
     {
       "EventId": 3,
       "EventName": "Rozkol v organizaci",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/3.mp4",
+      "EventDescription": "Jeden z klíčových členů vaší organizace veřejně zpochybnil vaše metody a hrozí odchodem spolu s částí podporovatelů.",
+      "VideoPath": "Assets/Video/3.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -117,8 +117,8 @@
     {
       "EventId": 4,
       "EventName": "Kybernetický útok",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/4.mp4",
+      "EventDescription": "Hackeři napadli vaše interní systémy a hrozí zveřejněním citlivých dat o financování a strategiích vaší organizace.",
+      "VideoPath": "Assets/Video/4.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -155,8 +155,8 @@
     {
       "EventId": 5,
       "EventName": "Charitativní krize",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/5.mp4",
+      "EventDescription": "V zemi propukla humanitární krize. Veřejnost sleduje, jak na ni jednotlivé politické síly reagují.",
+      "VideoPath": "Assets/Video/5.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -193,8 +193,8 @@
     {
       "EventId": 6,
       "EventName": "Ban na soc. sítích",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/6.mp4",
+      "EventDescription": "Vaše hlavní účty na sociálních sítích byly zablokovány za porušování pravidel platformy šířením dezinformací.",
+      "VideoPath": "Assets/Video/6.mp4",
       "RequiredPerk": "Sociální sítě",
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -231,8 +231,8 @@
     {
       "EventId": 7,
       "EventName": "Zahraniční reportáž",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/7.mp4",
+      "EventDescription": "Zahraniční investigativní tým natočil kritický dokument o vaší organizaci a jejím vlivu na českou společnost.",
+      "VideoPath": "Assets/Video/7.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": 20,
       "OptionFree": {
@@ -269,8 +269,8 @@
     {
       "EventId": 8,
       "EventName": "Církevní výtka",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/8.mp4",
+      "EventDescription": "Představitelé církve veřejně odsoudili vaši rétoriku a vyzvali věřící, aby se od vašeho hnutí distancovali.",
+      "VideoPath": "Assets/Video/8.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -307,8 +307,8 @@
     {
       "EventId": 9,
       "EventName": "Skandál u piva",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/9.mp4",
+      "EventDescription": "Váš spolupracující influencer byl natočen v hospodě, jak pronáší rasistické a extremistické výroky.",
+      "VideoPath": "Assets/Video/9.mp4",
       "RequiredPerk": "Influenceři",
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -345,8 +345,8 @@
     {
       "EventId": 10,
       "EventName": "Ekonomická recese",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/10.mp4",
+      "EventDescription": "Země zasáhla ekonomická krize. Rostoucí nezaměstnanost a zdražování vyvolávají nespokojenost napříč společností.",
+      "VideoPath": "Assets/Video/10.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -383,8 +383,8 @@
     {
       "EventId": 11,
       "EventName": "Soudní proces",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/11.mp4",
+      "EventDescription": "Jeden z vašich prominentních členů čelí trestnímu stíhání za podněcování k násilí a šíření nenávisti.",
+      "VideoPath": "Assets/Video/11.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -421,8 +421,8 @@
     {
       "EventId": 12,
       "EventName": "Investigativní kniha",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/12.mp4",
+      "EventDescription": "Známý novinář vydal knihu podrobně mapující vaši organizaci, její financování a propojení s extremistickými skupinami.",
+      "VideoPath": "Assets/Video/12.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -459,8 +459,8 @@
     {
       "EventId": 13,
       "EventName": "Vpád do redakce",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/13.mp4",
+      "EventDescription": "Skupina vašich radikálních příznivců vtrhla do redakce nezávislého média a vyhrožovala novinářům.",
+      "VideoPath": "Assets/Video/13.mp4",
       "RequiredPerk": "Polovojenské jednotky",
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -497,8 +497,8 @@
     {
       "EventId": 14,
       "EventName": "Sportovní úspěch",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/14.mp4",
+      "EventDescription": "Národní sportovní tým dosáhl historického úspěchu. Celá země slaví a média hledají reakce politických hráčů.",
+      "VideoPath": "Assets/Video/14.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -535,8 +535,8 @@
     {
       "EventId": 15,
       "EventName": "Dopis umělců",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/15.mp4",
+      "EventDescription": "Skupina známých umělců a osobností podepsala otevřený dopis kritizující vaše hnutí a jeho dopad na společnost.",
+      "VideoPath": "Assets/Video/15.mp4",
       "RequiredPerk": "Založení politické strany",
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -573,8 +573,8 @@
     {
       "EventId": 16,
       "EventName": "Pozvání do médií",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/16.mp4",
+      "EventDescription": "Speciální vydání talkshow Davida Žilky přináší přímou debatu s lídrem strany, ve které moderátorotevírá citlivá témata a konfrontuje ho s kontroverzními otázkami. V průběhu vysílání narůstánapětí a atmosféra ve studiu houstne, zatímco Emanuel Verdi obhajuje své kroky před zrakyveřejnosti.",
+      "VideoPath": "Assets/Video/16.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -611,8 +611,8 @@
     {
       "EventId": 17,
       "EventName": "Eko katastrofa",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/17.mp4",
+      "EventDescription": "Reportáž se odehravá ve studiu, reportér popisusituaci, která nastala, chemická laboratoř vybuchlaa měla jakousi spojitost se stranou Hnutí novýsvět.",
+      "VideoPath": "Assets/Video/17.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -649,8 +649,8 @@
     {
       "EventId": 18,
       "EventName": "Uniklé dokumenty (finanční)",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/18.mp4",
+      "EventDescription": "Člen strany hns byl odhalen z finančních podvodů díky státním dluhopisům a investigativní novinařině.",
+      "VideoPath": "Assets/Video/18.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": 20,
       "OptionFree": {
@@ -687,8 +687,8 @@
     {
       "EventId": 19,
       "EventName": "Uniklé dokumenty (sexuální)",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/19.mp4",
+      "EventDescription": "Na veřejnost unikají dokumenty údajně patřící straně Nový Svět, které popisují manipulaci s trestní činností jednoho z jejích vrcholných představitelů. Pokud se jejich pravost potvrdí, může to zásadně otřást postavením strany i důvěrou veřejnosti.",
+      "VideoPath": "Assets/Video/19.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": 20,
       "OptionFree": {
@@ -725,8 +725,8 @@
     {
       "EventId": 20,
       "EventName": "Foto se zahraničním oligarchou",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/20.mp4",
+      "EventDescription": "Uniklé fotografie zachycují vedení strany Nový Svět na schůzce s kontroverzní zahraniční oligarchií, přičemž mezi nimi je i Emanuel Verdi, což vyvolává vážné otázky o zákulisních vazbách.",
+      "VideoPath": "Assets/Video/20.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -763,8 +763,8 @@
     {
       "EventId": 21,
       "EventName": "Parodie v divadle",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/21.mp4",
+      "EventDescription": "V městském divadle se hraje inscenace Pravda ve lži, která podle diváků paroduje současného lídra strany a ostře kritizuje jeho politické kroky.",
+      "VideoPath": "Assets/Video/21.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": 30,
       "OptionFree": {
@@ -801,8 +801,8 @@
     {
       "EventId": 22,
       "EventName": "Exodus vzdělaných",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/22.mp4",
+      "EventDescription": "Na vysoké škole filozofické, známé jako „vysoká škola na kopci“, dnes chyběla většina profesorů, kteří kvůli postupům vedoucí strany a jejího představitele Emanuela Verdiho masově odcházejí ze země. Tento fenomén se neomezuje jen lokálně, ale zasahuje celé území – jeho dopad ukáže až čas.",
+      "VideoPath": "Assets/Video/22.mp4",
       "RequiredPerk": "Zvolení do poslanecké sněmovny",
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -839,8 +839,8 @@
     {
       "EventId": 23,
       "EventName": "Demonstrace opozice",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/23.mp4",
+      "EventDescription": "Jedná se o krátkou reportáž, kde reportér vysvětluje, že se v zemi momentálně konají demonstrace. Video je sestříhané v podobě jedno záběrovky.",
+      "VideoPath": "Assets/Video/23.mp4",
       "RequiredPerk": "Účast ve vládě",
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -877,8 +877,8 @@
     {
       "EventId": 24,
       "EventName": "Kontroverzní meme",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/24.mp4",
+      "EventDescription": "Jedná se o reportáž kde reportér rozebírá a oznamuje, že Nový Svět vydal na sociální sítě nevhodný vtip který pohoršuje romskou menšinu. V reportáži vidíme i zmiňovaný příspěvek.",
+      "VideoPath": "Assets/Video/24.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -915,8 +915,8 @@
     {
       "EventId": 25,
       "EventName": "Neziskovka",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/25.mp4",
+      "EventDescription": "V Poslanecké sněmovně se projednává ostré vystoupení neziskové organizace zaměřené na lidská práva, která se výrazně vymezila proti straně Nový Svět. Očekává se reakce vedení strany na tuto kritiku a další vývoj situace.",
+      "VideoPath": "Assets/Video/25.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -953,8 +953,8 @@
     {
       "EventId": 26,
       "EventName": "Investigativní podcast",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/26.mp4",
+      "EventDescription": "Nový podcast odhaluje kontroverzní kroky současné vládní strany a jejího zastupitele Emanuela Verdiho, obviňující je z korupce a podložené usvědčujícími materiály. Nyní zůstává otázkou, zda se pravdivost těchto tvrzení potvrdí.",
+      "VideoPath": "Assets/Video/26.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -991,8 +991,8 @@
     {
       "EventId": 27,
       "EventName": "Útok cizí moci",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/27.mp4",
+      "EventDescription": "Sousedící mocnost nerespektuje hranice státu a zahájila plně vojenskou operaci pro zabrání hraničních území.",
+      "VideoPath": "Assets/Video/27.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -1029,8 +1029,8 @@
     {
       "EventId": 28,
       "EventName": "Odchod investora",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/28.mp4",
+      "EventDescription": "Kolem firmy která patřila mezi klíčové investory v ekonomice země, se rozvíjí napjatá situace. Dnes firma oznámila, že se stahuje ze státu a přestává zde nadále operovat, což může mít zásadní dopad na domácí trh.",
+      "VideoPath": "Assets/Video/28.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {
@@ -1067,8 +1067,8 @@
     {
       "EventId": 29,
       "EventName": "Nová móda",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/29.mp4",
+      "EventDescription": "Poslanci strany Nový svět překvapivě mění svou image a místo běžného moderního stylu přicházejí do Poslanecké sněmovny v klasických oblecích a sakách. Tento náhlý obrat vyvolává otázky, zda jde o skutečnou změnu postoje, nebo jen promyšlenou strategii, jak působit důvěryhodněji před veřejností.",
+      "VideoPath": "Assets/Video/29.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": 30,
       "OptionFree": {
@@ -1105,8 +1105,8 @@
     {
       "EventId": 30,
       "EventName": "Rodinný rozkol",
-      "EventDescription": "_?",
-      "VideoPath": "Assets/Videos/30.mp4",
+      "EventDescription": "Syn jednoho členů strany zveřejní na sociální síti příspěvek proti straně. Reportér dělá výklad o  události",
+      "VideoPath": "Assets/Video/30.mp4",
       "RequiredPerk": null,
       "CollaboratorsRequired": null,
       "OptionFree": {

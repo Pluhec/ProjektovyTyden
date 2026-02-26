@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -8,6 +9,11 @@ namespace PlayerChoice.DataSets
 public class PlayerStats
 {
 	public static int Money = 10;
+
+	public static void AddMoney(byte PAR_Ammount)
+	{
+		Money	+= PAR_Ammount;
+	}
 }
 
 public class PerkInformation
