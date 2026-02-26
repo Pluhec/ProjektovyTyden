@@ -127,6 +127,7 @@ public class TwittirManager : MonoBehaviour
 
             // Resize width to match the image aspect ratio, keeping the current height
             RectTransform imageRect = imageChild.GetComponent<RectTransform>();
+            imageRect.pivot         = new Vector2(0f, 0.5f); // anchor growth to the left
             float height      = imageRect.sizeDelta.y;
             float aspectRatio = (float)randomImage.width / randomImage.height;
             imageRect.sizeDelta = new Vector2(height * aspectRatio, height);
@@ -169,6 +170,13 @@ public class TwittirManager : MonoBehaviour
 
             RawImage display = videoChild.GetComponentInChildren<RawImage>();
             if (display != null) display.texture = rt;
+
+            // Resize the VideoPlayer width to match the video's aspect ratio, keeping height
+            RectTransform videoRect = videoChild.GetComponent<RectTransform>();
+            videoRect.pivot         = new Vector2(0f, 0.5f); // anchor growth to the left
+            float videoHeight      = videoRect.sizeDelta.y;
+            float videoAspect      = (float)randomVideo.width / randomVideo.height;
+            videoRect.sizeDelta    = new Vector2(videoHeight * videoAspect, videoHeight);
 
             player.clip        = randomVideo;
             player.isLooping   = true;
