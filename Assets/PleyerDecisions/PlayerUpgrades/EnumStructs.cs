@@ -149,7 +149,7 @@ public class EnumStructs
 		public PerkInformation OptionPerk; // NULL for any option that Perk
 		public string OptionName;
 		public string OptionEffectdescription;
-		public S_PerkSpecialEffect optionSpecialEffect; // NULL if there is no special effect
+		public S_PerkSpecialEffect OptionSpecialEffect; // NULL if there is no special effect
 		public S_StatData OptionEffectYoung;
 		public S_StatData OptionEffectAdult;
 		public S_StatData OptionEffectSenior;
