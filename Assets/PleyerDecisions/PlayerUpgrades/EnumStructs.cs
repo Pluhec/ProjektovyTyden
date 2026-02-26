@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -73,10 +74,13 @@ public class PerkInformation
 	}
 }
 
+[Serializable]
 public class EventInfo
 {
+	public int EventId;
 	public string EventName;
 	public string EventDescription;
+	public string EventPredisposition;
 	public EnumStructs.S_EventOption OptionFree;
 	public EnumStructs.S_EventOption OptionMoney;
 	public EnumStructs.S_EventOption OptionPerk;
@@ -135,6 +139,7 @@ public class EnumStructs
 		public sbyte? EffectAmmount; // IF EffectType FinancePopUp this is NULL
 	}
 
+	[Serializable]
 	public struct S_EventOption
 	{
 		public int OptionCost; // ZERO/NULL for free and Perk option
@@ -146,6 +151,7 @@ public class EnumStructs
 		public S_StatData OptionEffectSenior;
 	}
 
+	[Serializable]
 	public struct S_StatData
 	{
 		public E_Age AgeGroup;
