@@ -8,7 +8,7 @@ public class SkillButton : MonoBehaviour
     public enum SkillTier { Tier1, Tier2, Tier3 }
 
     [Header("Skill Identity")]
-    public int skillId;
+    public string perkFieldName;
 
     [Header("Skill Type")]
     public bool isPrimarySkill = false;
@@ -80,7 +80,6 @@ public class SkillButton : MonoBehaviour
         SkillTreeConnector connector = FindObjectOfType<SkillTreeConnector>();
         if (connector == null || connector.popupPrefab == null)
         {
-            Debug.LogWarning($"SkillButton [{skillId}]: popupPrefab není přiřazen na SkillTreeConnector!");
             return;
         }
 
@@ -88,7 +87,7 @@ public class SkillButton : MonoBehaviour
         GameObject popup = Instantiate(connector.popupPrefab, canvas.transform);
         SkillPopup skillPopup = popup.GetComponent<SkillPopup>();
         if (skillPopup != null)
-            skillPopup.Init(skillId, this);
+            skillPopup.Init(this);
     }
 
     public void Apply()
