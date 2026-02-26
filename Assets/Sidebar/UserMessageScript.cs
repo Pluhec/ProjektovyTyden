@@ -36,6 +36,7 @@ public class UserMessageScript : MonoBehaviour
     public string userMessageInput = "Prezident je velice dobrý"; // Default values ignore
 
     private static System.Random V_Random = new System.Random();
+    private static HashSet<string> postedMessages = new HashSet<string>();
 
     void Start() // here was the issue when we left off in school
     {
@@ -127,7 +128,13 @@ public class UserMessageScript : MonoBehaviour
 
                         if (dependentMessages.TryGetValue(stageKey, out var messagesForStage) && messagesForStage.Count > 0)
                         {
-                            return messagesForStage[V_Random.Next(0, messagesForStage.Count)];
+                            var availableMessages = messagesForStage.Where(m => !postedMessages.Contains(m.Content)).ToList();
+                            if (availableMessages.Count > 0)
+                            {
+                                var selectedMessage = availableMessages[V_Random.Next(0, availableMessages.Count)];
+                                postedMessages.Add(selectedMessage.Content);
+                                return selectedMessage;
+                            }
                         }
                     }
                     catch (System.Exception ex)
@@ -152,7 +159,13 @@ public class UserMessageScript : MonoBehaviour
             
             if (independentMessages != null && independentMessages.IndependentZpravy != null && independentMessages.IndependentZpravy.Count > 0)
             {
-                return independentMessages.IndependentZpravy[V_Random.Next(0, independentMessages.IndependentZpravy.Count)];
+                var availableMessages = independentMessages.IndependentZpravy.Where(m => !postedMessages.Contains(m.Content)).ToList();
+                if (availableMessages.Count > 0)
+                {
+                    var selectedMessage = availableMessages[V_Random.Next(0, availableMessages.Count)];
+                    postedMessages.Add(selectedMessage.Content);
+                    return selectedMessage;
+                }
             }
         }
         catch (System.Exception ex)
