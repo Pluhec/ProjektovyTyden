@@ -135,16 +135,13 @@ public class OutroController : MonoBehaviour
             // Zobrazení po určitou dobu
             yield return new WaitForSeconds(displayDuration);
 
-            // Fade Out textu
-            yield return StartCoroutine(FadeText(1f, 0f));
-
             // Lehké prodlení mezi texty
             yield return new WaitForSeconds(0.5f);
         }
 
         // Po poslední zprávě můžeme provést fade-out celého overlaye
-        if (overlayCanvasGroup != null)
-            yield return StartCoroutine(FadeOverlayOut());
+        // if (overlayCanvasGroup != null)
+            // yield return StartCoroutine(FadeOverlayOut());
 
         onOutroFinished?.Invoke();
 
