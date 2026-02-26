@@ -14,7 +14,7 @@ namespace PlayerChoice.DataSets
 		public string UserName { get; set; }
 	}
 
-	[Serializable]
+    /*[Serializable]
 	public class EventsJSON_Wrapper
 	{
 		public EventJSON[] Events;
@@ -51,5 +51,5 @@ namespace PlayerChoice.DataSets
 		public int Virality;
 		public int Impact;
 		public int Visibility;
-	}
+	}*/
 }

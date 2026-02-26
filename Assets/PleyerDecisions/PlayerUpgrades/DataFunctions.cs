@@ -42,29 +42,18 @@ public class DataFunctions
 		string V_JsonContent				= V_StrRead_EventsJSON.ReadToEnd();
 		V_StrRead_EventsJSON.Close();
 
-		EventsJSON_Wrapper V_Wrapper		= JsonUtility.FromJson<EventsJSON_Wrapper>(V_JsonContent);
-
 		EventsList.Clear();
 
-		foreach (EventJSON V_RawEvent in V_Wrapper.Events)
+		foreach (EventInfo V_RawEvent in JsonUtility.FromJson<EventInfo[]>(V_JsonContent))
 		{
-			EventInfo V_Event			= new EventInfo();
-			V_Event.EventId				= V_RawEvent.EventId;
-			V_Event.EventName			= V_RawEvent.EventName;
-			V_Event.EventDescription	= V_RawEvent.EventDescription;
-			//V_Event.EventPredisposition	= V_RawEvent.EventPredisposition;
-			V_Event.OptionFree			= ConvertOption(V_RawEvent.OptionFree);
-			V_Event.OptionMoney			= ConvertOption(V_RawEvent.OptionMoney);
-			V_Event.OptionPerk			= ConvertOption(V_RawEvent.OptionPerk);
-
-			EventsList.Add(V_Event);
+			EventsList.Add(V_RawEvent);
 		}
 
 		Debug.Log("[DataFunctions] Loaded " + EventsList.Count + " events from JSON.");
 		return EventsList;
 	}
 
-	private static EnumStructs.S_EventOption ConvertOption(EventOptionJSON PAR_Raw)
+    /*private static EnumStructs.S_EventOption ConvertOption(EventOptionJSON PAR_Raw)
 	{
 		EnumStructs.S_EventOption V_Option	= new EnumStructs.S_EventOption();
 		V_Option.OptionCost					= PAR_Raw.OptionCost;
@@ -85,7 +74,7 @@ public class DataFunctions
 		V_Stat.Impact					= (sbyte)PAR_Raw.Impact;
 		V_Stat.Visibility				= (sbyte)PAR_Raw.Visibility;
 		return V_Stat;
-	}
+	}*/
 
 
 	public static SocialPost_JSON LoadJSONFile(string PAR_FileName)
