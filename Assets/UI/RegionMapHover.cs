@@ -118,7 +118,11 @@ public class RegionMapHover : MonoBehaviour
         if (mainCamera == null || mapQuad == null || pixels == null)
             return -1;
 
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Vector3 mousePos = Input.mousePosition;
+        if (!float.IsFinite(mousePos.x) || !float.IsFinite(mousePos.y))
+            return -1;
+
+        Ray ray = mainCamera.ScreenPointToRay(mousePos);
 
         Vector3 planeNormal = mapQuad.forward;
         Vector3 planeOrigin = mapQuad.position;

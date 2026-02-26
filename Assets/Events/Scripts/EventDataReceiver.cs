@@ -17,6 +17,8 @@ public class EventDataReceiver : MonoBehaviour
     [Header("=== REFERENCE ===")]
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private TextMeshProUGUI eventText;
+    [Tooltip("Přírná reference na EventCanvas komponentu ve scéně")]
+    [SerializeField] private EventCanvas eventCanvas;
 
     [Header("=== JSON DATA ===")]
     [Tooltip("Cesta k Events.json (relativní k Assets)")]
@@ -32,6 +34,18 @@ public class EventDataReceiver : MonoBehaviour
     public TimeManager timeManager;
     public TimeSoundManager timeSoundManager;
     public bool autoStart = false;
+
+    [Header("=== NÁHODNÉ EVENTY ===")]
+    [Tooltip("Zapni pro automatické spouštění náhodných eventů v průběhu hry")]
+    [SerializeField] private bool enableRandomEvents = true;
+    [Tooltip("Minimální čekací doba mezi eventy (v sekundách)")]
+    [SerializeField] private float minEventInterval = 30f;
+    [Tooltip("Maximální čekací doba mezi eventy (v sekundách)")]
+    [SerializeField] private float maxEventInterval = 120f;
+
+    // Interní stav scheduleru
+    private bool isEventActive = false;
+    private Coroutine randomEventCoroutine;
     
     // Dostupné eventy pro testování (1-30)
     private int[] availableEventIds = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 };
@@ -111,7 +125,7 @@ public class EventDataReceiver : MonoBehaviour
 
     void Start()
     {
-        if(autoStart)
+        if (autoStart || enableRandomEvents)
         {
             LoadEventsFromJSON();
         }
@@ -122,8 +136,58 @@ public class EventDataReceiver : MonoBehaviour
             Log("SIMULACE AKTIVNÍ - Zobrazuji náhodný event (16-30)");
             Log("========================================");
             
-            // Vždy použij náhodný event z 16-30 (ignoruj testEventId kvůli Unity serialization)
             DisplayRandomEvent();
+
+            // Zobraz canvas po načtení dat
+            if (eventCanvas != null)
+                eventCanvas.Show();
+            else
+                Debug.LogWarning("[EventDataReceiver] EventCanvas není přiřazen v Inspectoru!");
+        }
+        else if (enableRandomEvents)
+        {
+            randomEventCoroutine = StartCoroutine(RandomEventScheduler());
+        }
+    }
+
+    /// <summary>
+    /// Spouští náhodné eventy v pravidelných náhodných intervalech po celou dobu hry.
+    /// </summary>
+    private System.Collections.IEnumerator RandomEventScheduler()
+    {
+        // Počáteční čekání před prvním eventem
+        float initialWait = Random.Range(minEventInterval, maxEventInterval);
+        Log($"[Scheduler] První event za {initialWait:F1}s");
+        yield return new WaitForSecondsRealtime(initialWait);
+
+        while (true)
+        {
+            // Zobraz event
+            if (loadedEvents.Count > 0)
+            {
+                isEventActive = true;
+
+                // Nejdřív nači data eventu (nastaví URL videa a volá Prepare)
+                DisplayRandomEvent();
+
+                // Pak zobraz canvas a spusť video (volá Play)
+                if (eventCanvas != null)
+                    eventCanvas.Show();
+                else
+                    Debug.LogWarning("[EventDataReceiver] EventCanvas není přiřazen v Inspectoru!");
+
+                // Čekej dokud hráč event nevyřeší
+                yield return new WaitUntil(() => !isEventActive);
+            }
+            else
+            {
+                LogWarning("[Scheduler] Žádné načtené eventy, scheduler čeká.");
+            }
+
+            // Čekej náhodnou dobu před dalším eventem
+            float waitTime = Random.Range(minEventInterval, maxEventInterval);
+            Log($"[Scheduler] Další event za {waitTime:F1}s");
+            yield return new WaitForSecondsRealtime(waitTime);
         }
     }
 
@@ -133,9 +197,6 @@ public class EventDataReceiver : MonoBehaviour
     public void LoadEventsFromJSON()
     {
         string fullPath = Path.Combine(Application.dataPath, eventsJsonPath.Replace("Assets/", ""));
-
-        timeManager.TogglePause();
-        timeSoundManager.StopAllSound();
         
         if (!File.Exists(fullPath))
         {
@@ -180,6 +241,10 @@ public class EventDataReceiver : MonoBehaviour
 
         // Ulož aktuální event
         currentEvent = eventData;
+
+        // Pozastav hru při zobrazení eventu
+        if (timeManager != null) timeManager.TogglePause();
+        if (timeSoundManager != null) timeSoundManager.StopAllSound();
 
         Log($"--- ZOBRAZUJI EVENT {eventId}: {eventData.EventName} ---");
         Log($"Video path: {eventData.VideoPath}");
@@ -435,6 +500,9 @@ public class EventDataReceiver : MonoBehaviour
 
         if (timeSoundManager != null)
             timeSoundManager.ResumeSound();
+
+        // Oznám scheduleru, že event byl vyřešen
+        isEventActive = false;
 
         Log("Hra resumována po eventu.");
     }
