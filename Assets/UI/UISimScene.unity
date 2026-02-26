@@ -581,7 +581,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 5063739715695257557, guid: 2ae0f1a3849ae6e43a65c2b56b6cec81, type: 3}
+  m_Sprite: {fileID: 7096634524515291106, guid: 2de8cd785ce9f9a46a9325d592b34cac, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1641,6 +1641,7 @@ MonoBehaviour:
     adultMaxAge: 170
   propagandaLevelAdaptationPerDay: 0.2
   paintingBrushRadius: 8
+  simulationTime: 0
   regionAverages: []
   regionPopulations: 
   regionAgeAverages: []
@@ -2466,8 +2467,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -12, y: 81}
-  m_SizeDelta: {x: 2337.7, y: 1557.27}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 983.3, y: 965.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1311957770
 MonoBehaviour:
@@ -2489,7 +2490,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 2133249164441064425, guid: 482281497026601438ca1521929dce72, type: 3}
+  m_Sprite: {fileID: -8327258022302873354, guid: e2f3c5987bdfc6d4d870b63e39ca6605, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
