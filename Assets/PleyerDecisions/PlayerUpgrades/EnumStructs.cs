@@ -80,6 +80,8 @@ public class PerkInformation
 			}
 		}
 
+		DataFunctions.PurchasedPerk.Add(this);
+
 		return true;
 	}
 }

@@ -18,6 +18,7 @@ public class DataFunctions
 	private static EventDataReceiver V_EventDataReceiver;
 
 	public static List<EventInfo> EventsList = new List<EventInfo>();
+	public static List<PerkInformation> PurchasedPerk	= new List<PerkInformation>();
 
 	public static List<string> OwnedPerks = new List<string>();
 	public static int CurrentCollaborators = 0;
@@ -57,14 +58,14 @@ public class DataFunctions
 
 	public static bool CheckRequirements(EventInfo PAR_Event)
 	{
-		if (!string.IsNullOrEmpty(PAR_Event.RequiredPerk))
+		if(PurchasedPerk.Contains(PAR_Event.RequiredPerk)	== null)
 		{
-			if (!OwnedPerks.Contains(PAR_Event.RequiredPerk)) return false;
+			return false;
 		}
 
-		if (PAR_Event.CollaboratorsRequired > 0)
+		if(PAR_Event.CollaboratorsRequired > 0 && CurrentCollaborators < PAR_Event.CollaboratorsRequired)
 		{
-			if (CurrentCollaborators < PAR_Event.CollaboratorsRequired) return false;
+			return false;
 		}
 
 		return true;
