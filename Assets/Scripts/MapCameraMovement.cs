@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Camera))]
 public class MapCameraMovement : MonoBehaviour
@@ -96,6 +97,11 @@ public class MapCameraMovement : MonoBehaviour
 
     private void HandleZoom()
     {
+        // If the pointer is currently over any UI element (e.g. Twittir scroll area),
+        // don't let the map react to mouse-wheel scrolling.
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            return;
+
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0f)
         {
