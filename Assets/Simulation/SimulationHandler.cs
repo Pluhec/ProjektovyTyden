@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using PlayerChoice.DataSets;
 using TMPro;
+using UnityEngine.UI;
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct NPC // 12b (9b data + 3b padding)
@@ -83,6 +84,7 @@ public class SimulationHandler : MonoBehaviour
 
     [Header("Global Stats UI")]
     public TextMeshProUGUI globalStanceText;
+    public Slider globalStanceSlider;
     public TextMeshProUGUI globalPopulationText;
     public TextMeshProUGUI globalAgeText;
     public TextMeshProUGUI globalEducationText;
@@ -105,6 +107,13 @@ public class SimulationHandler : MonoBehaviour
         npcs = new NPC[numNPCs];
         npcBuffer = new ComputeBuffer(numNPCs, 12, ComputeBufferType.Raw);
         npcBuffer.SetData(npcs);
+
+        // Initialize global stance slider range
+        if (globalStanceSlider != null)
+        {
+            globalStanceSlider.minValue = 0f;
+            globalStanceSlider.maxValue = 100f;
+        }
 
         // init thesimulation
         cs.SetBuffer(kernel_init, "npcs", npcBuffer);
@@ -186,8 +195,16 @@ public class SimulationHandler : MonoBehaviour
 
     void UpdateGlobalStatsUI()
     {
+        float stanceDisplay = GetGlobalStanceAverage() / 255f * 200f - 100f;
         if (globalStanceText != null)
-            globalStanceText.text = $"{GetGlobalStanceAverage() / 255f * 200f - 100f:+0.0;-0.0;0.0}";
+            globalStanceText.text = $"{stanceDisplay:+0.0;-0.0;0.0}";
+
+        // Sync slider (0..100) with displayed stance (-100..100)
+        if (globalStanceSlider != null)
+        {
+            // Map -100..100 -> 0..100
+            globalStanceSlider.value = stanceDisplay;
+        }
         if (globalPopulationText != null)
             globalPopulationText.text = $"{GetGlobalPopulationAverage():0.0}";
         if (globalAgeText != null)
