@@ -180,6 +180,7 @@ public class TimeSoundManager : MonoBehaviour
 
         fadeCoroutine = StartCoroutine(FadeOutAndStopCoroutine());
     }
+    
 
     [ContextMenu("Resume Sound")]
     public void ResumeSound()

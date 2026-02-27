@@ -33,6 +33,7 @@ public class EventDataReceiver : MonoBehaviour
 
     public TimeManager timeManager;
     public TimeSoundManager timeSoundManager;
+    public MusicManager musicManager;
     public bool autoStart = false;
 
     [Header("=== NÁHODNÉ EVENTY ===")]
@@ -245,6 +246,7 @@ public class EventDataReceiver : MonoBehaviour
         // Pozastav hru při zobrazení eventu
         if (timeManager != null) timeManager.TogglePause();
         if (timeSoundManager != null) timeSoundManager.StopAllSound();
+        musicManager.FadePause(0.5f);
 
         Log($"--- ZOBRAZUJI EVENT {eventId}: {eventData.EventName} ---");
         Log($"Video path: {eventData.VideoPath}");
@@ -496,8 +498,11 @@ public class EventDataReceiver : MonoBehaviour
         if (timeManager != null)
             timeManager.TogglePause();
 
+        musicManager.FadeResume(0.5f);
+
         if (timeSoundManager != null)
             timeSoundManager.ResumeSound();
+            musicManager.FadeResume(0.5f);
 
         // Oznám scheduleru, že event byl vyřešen
         isEventActive = false;
