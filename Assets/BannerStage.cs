@@ -48,12 +48,12 @@ public class BannerStage : MonoBehaviour
         float totalitarianPct = simulationHandler.GetStancePercentage();
 
         Stage newStage;
-        if (totalitarianPct < 33f)
-            newStage = Stage.Stage1;
-        else if (totalitarianPct < 66f)
+        if (totalitarianPct < 30f)
+            newStage = Stage.Stage3;
+        else if (totalitarianPct < 60f)
             newStage = Stage.Stage2;
         else
-            newStage = Stage.Stage3;
+            newStage = Stage.Stage1;
 
         if (newStage != currentStage)
             SetStage(newStage);
