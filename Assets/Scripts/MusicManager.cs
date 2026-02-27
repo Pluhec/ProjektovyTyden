@@ -301,10 +301,6 @@ public class MusicManager : MonoBehaviour
     private float duckTargetVolume;
     private bool isDucked = false;
 
-    /// <summary>
-    /// Gradually lowers music volume to a fraction of the current volume.
-    /// Call this when an event video starts.
-    /// </summary>
     public void DuckMusic(float targetFraction = 0.1f, float duration = 1.0f)
     {
         if (isDucked) return;
@@ -314,10 +310,6 @@ public class MusicManager : MonoBehaviour
         duckRoutine = StartCoroutine(FadeToVolume(duckTargetVolume, duration));
     }
 
-    /// <summary>
-    /// Gradually restores music volume back to the original level.
-    /// Call this when the event is dismissed.
-    /// </summary>
     public void RestoreMusic(float duration = 1.0f)
     {
         if (!isDucked) return;
@@ -342,6 +334,64 @@ public class MusicManager : MonoBehaviour
         duckRoutine = null;
     }
 
+    // --- Fade Pause / Resume (New for Hover Controller) ---
+    private Coroutine fadePauseResumeRoutine;
+
+    public void FadePause(float duration = 0.5f)
+    {
+        isPausedByUser = true;
+        if (fadePauseResumeRoutine != null) StopCoroutine(fadePauseResumeRoutine);
+        fadePauseResumeRoutine = StartCoroutine(FadeOutAndPauseRoutine(duration));
+    }
+
+    public void FadeResume(float duration = 0.5f)
+    {
+        isPausedByUser = false;
+        if (fadePauseResumeRoutine != null) StopCoroutine(fadePauseResumeRoutine);
+        if (activeSource != null && activeSource.clip != null)
+        {
+            activeSource.UnPause();
+            fadePauseResumeRoutine = StartCoroutine(FadeInAndResumeRoutine(duration));
+        }
+    }
+
+    private IEnumerator FadeOutAndPauseRoutine(float duration)
+    {
+        float startVol = activeSource != null ? activeSource.volume : volume;
+        float t = 0f;
+
+        while (t < duration)
+        {
+            t += GetDeltaTime();
+            float k = Mathf.Clamp01(t / duration);
+            if (activeSource != null) activeSource.volume = Mathf.Lerp(startVol, 0f, k);
+            yield return null;
+        }
+
+        if (activeSource != null)
+        {
+            activeSource.volume = 0f;
+            activeSource.Pause();
+        }
+    }
+
+    private IEnumerator FadeInAndResumeRoutine(float duration)
+    {
+        float startVol = activeSource != null ? activeSource.volume : 0f;
+        float t = 0f;
+
+        while (t < duration)
+        {
+            t += GetDeltaTime();
+            float k = Mathf.Clamp01(t / duration);
+            if (activeSource != null) activeSource.volume = Mathf.Lerp(startVol, volume, k);
+            yield return null;
+        }
+
+        if (activeSource != null) activeSource.volume = volume;
+    }
+
+    // --- Setup ---
     private void SetupSources()
     {
         AudioSource[] allSources = GetComponents<AudioSource>();

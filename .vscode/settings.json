@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "ProjektovyTyden_FullOnTest.slnx"
+    "dotnet.defaultSolution": "ProjektovyTyden.slnx"
 }

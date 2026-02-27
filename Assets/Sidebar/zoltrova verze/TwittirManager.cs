@@ -19,13 +19,7 @@ public class TwittirManager : MonoBehaviour
     public Transform loadingCircle;
     public ScrollRect scrollRect;
 
-    [Header("Expanded Video Viewer")]
-    public GameObject expandedVideoPanel;
-    public VideoPlayer expandedVideoPlayer;
-    public RawImage expandedVideoDisplay;
-    public RectTransform expandedVideoContainer;
-    public TMPro.TextMeshProUGUI expandedUsername;
-    public UnityEngine.UI.Button closeButton;
+    // Expanded video viewer removed — feature disabled. Fields were here previously.
 
     [Tooltip("Seconds to wait at the bottom before loading more")]
     public float loadMoreDelay = 2f;
@@ -52,17 +46,7 @@ public class TwittirManager : MonoBehaviour
 
         Generate10();
 
-        // Initialize expanded video panel
-        if (expandedVideoPanel != null)
-        {
-            expandedVideoPanel.SetActive(false);
-        }
-
-        // Setup close button
-        if (closeButton != null)
-        {
-            closeButton.onClick.AddListener(CloseExpandedVideo);
-        }
+        // Expanded video UI removed; feature disabled.
     }
 
     void Update()
@@ -323,84 +307,19 @@ public class TwittirManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Expands a video to full view at the top of the Twittir feed
+    /// Restore no-op ExpandVideo to satisfy callers; feature remains disabled.
     /// </summary>
     public void ExpandVideo(VideoPlayer sourceVideoPlayer, string username)
     {
-        if (expandedVideoPanel == null || expandedVideoPlayer == null || expandedVideoDisplay == null)
-        {
-            Debug.LogWarning("TwittirManager: Expanded video components not assigned!");
-            return;
-        }
-
-        // Move expanded video panel to be the first child in content (pushes other posts down)
-        expandedVideoPanel.transform.SetParent(contentParent);
-        expandedVideoPanel.transform.SetAsFirstSibling();
-
-        // Show the expanded video panel
-        expandedVideoPanel.SetActive(true);
-
-        // Set username
-        if (expandedUsername != null)
-        {
-            expandedUsername.text = username;
-        }
-
-        // Copy video clip to expanded player
-        if (sourceVideoPlayer != null && sourceVideoPlayer.clip != null)
-        {
-            VideoClip clip = sourceVideoPlayer.clip;
-
-            // Create a new RenderTexture for the expanded view
-            RenderTexture rt = new RenderTexture((int)clip.width, (int)clip.height, 0);
-            expandedVideoPlayer.renderMode = VideoRenderMode.RenderTexture;
-            expandedVideoPlayer.targetTexture = rt;
-            expandedVideoDisplay.texture = rt;
-
-            // Set the video clip
-            expandedVideoPlayer.clip = clip;
-            expandedVideoPlayer.isLooping = true;
-
-            // Resize the video container to match Twittir width with proper aspect ratio
-            if (expandedVideoContainer != null)
-            {
-                // Get the content parent width (full Twittir width)
-                float containerWidth = contentParent.GetComponent<RectTransform>().rect.width;
-                float aspectRatio = (float)clip.width / clip.height;
-                float height = containerWidth / aspectRatio;
-
-                expandedVideoContainer.sizeDelta = new Vector2(containerWidth, height);
-
-                // Update the expanded panel's size to match
-                RectTransform panelRect = expandedVideoPanel.GetComponent<RectTransform>();
-                if (panelRect != null)
-                {
-                    panelRect.sizeDelta = new Vector2(containerWidth, height + 60); // +60 for username/close button area
-                }
-            }
-
-            // Play the video
-            expandedVideoPlayer.time = sourceVideoPlayer.time; // Start from same position
-            expandedVideoPlayer.Play();
-        }
-
-        // Force layout rebuild so content flows properly
-        Canvas.ForceUpdateCanvases();
+        Debug.Log("TwittirManager: ExpandVideo called but expanded video feature is disabled.");
     }
 
     /// <summary>
-    /// Closes the expanded video view
+    /// Restore no-op CloseExpandedVideo to satisfy callers; feature remains disabled.
     /// </summary>
     public void CloseExpandedVideo()
     {
-        if (expandedVideoPanel != null)
-        {
-            expandedVideoPanel.SetActive(false);
-        }
-
-        if (expandedVideoPlayer != null)
-        {
-            expandedVideoPlayer.Stop();
-        }
+        Debug.Log("TwittirManager: CloseExpandedVideo called but expanded video feature is disabled.");
     }
+
 }
