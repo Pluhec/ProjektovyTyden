@@ -100,9 +100,12 @@ public class DataFunctions
 		
 	}
 
+	/// <summary>Fired when the player wins (buys the victory perk).</summary>
+	public static event System.Action OnVictory;
+
 	public static void NotifyVictory()
 	{
-		
+		OnVictory?.Invoke();
 	}
 }
 }
