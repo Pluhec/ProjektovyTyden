@@ -566,9 +566,9 @@ public class SimulationHandler : MonoBehaviour
     {
         foreach (EnumStructs.S_StatData stat in statData)
         {
-            float virality = stat.Virality * 5f;
-            float impact = stat.Impact * 5f;
-            float visibility = stat.Visibility * 5f;
+            float virality = stat.Virality * 1f;
+            float impact = stat.Impact * 1f;
+            float visibility = stat.Visibility * 1f;
 
             switch (stat.AgeGroup)
             {
