@@ -195,7 +195,8 @@ public class SimulationHandler : MonoBehaviour
 
     void UpdateGlobalStatsUI()
     {
-        float stanceDisplay = GetGlobalStanceAverage() / 255f * 200f - 100f;
+        float stanceDisplay = (100f - GetStancePercentage() - 25f) * 1.4f; // remap 0-100 -> 100-0, with 50=neutral at 50
+        stanceDisplay = Mathf.Clamp(stanceDisplay, 0f, 100f);
         if (globalStanceText != null)
             globalStanceText.text = $"{stanceDisplay:+0.0;-0.0;0.0}";
 
@@ -462,13 +463,12 @@ public class SimulationHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// Returns the same 0-100 value shown on the progress bar / slider.
-    /// Use this everywhere you need the current stance percentage.
+    /// Returns 0-100 across the full stance range (byte 0-255).
+    /// 0 = fully democratic, 50 = neutral, 100 = fully totalitarian.
     /// </summary>
     public float GetStancePercentage()
     {
-        float raw = GetGlobalStanceAverage() / 255f * 200f - 100f;
-        return Mathf.Clamp(raw, 0f, 100f);
+        return GetGlobalStanceAverage() / 255f * 100f;
     }
 
     public float GetGlobalPopulationAverage()
@@ -566,9 +566,9 @@ public class SimulationHandler : MonoBehaviour
     {
         foreach (EnumStructs.S_StatData stat in statData)
         {
-            float virality = stat.Virality / 127f;
-            float impact = stat.Impact / 127f;
-            float visibility = stat.Visibility / 127f;
+            float virality = stat.Virality * 5f;
+            float impact = stat.Impact * 5f;
+            float visibility = stat.Visibility * 5f;
 
             switch (stat.AgeGroup)
             {

@@ -84,7 +84,7 @@ public class EventDataReceiver : MonoBehaviour
     {
         public int AgeGroup;
         public int Virality;
-        public int Impact;
+        public int  Impact;
         public int Visibility;
     }
 

@@ -84,17 +84,17 @@ public class TwittirManager : MonoBehaviour
         float stancePct = simulationHandler.GetStancePercentage();
 
         // Map to stance category (1/2/3) based on progress bar thresholds
-        if (stancePct < 33f)
+        if (stancePct < 30f)
         {
-            stance = 1; // Democratic (0-33%)
+            stance = 3; // Total (0-33%)
         }
-        else if (stancePct < 66f)
+        else if (stancePct < 60f)
         {
             stance = 2; // Propaganda (33-66%)
         }
         else
         {
-            stance = 3; // Totalitarian (66-100%)
+            stance = 1; // Democratic (66-100%)
         }
 
         Debug.Log($"TwittirManager: Progress bar = {stancePct:F1}% → Category {stance} ({(stance == 1 ? "dem" : stance == 2 ? "prop" : "tot")})");

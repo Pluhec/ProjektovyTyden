@@ -121,7 +121,7 @@ void SimulationInit(uint3 id : SV_DispatchThreadID)
     npc.age = uint(initData.y * 255.0);
     npc.education = uint(initData.z * 255.0);
     npc.impressionability = uint(initData.w * 255.0);
-    npc.stance = int(pow(saturate(initData.z*0.9 + 0.08 - Hash(id.x+789, true)*0.15), 0.2) * 255 - 128);
+    npc.stance = int(pow(saturate(initData.z*0.9 + 0.08 - Hash(id.x+789, true)*0.15), 0.2) * 130 - 10);
     npc.neighbors = uint(npc.population / 255. * 4.5 + Hash(id.x+123, true)*4); // neighbors based by population with 50% randomness
     StoreNpc(id.x, npc);
 }

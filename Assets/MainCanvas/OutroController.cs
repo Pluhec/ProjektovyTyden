@@ -3,9 +3,17 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
 using UnityEngine.Video;
+using PlayerChoice.DataSets;
 
 public class OutroController : MonoBehaviour
 {
+    [Header("Victory Child Objects")]
+    [Tooltip("Child GameObject s VideoPlayerem – bude aktivován při výhře.")]
+    public GameObject videoPlayerObject;
+
+    [Tooltip("Child GameObject s OutroCanvasem – bude aktivován při výhře.")]
+    public GameObject outroCanvasObject;
+
     [Header("UI Components")]
     [Tooltip("CanvasGroup celého overlaye (nad videem) – kvůli fade-outu celého outro.")]
     public CanvasGroup overlayCanvasGroup;
@@ -37,6 +45,25 @@ public class OutroController : MonoBehaviour
 
     private bool outroIsPlaying = false;
     private string[] _currentMessages;   // Interně zvolená sada zpráv podle výsledku
+
+    private void OnEnable()
+    {
+        DataFunctions.OnVictory += OnPlayerVictory;
+    }
+
+    private void OnDisable()
+    {
+        DataFunctions.OnVictory -= OnPlayerVictory;
+    }
+
+    private void OnPlayerVictory()
+    {
+        // Zapneme child objekty (VideoPlayer a OutroCanvas)
+        if (videoPlayerObject != null) videoPlayerObject.SetActive(true);
+        if (outroCanvasObject != null)  outroCanvasObject.SetActive(true);
+
+        UserWinPlayOutro();
+    }
 
     private void Awake()
     {
