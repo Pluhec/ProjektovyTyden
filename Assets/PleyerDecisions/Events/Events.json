@@ -247,7 +247,7 @@
       },
       "OptionMoney": {
         "OptionCost": 0,
-        "OptionPerk": "Zastrašování novinářů",
+        "OptionPerk": null,
         "OptionName": "Protiútok na novináře",
         "OptionEffect": null,
         "OptionSpecialEffect": null,
@@ -865,7 +865,7 @@
       },
       "OptionPerk": {
         "OptionCost": 0,
-        "OptionPerk": null,
+        "OptionPerk": "Televizní kanál",
         "OptionName": "Násilné rozehnání",
         "OptionEffect": "imunní obyvatelé +5%",
         "OptionSpecialEffect": { "EffectsType": 3, "EffectsGroup": 0, "EffectsEducation": null, "EffectAmmount": 5 },
@@ -903,7 +903,7 @@
       },
       "OptionPerk": {
         "OptionCost": 0,
-        "OptionPerk": null,
+        "OptionPerk": "Sociální sítě",
         "OptionName": "Začít prodávat oficiální merch",
         "OptionEffect": null,
         "OptionSpecialEffect": null,
