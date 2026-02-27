@@ -1,0 +1,15 @@
+{
+  "IndependentZpravy": [
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Dneska jsem zaplatil za kávu víc než jsem čekal, asi si ji budu vařit doma.", "Description": "", "UserImage": "", "UserName": "ShadowHunter_99" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Zapomněl jsem chleba v troubě a teď mám domácí topinku na celý týden.", "Description": "", "UserImage": "", "UserName": "NeonWolf42" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Nejlepší pocit je když si lehneš a zjistíš, že nemusíš ráno vstávat.", "Description": "", "UserImage": "", "UserName": "MysticLuna_x" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Kočka dneska spadla ze skříně a tvářila se, že to byl plán.", "Description": "", "UserImage": "", "UserName": "CyberMate69" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Koupil jsem si rostlinu a teď se snažím nezapomenout ji zalévat.", "Description": "", "UserImage": "", "UserName": "ThunderBolt_Z" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Proč ponožky mizí jen z jedné strany pračky?", "Description": "", "UserImage": "", "UserName": "ElectricEve_K" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Dneska jsem uvařil rýži bez návodu a dopadlo to dobře.", "Description": "", "UserImage": "", "UserName": "PixelPavel_J" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Déšť za oknem je nejlepší kulisa k práci.", "Description": "", "UserImage": "", "UserName": "NightNaty_88" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Zjistil jsem, že mám v lednici věci o kterých nevím jak dlouho tam jsou.", "Description": "", "UserImage": "", "UserName": "RogueRoman_7" },
+    { "Type": false, "Topic": 0, "Agression": 0, "Content": "Někdo ví proč jsou víčka od jogurtu vždycky tak pevná?", "Description": "", "UserImage": "", "UserName": "AquaAdela_3" }
+    // ... (copy the rest of the JSON as needed)
+  ]
+}

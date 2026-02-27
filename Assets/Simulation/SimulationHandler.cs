@@ -461,6 +461,16 @@ public class SimulationHandler : MonoBehaviour
         return popSum > 0 ? stanceSum / popSum : 0f;
     }
 
+    /// <summary>
+    /// Returns the same 0-100 value shown on the progress bar / slider.
+    /// Use this everywhere you need the current stance percentage.
+    /// </summary>
+    public float GetStancePercentage()
+    {
+        float raw = GetGlobalStanceAverage() / 255f * 200f - 100f;
+        return Mathf.Clamp(raw, 0f, 100f);
+    }
+
     public float GetGlobalPopulationAverage()
     {
         if (npcs == null) return 0f;

@@ -196,7 +196,7 @@ public class EventDataReceiver : MonoBehaviour
     /// </summary>
     public void LoadEventsFromJSON()
     {
-        string fullPath = Path.Combine(Application.dataPath, eventsJsonPath.Replace("Assets/", ""));
+        string fullPath = Path.Combine(Application.streamingAssetsPath, "SocialMessagesJSON/Events.json");
         
         if (!File.Exists(fullPath))
         {
@@ -377,12 +377,10 @@ public class EventDataReceiver : MonoBehaviour
             return;
         }
 
-        // Převeď na absolutní cestu
-        string absolutePath = System.IO.Path.Combine(
-            Application.dataPath, 
-            videoPath.Replace("Assets/", "")
-        );
-        absolutePath = absolutePath.Replace("/", System.IO.Path.DirectorySeparatorChar.ToString());
+        // Převeď na absolutní cestu pro StreamingAssets
+        // JSON obsahuje "Assets/Video/X.mp4", ale soubory jsou v StreamingAssets/Video/
+        string fileName = System.IO.Path.GetFileName(videoPath);
+        string absolutePath = System.IO.Path.Combine(Application.streamingAssetsPath, "Video", fileName);
 
         // Zkontroluj jestli soubor existuje
         if (!System.IO.File.Exists(absolutePath))

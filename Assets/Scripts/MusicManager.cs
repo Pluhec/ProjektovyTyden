@@ -296,6 +296,52 @@ public class MusicManager : MonoBehaviour
         return useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
     }
 
+    // --- Music Ducking (for event videos) ---
+    private Coroutine duckRoutine;
+    private float duckTargetVolume;
+    private bool isDucked = false;
+
+    /// <summary>
+    /// Gradually lowers music volume to a fraction of the current volume.
+    /// Call this when an event video starts.
+    /// </summary>
+    public void DuckMusic(float targetFraction = 0.1f, float duration = 1.0f)
+    {
+        if (isDucked) return;
+        isDucked = true;
+        duckTargetVolume = volume * targetFraction;
+        if (duckRoutine != null) StopCoroutine(duckRoutine);
+        duckRoutine = StartCoroutine(FadeToVolume(duckTargetVolume, duration));
+    }
+
+    /// <summary>
+    /// Gradually restores music volume back to the original level.
+    /// Call this when the event is dismissed.
+    /// </summary>
+    public void RestoreMusic(float duration = 1.0f)
+    {
+        if (!isDucked) return;
+        isDucked = false;
+        if (duckRoutine != null) StopCoroutine(duckRoutine);
+        duckRoutine = StartCoroutine(FadeToVolume(volume, duration));
+    }
+
+    private IEnumerator FadeToVolume(float target, float duration)
+    {
+        float startVol = activeSource != null ? activeSource.volume : volume;
+        float t = 0f;
+        while (t < duration)
+        {
+            t += GetDeltaTime();
+            float k = Mathf.Clamp01(t / duration);
+            float newVol = Mathf.Lerp(startVol, target, k);
+            if (activeSource != null) activeSource.volume = newVol;
+            yield return null;
+        }
+        if (activeSource != null) activeSource.volume = target;
+        duckRoutine = null;
+    }
+
     private void SetupSources()
     {
         AudioSource[] allSources = GetComponents<AudioSource>();

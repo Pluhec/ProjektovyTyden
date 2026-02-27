@@ -19,6 +19,14 @@ public class TwittirManager : MonoBehaviour
     public Transform loadingCircle;
     public ScrollRect scrollRect;
 
+    [Header("Expanded Video Viewer")]
+    public GameObject expandedVideoPanel;
+    public VideoPlayer expandedVideoPlayer;
+    public RawImage expandedVideoDisplay;
+    public RectTransform expandedVideoContainer;
+    public TMPro.TextMeshProUGUI expandedUsername;
+    public UnityEngine.UI.Button closeButton;
+
     [Tooltip("Seconds to wait at the bottom before loading more")]
     public float loadMoreDelay = 2f;
 
@@ -28,17 +36,33 @@ public class TwittirManager : MonoBehaviour
     // Videos:   Assets/Resources/TwittirVideos/
     private static readonly string VideosResourcePath = "TwittirVideos";
 
-    [Tooltip("1 = dem, 2 = prop, 3 = tot")]
+    [Tooltip("1 = dem, 2 = prop, 3 = tot (automatically updated from simulation stance)")]
     public int stance = 1;
 
     private static System.Random _random = new System.Random();
     private static HashSet<string> _postedMessages = new HashSet<string>();
 
     private bool _isLoadingMore = false;
+    private SimulationHandler simulationHandler;
 
     void Start()
     {
+        simulationHandler = FindObjectOfType<SimulationHandler>();
+        UpdateStanceFromSimulation();
+
         Generate10();
+
+        // Initialize expanded video panel
+        if (expandedVideoPanel != null)
+        {
+            expandedVideoPanel.SetActive(false);
+        }
+
+        // Setup close button
+        if (closeButton != null)
+        {
+            closeButton.onClick.AddListener(CloseExpandedVideo);
+        }
     }
 
     void Update()
@@ -56,9 +80,48 @@ public class TwittirManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the stance category based on the current simulation political stance.
+    /// Uses percentage scale (0-100%) where higher = more totalitarian:
+    /// - stance 1 (dem): 0-33% (democratic)
+    /// - stance 2 (prop): 33-66% (moderate/propaganda)
+    /// - stance 3 (tot): 66-100% (totalitarian)
+    /// </summary>
+    private void UpdateStanceFromSimulation()
+    {
+        if (simulationHandler == null)
+        {
+            Debug.LogWarning("TwittirManager: SimulationHandler not found! Using default stance (democratic).");
+            stance = 1;
+            return;
+        }
+
+        // Read the same value the progress bar shows (0-100)
+        float stancePct = simulationHandler.GetStancePercentage();
+
+        // Map to stance category (1/2/3) based on progress bar thresholds
+        if (stancePct < 33f)
+        {
+            stance = 1; // Democratic (0-33%)
+        }
+        else if (stancePct < 66f)
+        {
+            stance = 2; // Propaganda (33-66%)
+        }
+        else
+        {
+            stance = 3; // Totalitarian (66-100%)
+        }
+
+        Debug.Log($"TwittirManager: Progress bar = {stancePct:F1}% → Category {stance} ({(stance == 1 ? "dem" : stance == 2 ? "prop" : "tot")})");
+    }
+
     // Generate 10 new posts with a random mix of types
     void Generate10()
     {
+        // Update stance from simulation before generating new posts
+        UpdateStanceFromSimulation();
+
         for (int i = 0; i < 10; i++)
         {
             int roll = _random.Next(0, 8);
@@ -186,6 +249,11 @@ public class TwittirManager : MonoBehaviour
             VideoHoverController hover = videoChild.gameObject.AddComponent<VideoHoverController>();
             hover.videoPlayer = player;
 
+            // Add click handler to expand video on click
+            VideoPostClickHandler clickHandler = videoChild.gameObject.AddComponent<VideoPostClickHandler>();
+            clickHandler.videoPlayer = player;
+            clickHandler.username = post_data.UserName;
+
             // Prepare the video and show the first frame so it isn't transparent at rest
             player.prepareCompleted += _ => StartCoroutine(ShowFirstFrame(player));
             player.Prepare();
@@ -214,7 +282,7 @@ public class TwittirManager : MonoBehaviour
     // Reuses the same JSON loading logic as UserMessageScript
     private SocialPost_JSON GetRandomPost()
     {
-        string socialBasePath = Path.Combine(Application.dataPath, "PleyerDecisions/SocialMessagesJSON/");
+        string socialBasePath = Path.Combine(Application.streamingAssetsPath, "SocialMessagesJSON");
         string independentFile = Path.Combine(socialBasePath, "IndependentMessages.json");
 
         if (!File.Exists(independentFile))
@@ -252,5 +320,87 @@ public class TwittirManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// Expands a video to full view at the top of the Twittir feed
+    /// </summary>
+    public void ExpandVideo(VideoPlayer sourceVideoPlayer, string username)
+    {
+        if (expandedVideoPanel == null || expandedVideoPlayer == null || expandedVideoDisplay == null)
+        {
+            Debug.LogWarning("TwittirManager: Expanded video components not assigned!");
+            return;
+        }
+
+        // Move expanded video panel to be the first child in content (pushes other posts down)
+        expandedVideoPanel.transform.SetParent(contentParent);
+        expandedVideoPanel.transform.SetAsFirstSibling();
+
+        // Show the expanded video panel
+        expandedVideoPanel.SetActive(true);
+
+        // Set username
+        if (expandedUsername != null)
+        {
+            expandedUsername.text = username;
+        }
+
+        // Copy video clip to expanded player
+        if (sourceVideoPlayer != null && sourceVideoPlayer.clip != null)
+        {
+            VideoClip clip = sourceVideoPlayer.clip;
+
+            // Create a new RenderTexture for the expanded view
+            RenderTexture rt = new RenderTexture((int)clip.width, (int)clip.height, 0);
+            expandedVideoPlayer.renderMode = VideoRenderMode.RenderTexture;
+            expandedVideoPlayer.targetTexture = rt;
+            expandedVideoDisplay.texture = rt;
+
+            // Set the video clip
+            expandedVideoPlayer.clip = clip;
+            expandedVideoPlayer.isLooping = true;
+
+            // Resize the video container to match Twittir width with proper aspect ratio
+            if (expandedVideoContainer != null)
+            {
+                // Get the content parent width (full Twittir width)
+                float containerWidth = contentParent.GetComponent<RectTransform>().rect.width;
+                float aspectRatio = (float)clip.width / clip.height;
+                float height = containerWidth / aspectRatio;
+
+                expandedVideoContainer.sizeDelta = new Vector2(containerWidth, height);
+
+                // Update the expanded panel's size to match
+                RectTransform panelRect = expandedVideoPanel.GetComponent<RectTransform>();
+                if (panelRect != null)
+                {
+                    panelRect.sizeDelta = new Vector2(containerWidth, height + 60); // +60 for username/close button area
+                }
+            }
+
+            // Play the video
+            expandedVideoPlayer.time = sourceVideoPlayer.time; // Start from same position
+            expandedVideoPlayer.Play();
+        }
+
+        // Force layout rebuild so content flows properly
+        Canvas.ForceUpdateCanvases();
+    }
+
+    /// <summary>
+    /// Closes the expanded video view
+    /// </summary>
+    public void CloseExpandedVideo()
+    {
+        if (expandedVideoPanel != null)
+        {
+            expandedVideoPanel.SetActive(false);
+        }
+
+        if (expandedVideoPlayer != null)
+        {
+            expandedVideoPlayer.Stop();
+        }
     }
 }

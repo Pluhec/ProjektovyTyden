@@ -16,6 +16,8 @@ public class BannerStage : MonoBehaviour
     [SerializeField] private Sprite bannerStage2;
     [SerializeField] private Sprite bannerStage3;
 
+    private SimulationHandler simulationHandler;
+
     private void OnValidate()
     {
         Apply();
@@ -23,7 +25,38 @@ public class BannerStage : MonoBehaviour
 
     private void Start()
     {
+        simulationHandler = FindObjectOfType<SimulationHandler>();
+        UpdateStageFromSimulation();
         Apply();
+    }
+
+    private void Update()
+    {
+        UpdateStageFromSimulation();
+    }
+
+    /// <summary>
+    /// Updates banner stage based on simulation totalitarian percentage.
+    /// Only counts past neutral (byte 128). Same formula as TwittirManager / NewsLoader:
+    ///   0-33% = Stage1 (dem), 33-66% = Stage2 (prop), 66-100% = Stage3 (tot)
+    /// </summary>
+    private void UpdateStageFromSimulation()
+    {
+        if (simulationHandler == null) return;
+
+        // Read the same value the progress bar shows (0-100)
+        float totalitarianPct = simulationHandler.GetStancePercentage();
+
+        Stage newStage;
+        if (totalitarianPct < 33f)
+            newStage = Stage.Stage1;
+        else if (totalitarianPct < 66f)
+            newStage = Stage.Stage2;
+        else
+            newStage = Stage.Stage3;
+
+        if (newStage != currentStage)
+            SetStage(newStage);
     }
 
     public void SetStage(Stage stage)

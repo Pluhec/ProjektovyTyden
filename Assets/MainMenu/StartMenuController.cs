@@ -65,7 +65,8 @@ public class StartMenuController : MonoBehaviour
     {
         // Načte herní scénu
         // Ujisti se, že scéna je přidaná v File -> Build Settings!
-        SceneManager.LoadScene(gameSceneName);
+           // Load the game scene instead of activating a canvas
+           SceneManager.LoadScene(gameSceneName);
     }
 
     public void OpenOptions()

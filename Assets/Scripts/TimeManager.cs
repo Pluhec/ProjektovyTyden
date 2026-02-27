@@ -16,6 +16,10 @@ public class TimeManager : MonoBehaviour
     private bool isPaused;
     private float prevTimeOfTheDay = 1f;
 
+    [Header("Day Duration")]
+    [Tooltip("How many simulation ticks (seconds) make one full day. Lower = faster days. Default: 30 = 30 seconds per day")]
+    public int ticksPerDay = 30;
+
     [Header("Day Slider")]
     public Slider daySlider;
     public Image daySliderFill;
@@ -58,20 +62,20 @@ public class TimeManager : MonoBehaviour
             }
         }
 
-        float timeOfTheDay = Mathf.Cos((simulationHandler.simulationTime % 60 + timer) / 60f * Mathf.PI * 2)*0.5f+0.5f;
+        float timeOfTheDay = Mathf.Cos((simulationHandler.simulationTime % ticksPerDay + timer) / ticksPerDay * Mathf.PI * 2)*0.5f+0.5f;
         foreach (var img in allMapResources)
             img.color = dayNightGradient.Evaluate(Mathf.Clamp01(timeOfTheDay));
 
         if (daySlider != null)
         {
-            float dayProgress = ((simulationHandler.simulationTime + 30) % 60 + timer) / 60f;
+            float dayProgress = ((simulationHandler.simulationTime + ticksPerDay/2) % ticksPerDay + timer) / ticksPerDay;
             daySlider.value = dayProgress;
         }
 
         if (daySliderFill != null)
             daySliderFill.material = isPaused ? pausedMaterial : playingMaterial;
 
-        day = (uint)((simulationHandler.simulationTime + 30) / 60) + 1;
+        day = (uint)((simulationHandler.simulationTime + ticksPerDay/2) / ticksPerDay) + 1;
 
         if (dayText != null)
         {

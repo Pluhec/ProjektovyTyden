@@ -43,6 +43,10 @@ public class IconSpawnSettings
     [Tooltip("Minimum number of neighbors (0-8) that must also pass the color threshold.")]
     [Range(0, 8)]
     public int minSameColorNeighbors = 3;
+
+    [Header("Ideology Scaling")]
+    [Tooltip("If true, spawn rate decreases when this ideology is rare in the population (riots, protests). If false, spawns normally regardless of ideology distribution (money, resources).")]
+    public bool scaleByIdeologyProportion = false;
 }
 
 public class SpawningPointsByMap : MonoBehaviour
@@ -67,9 +71,22 @@ public class SpawningPointsByMap : MonoBehaviour
     private float spawnTimer;
     private NPC[] localNpcsArray;
 
+    // Cache ideology proportions to avoid recalculating every spawn attempt
+    private readonly Dictionary<IconSpawnSettings, float> ideologyProportions = new Dictionary<IconSpawnSettings, float>();
+    private float proportionCacheTimer = 0f;
+    [Tooltip("How often (in seconds) to recalculate global ideology proportions.")]
+    public float proportionUpdateInterval = 2f;
+
     void Start()
     {
         spawnTimer = spawnInterval;
+        proportionCacheTimer = proportionUpdateInterval;
+
+        // Calculate initial proportions
+        if (simulationHandler != null && simulationHandler.npcBuffer != null)
+        {
+            UpdateIdeologyProportions();
+        }
     }
 
     void Update()
@@ -77,11 +94,80 @@ public class SpawningPointsByMap : MonoBehaviour
         if (simulationHandler == null || simulationHandler.npcBuffer == null || iconTypes.Count == 0)
             return;
 
+        proportionCacheTimer -= Time.deltaTime;
+        if (proportionCacheTimer <= 0f)
+        {
+            proportionCacheTimer = proportionUpdateInterval;
+            UpdateIdeologyProportions();
+        }
+
         spawnTimer -= Time.deltaTime;
         if (spawnTimer <= 0f)
         {
             spawnTimer = spawnInterval;
             TrySpawnPrefabs();
+        }
+    }
+
+    /// <summary>
+    /// Calculates what proportion of the total population falls into each icon type's ideology range.
+    /// This is used to scale spawn probability for riots/protests - if only 5% of the population is extreme, riots should be much rarer.
+    /// Only applies to icon types with scaleByIdeologyProportion = true.
+    /// </summary>
+    private void UpdateIdeologyProportions()
+    {
+        int numNPCs = simulationHandler.gridSize.x * simulationHandler.gridSize.y;
+
+        if (localNpcsArray == null || localNpcsArray.Length != numNPCs)
+        {
+            localNpcsArray = new NPC[numNPCs];
+        }
+
+        simulationHandler.npcBuffer.GetData(localNpcsArray);
+
+        ideologyProportions.Clear();
+
+        foreach (var iconType in iconTypes)
+        {
+            // Skip ideology scaling for money and other non-riot icons
+            if (!iconType.scaleByIdeologyProportion)
+            {
+                continue;
+            }
+
+            int totalPopulation = 0;
+            int matchingPopulation = 0;
+
+            float minValue = Mathf.Min(iconType.minIdeologyValue, iconType.maxIdeologyValue);
+            float maxValue = Mathf.Max(iconType.minIdeologyValue, iconType.maxIdeologyValue);
+
+            for (int i = 0; i < numNPCs; i++)
+            {
+                NPC npc = localNpcsArray[i];
+                if (npc.population == 0) continue;
+
+                totalPopulation += npc.population;
+
+                // Convert stance to ideology (0=blue, 0.5=neutral, 1=red)
+                float blueNormalized = npc.stance / 255f;
+                float ideologyValue = 1f - blueNormalized;
+
+                if (ideologyValue >= minValue && ideologyValue <= maxValue)
+                {
+                    matchingPopulation += npc.population;
+                }
+            }
+
+            // Calculate proportion (0 to 1)
+            float proportion = totalPopulation > 0 ? (float)matchingPopulation / totalPopulation : 0f;
+
+            // Square the proportion to make rare ideologies exponentially less likely to spam spawns
+            // Example: 5% of population → 0.05² = 0.0025 = 0.25% spawn rate multiplier
+            float scaledProportion = proportion * proportion;
+
+            ideologyProportions[iconType] = scaledProportion;
+
+            Debug.Log($"[Riot Scaling] {iconType.iconType} ({minValue:F2}-{maxValue:F2}): {proportion * 100f:F1}% of population → {scaledProportion * 100f:F2}% spawn rate");
         }
     }
 
@@ -136,9 +222,18 @@ public class SpawningPointsByMap : MonoBehaviour
                     continue;
                 }
 
-                float spawnProbability = CalculateSpawnProbability(iconType, ideologyValue);
+                float baseProbability = CalculateSpawnProbability(iconType, ideologyValue);
 
-                if (Random.value <= spawnProbability)
+                // Scale probability by global ideology proportion (only for riots/protests, not money)
+                float finalProbability = baseProbability;
+                if (iconType.scaleByIdeologyProportion && ideologyProportions.TryGetValue(iconType, out float cachedProportion))
+                {
+                    // If only 5% of population has this ideology, multiply by 0.05² = 0.0025
+                    float proportionScale = Mathf.Max(cachedProportion, 0.01f); // Minimum 1% to prevent complete suppression
+                    finalProbability = baseProbability * proportionScale;
+                }
+
+                if (Random.value <= finalProbability)
                 {
                     SpawnPrefabAtNpcIndex(randomIndex, iconType);
                     break; // Only spawn one icon per attempt

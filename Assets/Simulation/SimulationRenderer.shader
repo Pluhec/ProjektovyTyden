@@ -123,7 +123,7 @@ Shader "Hidden/SimulationRenderer"
                     float3 grayCol = float3(0.5, 0.5, 0.5);
                     float3 blueCol = float3(0.0, 0.0, 1.0);
                     float3 col = lerp(redCol, lerp(grayCol, blueCol, saturate(lerpValue*2-1)), saturate(lerpValue*2));
-                    return float4(col, pow(currentNpc.population / 255., _AlphaGamma));
+                    return float4(col, pow(currentNpc.population / 255., _AlphaGamma*1.2));
                 }
                 return float4(0., 0., 0., 0.0);
             }

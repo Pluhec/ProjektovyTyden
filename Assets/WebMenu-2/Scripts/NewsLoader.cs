@@ -23,6 +23,11 @@ public class NewsLoader : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private int aktualityCount = 3;
 
+    /// <summary>
+    /// Loads news once when the web page opens.
+    /// News is filtered based on the current political stance at this moment.
+    /// The news will NOT update while the page is open - only when closed and reopened.
+    /// </summary>
     private void Start()
     {
         if (useTestData)
@@ -89,10 +94,17 @@ public class NewsLoader : MonoBehaviour
         Clear(aktualityContent);
         Clear(archivContent);
 
-        // Seřadíme podle data od nejnovějšího
+        // Get current political stance from simulation (0-100% where higher = more totalitarian)
+        float currentStance = GetCurrentStance();
+        Debug.Log($"NewsLoader: Totalitarian percentage = {currentStance:F1}% (showing news with minStance <= {currentStance:F1}%)");
+
+        // Filter news based on current stance - only show news appropriate for current political climate
         items = items
+            .Where(item => item.minStance <= currentStance)
             .OrderByDescending(ParseDateSafe)
             .ToList();
+
+        Debug.Log($"NewsLoader: {items.Count} news items available for current stance");
 
         for (int i = 0; i < items.Count; i++)
         {
@@ -112,6 +124,25 @@ public class NewsLoader : MonoBehaviour
 
             view.Bind(items[i]);
         }
+    }
+
+    /// <summary>
+    /// Gets the current political stance from the simulation.
+    /// Returns a percentage (0-100%) where higher = more totalitarian.
+    /// </summary>
+    private float GetCurrentStance()
+    {
+        SimulationHandler simHandler = FindObjectOfType<SimulationHandler>();
+        if (simHandler == null)
+        {
+            Debug.LogWarning("NewsLoader: SimulationHandler not found! Defaulting to democratic stance (0%).");
+            return 0f;
+        }
+
+        // Read the same value the progress bar shows (0-100)
+        float totalitarianPercentage = simHandler.GetStancePercentage();
+
+        return totalitarianPercentage;
     }
 
     private static DateTime ParseDateSafe(NewsItem item)

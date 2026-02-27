@@ -77,14 +77,33 @@ public class EventCanvas : MonoBehaviour
 
     void Awake()
     {
+        Debug.Log("[EventCanvas] Awake() - Initializing EventCanvas");
+
         // Skryj všechny tooltipy na začátku
         if (TooltipPanel1 != null) TooltipPanel1.SetActive(false);
         if (TooltipPanel2 != null) TooltipPanel2.SetActive(false);
         if (TooltipPanel3 != null) TooltipPanel3.SetActive(false);
 
         // Skryj oba sub-canvasy; gameObject zůstává aktivní, aby script běžel
-        if (videoCanvas != null) videoCanvas.SetActive(false);
-        if (decisionCanvas != null) decisionCanvas.SetActive(false);
+        if (videoCanvas != null)
+        {
+            videoCanvas.SetActive(false);
+            Debug.Log("[EventCanvas] videoCanvas hidden on Awake");
+        }
+        else
+        {
+            Debug.LogError("[EventCanvas] videoCanvas is NULL in Awake! Check Inspector!");
+        }
+
+        if (decisionCanvas != null)
+        {
+            decisionCanvas.SetActive(false);
+            Debug.Log("[EventCanvas] decisionCanvas hidden on Awake");
+        }
+        else
+        {
+            Debug.LogError("[EventCanvas] decisionCanvas is NULL in Awake! Check Inspector!");
+        }
     }
 
     /// <summary>
@@ -92,6 +111,7 @@ public class EventCanvas : MonoBehaviour
     /// </summary>
     public void Show()
     {
+        Debug.Log("[EventCanvas] Show() called - attempting to show video canvas");
         ShowVideoCanvas();
     }
 
@@ -125,21 +145,31 @@ public class EventCanvas : MonoBehaviour
 
         Debug.Log($"[EventCanvas] Buttons updated: Free='{optionFree?.OptionName}', Money='{optionMoney?.OptionName}', Perk='{optionPerk?.OptionName}'");
 
+        // Check if buttons should be enabled/disabled based on requirements
+        UpdateButtonStates(optionMoney, optionPerk);
+
         // Navěšení správných tooltip panelů na příslušná tlačítka (předáme i data option)
-        SetupButtonTooltip(buttonFree, TooltipPanel1, optionFree);
-        SetupButtonTooltip(buttonMoney, TooltipPanel2, optionMoney);
-        SetupButtonTooltip(buttonPerk, TooltipPanel3, optionPerk);
+        SetupButtonTooltip(buttonFree, TooltipPanel1, optionFree, true);
+        SetupButtonTooltip(buttonMoney, TooltipPanel2, optionMoney, CanAffordMoney(optionMoney));
+        SetupButtonTooltip(buttonPerk, TooltipPanel3, optionPerk, HasRequiredPerk(optionPerk));
     }
 
     /// <summary>
     /// Přidá EventTrigger pro zobrazení/skrytí konkrétního tooltip panelu při najetí myši.
     /// </summary>
-    private void SetupButtonTooltip(Button btn, GameObject targetTooltipPanel, EventDataReceiver.OptionData option)
+    private void SetupButtonTooltip(Button btn, GameObject targetTooltipPanel, EventDataReceiver.OptionData option, bool isEnabled)
     {
         if (btn == null || targetTooltipPanel == null) return;
 
         // Najdi TextMeshPro komponentu v panelu (předpokládá se, že tam je)
         TextMeshProUGUI tooltipText = targetTooltipPanel.GetComponentInChildren<TextMeshProUGUI>();
+
+        // Get or create CanvasGroup for opacity control
+        CanvasGroup canvasGroup = btn.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = btn.gameObject.AddComponent<CanvasGroup>();
+        }
 
         EventTrigger trigger = btn.gameObject.GetComponent<EventTrigger>();
         if (trigger == null)
@@ -151,17 +181,47 @@ public class EventCanvas : MonoBehaviour
         // Zobrazení tooltipu
         var entryEnter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
         entryEnter.callback.AddListener((data) => {
+            // Brighten disabled button on hover so tooltip is readable
+            if (!isEnabled && canvasGroup != null)
+            {
+                canvasGroup.alpha = 0.8f;
+            }
+
             if (tooltipText != null)
             {
-                tooltipText.text = FormatOptionEffects(option);
+                if (isEnabled)
+                {
+                    tooltipText.text = FormatOptionEffects(option);
+                }
+                else
+                {
+                    tooltipText.text = GetDisabledReason(option);
+                }
             }
+
+            // Ensure tooltip panel is always fully visible (not affected by button opacity)
+            CanvasGroup tooltipCanvasGroup = targetTooltipPanel.GetComponent<CanvasGroup>();
+            if (tooltipCanvasGroup == null)
+            {
+                tooltipCanvasGroup = targetTooltipPanel.AddComponent<CanvasGroup>();
+            }
+            tooltipCanvasGroup.alpha = 1f;
+            tooltipCanvasGroup.ignoreParentGroups = true; // Ignore parent button's opacity
+
             targetTooltipPanel.SetActive(true);
         });
         trigger.triggers.Add(entryEnter);
 
         // Skrytí tooltipu
         var entryExit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
-        entryExit.callback.AddListener((data) => { targetTooltipPanel.SetActive(false); });
+        entryExit.callback.AddListener((data) => {
+            // Restore disabled opacity when hover ends
+            if (!isEnabled && canvasGroup != null)
+            {
+                canvasGroup.alpha = 0.5f;
+            }
+            targetTooltipPanel.SetActive(false);
+        });
         trigger.triggers.Add(entryExit);
     }
 
@@ -276,6 +336,101 @@ public class EventCanvas : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the visual state of buttons (enabled/disabled appearance)
+    /// </summary>
+    private void UpdateButtonStates(EventDataReceiver.OptionData optionMoney, EventDataReceiver.OptionData optionPerk)
+    {
+        // Free button is always enabled
+        SetButtonVisualState(buttonFree, true);
+
+        // Money button - check if player has enough money
+        bool canAffordMoney = CanAffordMoney(optionMoney);
+        SetButtonVisualState(buttonMoney, canAffordMoney);
+
+        // Perk button - check if player has the required perk
+        bool hasRequiredPerk = HasRequiredPerk(optionPerk);
+        SetButtonVisualState(buttonPerk, hasRequiredPerk);
+
+        Debug.Log($"[EventCanvas] Button states - Money: {canAffordMoney}, Perk: {hasRequiredPerk}");
+    }
+
+    /// <summary>
+    /// Sets the visual state of a button (grayed out when disabled)
+    /// </summary>
+    private void SetButtonVisualState(Button btn, bool isEnabled)
+    {
+        if (btn == null) return;
+
+        // Change button interactability
+        btn.interactable = isEnabled;
+
+        // Adjust visual opacity
+        CanvasGroup canvasGroup = btn.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = btn.gameObject.AddComponent<CanvasGroup>();
+        }
+
+        canvasGroup.alpha = isEnabled ? 1f : 0.5f;
+    }
+
+    /// <summary>
+    /// Checks if the player has enough money for the money option
+    /// </summary>
+    private bool CanAffordMoney(EventDataReceiver.OptionData optionMoney)
+    {
+        if (optionMoney == null) return true;
+        return PlayerChoice.DataSets.PlayerStats.Money >= optionMoney.OptionCost;
+    }
+
+    /// <summary>
+    /// Checks if the player has the required perk
+    /// </summary>
+    private bool HasRequiredPerk(EventDataReceiver.OptionData optionPerk)
+    {
+        if (optionPerk == null) return true;
+        if (string.IsNullOrEmpty(optionPerk.OptionPerk)) return true;
+
+        // Check using the same logic as EventDataReceiver.IsPerkOwned
+        System.Reflection.FieldInfo field = typeof(PlayerChoice.DataSets.PerkSet).GetField(
+            optionPerk.OptionPerk,
+            System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+
+        if (field == null)
+        {
+            // Check owned perks list as fallback
+            return PlayerChoice.DataSets.DataFunctions.OwnedPerks.Contains(optionPerk.OptionPerk);
+        }
+
+        PlayerChoice.DataSets.PerkInformation perkInfo = field.GetValue(null) as PlayerChoice.DataSets.PerkInformation;
+        return perkInfo != null && perkInfo.IsBought;
+    }
+
+    /// <summary>
+    /// Gets the reason why a button is disabled
+    /// </summary>
+    private string GetDisabledReason(EventDataReceiver.OptionData option)
+    {
+        if (option == null) return "NEDOSTUPNÉ";
+
+        // Check money requirement
+        if (option.OptionCost > 0)
+        {
+            int currentMoney = PlayerChoice.DataSets.PlayerStats.Money;
+            int required = option.OptionCost;
+            return $"NEDOSTATEK PENĚZ\n\nPotřebujete: {required}$\nMáte: {currentMoney}$\nChybí: {required - currentMoney}$";
+        }
+
+        // Check perk requirement
+        if (!string.IsNullOrEmpty(option.OptionPerk))
+        {
+            return $"CHYBĚJÍCÍ PERK\n\nPotřebujete perk:\n'{option.OptionPerk}'";
+        }
+
+        return "NEDOSTUPNÉ";
+    }
+
     void OnDestroy()
     {
         // Odeber listenery
@@ -338,6 +493,12 @@ public class EventCanvas : MonoBehaviour
         if (TooltipPanel1 != null) TooltipPanel1.SetActive(false);
         if (TooltipPanel2 != null) TooltipPanel2.SetActive(false);
         if (TooltipPanel3 != null) TooltipPanel3.SetActive(false);
+
+        // Gradually restore background music
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.RestoreMusic(1.0f);
+        }
     }
 
     /// <summary>
@@ -400,21 +561,44 @@ public class EventCanvas : MonoBehaviour
     /// </summary>
     private void ShowVideoCanvas()
     {
+        Debug.Log("[EventCanvas] ShowVideoCanvas() called");
+
         if (decisionCanvas != null)
         {
             decisionCanvas.SetActive(false);
+            Debug.Log("[EventCanvas] Decision canvas hidden");
+        }
+        else
+        {
+            Debug.LogWarning("[EventCanvas] decisionCanvas is NULL!");
         }
 
         if (videoCanvas != null)
         {
-            print("showing canvas");
+            Debug.Log("[EventCanvas] Setting videoCanvas to active");
             videoCanvas.SetActive(true);
+            Debug.Log($"[EventCanvas] videoCanvas.activeSelf = {videoCanvas.activeSelf}");
+        }
+        else
+        {
+            Debug.LogError("[EventCanvas] videoCanvas is NULL! Assign it in the Inspector!");
         }
 
         if (videoPlayer != null)
         {
             videoPlayer.time = 0;
             videoPlayer.Play();
+            Debug.Log("[EventCanvas] Video player started");
+        }
+        else
+        {
+            Debug.LogWarning("[EventCanvas] videoPlayer is NULL!");
+        }
+
+        // Gradually duck background music
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.DuckMusic(0.1f, 1.0f);
         }
     }
 
