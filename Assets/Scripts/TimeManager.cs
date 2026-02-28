@@ -53,7 +53,7 @@ public class TimeManager : MonoBehaviour
 
         if (!isPaused)
         {
-            timer += Time.deltaTime;
+            timer += Time.deltaTime / 2f;
             if (timer >= 1f)
             {
                 timer = 0f;
